@@ -202,6 +202,8 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
 .vrow button:hover{background:rgba(255,201,77,.16);color:#F2D8A7}
 .vrow .vrec.rec{background:var(--najdi);border-color:#FF6B6B;color:#fff;
   animation:pulseWarn .7s ease-in-out infinite}
+#edRec.rec{background:linear-gradient(180deg,#E4636B,var(--najdi));color:#fff;
+  border-color:#FF6B6B;animation:pulseWarn .7s ease-in-out infinite}
 .vrow .vply{border-color:rgba(46,213,115,.4);color:#8FE0AC}
 .vrow .vdel{border-color:rgba(255,107,107,.4);color:#FF9AA8;padding:3px 7px}
 #edCanvas{width:min(300px,78vw);height:min(300px,78vw);border-radius:18px;
@@ -376,7 +378,7 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     </div>
     <p class="hint" id="offlineTag">نحفظ اللعبة على جهازك...</p>
     <div class="sadu thin"></div>
-    <p class="hint">أعلى نتيجة: <b id="best">0</b></p>
+    <p class="hint">أعلى نتيجة: <b id="best">0</b> · نسخة <b id="verTag">7</b></p>
     <p class="hint" style="max-width:38ch">من "استوديو الوجوه" تقدر تضيف صورك — تنحفظ على جهازك أنت فقط وما تنرسل لأي مكان.</p>
   </div>
 
@@ -419,6 +421,11 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     <p class="hint">اسحب الصورة لتحريكها — استخدم الشريط للتكبير</p>
     <input type="range" id="edZoom" min="0" max="100" value="50" aria-label="تكبير">
     <input type="text" id="edName" maxlength="14" placeholder="اكتب الاسم اللي يظهر تحت الصورة" aria-label="الاسم">
+    <div class="row">
+      <button class="btn ghost sm" id="edRec">سجّل صوته</button>
+      <button class="btn ghost sm" id="edPlay" style="display:none">سمّعني</button>
+    </div>
+    <p class="hint" id="edVoiceTag">صوته يطلع كل ما تصيده في اللعبة</p>
     <div class="row">
       <button class="btn sm" id="edSave">حفظ</button>
       <button class="btn ghost sm" id="edAuto">كشف تلقائي</button>
@@ -2215,8 +2222,9 @@ function pickMime(){
   }
   return '';
 }
-async function recordVoice(face, cardEl){
+async function recordVoice(face, cardEl, inEditor){
   if(REC.rec){ stopRecording(); return; }
+  REC.inEditor = !!inEditor;
   if(!recSupported()){
     setStatus('متصفحك ما يدعم التسجيل. جرّب كروم أو سفاري محدّث.'); return;
   }
@@ -2245,33 +2253,48 @@ async function recordVoice(face, cardEl){
     REC.stream.getTracks().forEach(t => t.stop());
     const blob = new Blob(REC.chunks, {type: REC.chunks[0] ? REC.chunks[0].type : 'audio/webm'});
     REC.rec = null; REC.stream = null;
-    if(!blob.size){ setStatus('ما انسجّل شي — حاول مرة ثانية.'); renderStudio(); return; }
-    if(blob.size > 260000){ setStatus('التسجيل كبير — حاول أقصر.'); renderStudio(); return; }
+    if(!blob.size){ REC.inEditor ? (edVoiceUI(), toast('ما انسجّل شي — حاول مرة ثانية'))
+                                 : (setStatus('ما انسجّل شي — حاول مرة ثانية.'), renderStudio());
+                    return; }
+    if(blob.size > 260000){ REC.inEditor ? (edVoiceUI(), toast('التسجيل كبير — حاول أقصر'))
+                                          : (setStatus('التسجيل كبير — حاول أقصر.'), renderStudio());
+                            return; }
     const url = await new Promise(res => {
       const fr = new FileReader(); fr.onload = () => res(fr.result);
       fr.onerror = () => res(null); fr.readAsDataURL(blob);
     });
-    if(!url){ setStatus('ما قدرنا نحفظ التسجيل.'); renderStudio(); return; }
+    if(!url){ REC.inEditor ? (edVoiceUI(), toast('ما قدرنا نحفظ التسجيل'))
+                            : (setStatus('ما قدرنا نحفظ التسجيل.'), renderStudio());
+              return; }
     // نتأكد إنه ينفك قبل ما نحفظه
     try{ clips.set(url, await Snd.decode(url)); }
-    catch(e){ setStatus('التسجيل ما اشتغل على هذا المتصفح.'); renderStudio(); return; }
+    catch(e){ REC.inEditor ? (edVoiceUI(), toast('التسجيل ما اشتغل على هذا المتصفح'))
+                            : (setStatus('التسجيل ما اشتغل على هذا المتصفح.'), renderStudio());
+              return; }
     face.voice = url;
-    await saveFaces();
-    renderStudio();
-    setStatus('انحفظ صوت ' + face.name + ' — بيطلع كل ما تصيبه');
+    if(REC.inEditor){
+      await saveFaces();
+      edVoiceUI();
+      toast('انحفظ صوته — بيطلع كل ما تصيده');
+    } else {
+      await saveFaces();
+      renderStudio();
+      setStatus('انحفظ صوت ' + face.name + ' — بيطلع كل ما تصيبه');
+    }
     yell(face);
   };
   rec.start();
   // عدّ تنازلي مرئي على البطاقة
   let left = MAX_REC;
-  const btn = cardEl && cardEl.querySelector('.vrec');
+  const btn = inEditor ? $('edRec') : (cardEl && cardEl.querySelector('.vrec'));
   if(btn){ btn.classList.add('rec'); btn.textContent = 'يسجّل ' + (left/1000).toFixed(1); }
   REC.timer = setInterval(() => {
     left -= 100;
     if(btn) btn.textContent = 'يسجّل ' + Math.max(0,left/1000).toFixed(1);
     if(left <= 0) stopRecording();
   }, 100);
-  setStatus('قول «أوه» أو أي صيحة قصيرة...');
+  if(inEditor) toast('قول «أوه» أو أي صيحة قصيرة...');
+  else setStatus('قول «أوه» أو أي صيحة قصيرة...');
   setTimeout(() => { if(REC.rec) stopRecording(); }, MAX_REC + 120);
 }
 function stopRecording(){
@@ -2299,7 +2322,18 @@ function openEditor(face, isNew){
   const w = im.naturalWidth, h = im.naturalHeight;
   Ed.crop = clampCrop(face.crop ? {...face.crop} : fallbackCrop(w, h), w, h);
   $('edName').value = face.name || '';
+  edVoiceUI();
   syncZoom(); drawEditor(); show('editor');
+}
+function edVoiceUI(){
+  const f = Ed.face, r = $('edRec'), p = $('edPlay'), t = $('edVoiceTag');
+  if(!r) return;
+  r.classList.remove('rec');
+  const has = !!(f && f.voice);
+  r.textContent = has ? 'بدّل الصوت' : 'سجّل صوته';
+  if(p) p.style.display = has ? 'inline-flex' : 'none';
+  if(t) t.textContent = has ? 'عنده صوت — بيطلع كل ما تصيده'
+                            : 'اختياري: سجّل صيحته فتطلع كل ما تصيده';
 }
 function edDims(){ return { w:Ed.img.naturalWidth, h:Ed.img.naturalHeight }; }
 function syncZoom(){
@@ -2325,8 +2359,11 @@ function drawEditor(){
   g.drawImage(Ed.img, c.x, c.y, c.s, c.s, 0, 0, S, S);
   // تعتيم خارج الدائرة
   g.save();
-  g.beginPath(); g.rect(0,0,S,S);
-  g.arc(S/2, S/2, S/2-4, 0, 7, true);
+  const R0 = S/2 - 4;
+  g.beginPath(); g.rect(0, 0, S, S);
+  g.moveTo(S/2 + R0, S/2);              // ننقل نقطة المسار لبداية الدائرة قبل رسمها
+  g.arc(S/2, S/2, R0, 0, 7, true);
+  g.closePath();
   g.fillStyle = 'rgba(12,8,4,.72)'; g.fill('evenodd');
   g.restore();
   g.strokeStyle = '#FFC94D'; g.lineWidth = 3;
@@ -2550,6 +2587,8 @@ $('sndBtn').onclick = e => { const on = Snd.toggle(); e.target.textContent = 'ا
     syncZoom(); drawEditor();
   }, {passive:false});
   $('edZoom').addEventListener('input', e => setZoom(+e.target.value));
+  $('edRec').onclick  = () => { if(Ed.face) recordVoice(Ed.face, null, true); };
+  $('edPlay').onclick = () => { Snd.boot(); if(Ed.face) yell(Ed.face); };
   $('edAuto').onclick = () => {
     const {w,h} = edDims();
     const f = detectFace(Ed.img, w, h);
