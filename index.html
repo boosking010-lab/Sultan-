@@ -5,20 +5,27 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1B1410">
 <title>رماة الصحراء</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Rakkas&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<meta name="description" content="لعبة تصويب صحراوية بـ 12 مرحلة وثلاثة زعماء — تشتغل بدون إنترنت.">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="رماة الصحراء">
 <style>
 :root{
   --sand-light:#F2D8A7; --sand:#D9AE6B; --sand-dark:#A87A45;
   --clay:#8C3B22; --najdi:#A81F2D; --ink:#1B1410; --bone:#F7EEDC;
   --gold:#E8B33C; --palm:#2F4A33; --safe:#2C6E49;
+  /* خطوط النظام العربية تشتغل بدون إنترنت: أندرويد، آيفون، ويندوز */
+  --f-ui:'Noto Kufi Arabic','Noto Sans Arabic','SF Arabic','Geeza Pro','Segoe UI','Tahoma',system-ui,sans-serif;
+  --f-disp:'Noto Naskh Arabic','SF Arabic','Geeza Pro','Traditional Arabic','Segoe UI',Georgia,serif;
   --sp1:8px; --sp2:16px; --sp3:24px; --sp4:40px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;height:100dvh;overflow:hidden;background:#0C0906;overscroll-behavior:none}
 body{
-  font-family:'Tajawal','Tahoma','Segoe UI',sans-serif;
+  font-family:var(--f-ui);
   color:var(--bone); user-select:none; -webkit-user-select:none;
   touch-action:manipulation;
 }
@@ -32,7 +39,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:non
 }
 .layer.on{display:flex}
 .scrim{background:radial-gradient(ellipse at center,rgba(27,20,16,.82),rgba(12,9,6,.96))}
-h1,h2,h3{font-family:'Rakkas','Tajawal',serif;font-weight:400;line-height:1.15}
+h1,h2,h3{font-family:var(--f-disp);font-weight:800;line-height:1.25;letter-spacing:-.5px}
 h1{font-size:clamp(38px,9vw,76px);color:var(--gold);letter-spacing:.5px;
    text-shadow:0 4px 0 #6B2A14,0 8px 24px rgba(0,0,0,.6)}
 h2{font-size:clamp(26px,6vw,44px);color:var(--sand-light)}
@@ -53,7 +60,7 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
 
 .btn{
   display:inline-flex;align-items:center;justify-content:center;text-align:center;
-  font-family:'Tajawal',sans-serif;font-weight:800;font-size:clamp(16px,4.2vw,19px);
+  font-family:var(--f-ui);font-weight:800;font-size:clamp(16px,4.2vw,19px);
   color:#241703;background:linear-gradient(180deg,#FFDE7A,#FFC94D 45%,#D89216);
   border:0;border-bottom:5px solid #7A4A0F;border-radius:16px;
   box-shadow:0 8px 24px rgba(255,180,60,.22), inset 0 1px 0 rgba(255,255,255,.5);
@@ -90,8 +97,40 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
 @keyframes bump{0%{transform:scale(1)}45%{transform:scale(1.35)}100%{transform:scale(1)}}
 #lives{display:flex;gap:5px}
 .heart{width:20px;height:20px;filter:drop-shadow(0 2px 0 rgba(0,0,0,.4))}
+/* شريط الأسلحة: عمودي على حافة الشاشة اليسرى */
+#wpRail{position:absolute;left:8px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:7px;pointer-events:auto;z-index:6}
+.wp{
+  position:relative;width:58px;min-height:56px;padding:5px 3px 4px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  border-radius:14px;border:2px solid rgba(255,255,255,.10);
+  background:linear-gradient(180deg,rgba(40,28,20,.86),rgba(16,11,7,.92));
+  box-shadow:0 5px 16px rgba(0,0,0,.5);backdrop-filter:blur(6px);
+  transition:transform .16s cubic-bezier(.3,1.5,.5,1),border-color .16s,box-shadow .16s;
+}
+.wp svg{width:30px;height:16px;display:block}
+.wp .wn{font-family:var(--f-ui);font-size:9.5px;font-weight:700;color:#C6AE86;line-height:1}
+.wp .wa{font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.wp.on{transform:scale(1.09);border-color:currentColor;
+  box-shadow:0 0 0 1px currentColor,0 6px 22px rgba(0,0,0,.55)}
+.wp.on .wn{color:#F2D8A7}
+.wp.lock{opacity:.4;cursor:not-allowed}
+.wp.lock .wa{color:#8A7458;font-size:9.5px}
+.wp.empty .wa{color:#FF6B6B}
+.wp .key{position:absolute;top:2px;inset-inline-end:4px;font-size:8px;color:#6E5A42;font-weight:700}
+@media (max-height:480px) and (orientation:landscape){
+  #wpRail{gap:4px;left:5px}
+  .wp{width:46px;min-height:44px;border-radius:11px;padding:3px 2px}
+  .wp svg{width:24px;height:13px}
+  .wp .wn{font-size:8px} .wp .wa{font-size:10px} .wp .key{display:none}
+}
+@media (max-width:360px){ .wp{width:50px;min-height:50px} }
 #ammo{position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);
-      inset-inline-start:14px;display:flex;gap:5px;align-items:center}
+      inset-inline-start:50%;transform:translateX(50%);
+      display:flex;gap:5px;align-items:center;justify-content:center}
+#ammoNum{font-weight:800;font-size:17px;color:#FFC94D;font-variant-numeric:tabular-nums;
+  background:rgba(20,14,10,.8);border:1px solid rgba(255,201,77,.3);
+  border-radius:12px;padding:5px 14px}
 .shell{width:10px;height:28px;border-radius:4px;
        background:linear-gradient(180deg,#FFE9A8,#FFC94D 40%,#9A6A18);
        border:1px solid #3A2404;box-shadow:0 2px 6px rgba(0,0,0,.5);
@@ -101,7 +140,7 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
   inset-inline-end:14px;display:none}
 #reloadBtn.on{display:block}
 #comboTag{position:absolute;top:98px;inset-inline:0;text-align:center;
-  font-family:'Rakkas',serif;font-size:clamp(24px,6.5vw,40px);
+  font-family:var(--f-disp);font-size:clamp(24px,6.5vw,40px);
   background:linear-gradient(180deg,#FFF3D0,#FF9E3D);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 3px 0 rgba(122,46,16,.9)) drop-shadow(0 0 18px rgba(255,158,61,.5));
@@ -148,14 +187,14 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
   border:3px solid var(--sand-dark);background:#2A1F15;cursor:pointer;
   transition:border-color .18s,transform .18s}
 .fcard canvas.thumb:hover{border-color:var(--gold);transform:scale(1.05)}
-.fcard .role{border:0;cursor:pointer;font-family:'Tajawal',sans-serif}
+.fcard .role{border:0;cursor:pointer;font-family:var(--f-ui)}
 #edCanvas{width:min(300px,78vw);height:min(300px,78vw);border-radius:18px;
   touch-action:none;cursor:grab;background:#150F0A;box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #edCanvas:active{cursor:grabbing}
 #edZoom{width:min(300px,78vw);height:36px;accent-color:var(--gold);cursor:pointer}
 #edName{width:min(300px,78vw);padding:11px 14px;border-radius:12px;
   border:2px solid #6C543A;background:rgba(20,14,10,.8);color:var(--bone);
-  font-family:'Tajawal',sans-serif;font-weight:700;font-size:16px;text-align:center}
+  font-family:var(--f-ui);font-weight:700;font-size:16px;text-align:center}
 #edName:focus{outline:none;border-color:var(--gold)}
 .fcard .nm{font-size:12px;font-weight:700;color:#E4D3B4;max-width:100%;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -167,7 +206,12 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
   border-radius:50%;border:0;background:var(--najdi);color:#fff;font-weight:800;
   cursor:pointer;line-height:1;font-size:14px}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.hint{font-size:13px;color:#A8927150;color:#A89271}
+.hint{font-size:13px;color:#A89271}
+#offlineTag{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:99px;
+  background:rgba(44,110,73,.16);border:1px solid rgba(46,213,115,.32);color:#8FE0AC}
+#offlineTag::before{content:'';width:8px;height:8px;border-radius:50%;background:#2ED573;flex:none}
+#offlineTag.warn{background:rgba(232,179,60,.14);border-color:rgba(232,179,60,.4);color:#E8C98A}
+#offlineTag.warn::before{background:#E8B33C}
 /* لا نستخدم display:none — بعض المتصفحات ترفض فتح المنتقي لعنصر مخفي كلياً */
 input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;opacity:0}
@@ -253,6 +297,7 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       <div class="trackLbl" id="goalLbl">0 / 8</div>
     </div>
     <div id="comboTag"></div>
+    <div id="wpRail"></div>
     <div id="ammo"></div>
     <button class="btn sm" id="reloadBtn">إعادة تعبئة</button>
   </div>
@@ -269,7 +314,9 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       <button class="btn ghost sm" id="studioBtn">استوديو الوجوه</button>
       <button class="btn ghost sm" id="howBtn">كيف ألعب</button>
       <button class="btn ghost sm" id="sndBtn">الصوت: تشغيل</button>
+      <button class="btn sm" id="saveBtn" style="display:none">احفظها لجهازك</button>
     </div>
+    <p class="hint" id="offlineTag">نحفظ اللعبة على جهازك...</p>
     <div class="sadu thin"></div>
     <p class="hint">أعلى نتيجة: <b id="best">0</b></p>
     <p class="hint" style="max-width:38ch">من "استوديو الوجوه" تقدر تضيف صورك — تنحفظ على جهازك أنت فقط وما تنرسل لأي مكان.</p>
@@ -296,6 +343,9 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       <p>• ضربات متتالية بدون خطأ = <b>مضاعف نقاط</b> يوصل ×5.</p>
       <p>• الوجه اللي عليه علامة خضراء <b>محمي</b> — إذا ضربته تخسر قلب.</p>
       <p>• الهدف الذهبي نادر: نقاط عالية + يعبّي لك الطلقات.</p>
+      <p>• من شريط الأسلحة على يسار الشاشة تبدّل بين أربعة أسلحة (أو أرقام 1-4):
+         <b>بندقية</b> متوازنة، <b>رشاش</b> سريع ومبعثر، <b>بارودة</b> شظاياها تصيب أكثر من هدف،
+         و<b>قنّاص</b> يخترق الدروع ونقاطه مضاعفة. الأسلحة تنفتح كل ما تقدّمت.</p>
       <p>• كل 4 مراحل يجيك <b>زعيم</b> يحتاج ضربات كثيرة ويرفع درعه بين فترة وفترة.</p>
       <p>• لازم توصل هدف المرحلة قبل ما ينتهي الوقت، وإلا تخسر قلب وتعيدها.</p>
     </div>
@@ -472,13 +522,32 @@ const Snd = (() => {
       wind.connect(f); f.connect(windG); windG.connect(bus); wind.start();
     },
     windOff(){ if(wind){ try{ wind.stop(); }catch(e){} wind = null; windG = null; } },
-    // طلقة بثلاث طبقات: فرقعة + جسم + ذيل
-    shoot(){
-      noise(.05, 7000, .5, -5000, 1.2);
-      noise(.20, 1500, .34, -1300, 2.4, .01);
-      tone(88, .14, 'square', .18, -40);
-      tone(2100, .03, 'square', .08, -1500);
+    // لكل سلاح بصمة صوتية مختلفة
+    shoot(id){
+      if(id === 'smg'){                       // رشاش: فرقعة قصيرة حادة
+        noise(.035, 8000, .34, -6000, 1.1);
+        noise(.09, 2100, .2, -1700, 2);
+        tone(150, .05, 'square', .1, -60);
+      } else if(id === 'shot'){                // بارودة: دوي عريض وثقيل
+        noise(.09, 5200, .58, -4200, .9);
+        noise(.42, 900, .42, -760, 2.6, .015);
+        tone(58, .3, 'square', .3, -26);
+        tone(1500, .05, 'square', .1, -1100);
+      } else if(id === 'sniper'){              // قنّاص: طلقة حادة مع صدى
+        noise(.05, 9000, .5, -7000, 1.4);
+        noise(.3, 1800, .3, -1600, 3, .01);
+        tone(70, .34, 'sawtooth', .26, -30);
+        noise(.5, 700, .12, -600, 4, .12);     // صدى بعيد
+        tone(2600, .04, 'square', .09, -2000);
+      } else {                                 // بندقية
+        noise(.05, 7000, .5, -5000, 1.2);
+        noise(.20, 1500, .34, -1300, 2.4, .01);
+        tone(88, .14, 'square', .18, -40);
+        tone(2100, .03, 'square', .08, -1500);
+      }
     },
+    swap(){ tone(520,.05,'square',.13,-90); tone(760,.06,'square',.13,0,.07);
+            noise(.05,3600,.1,-2600,2,.02); },
     rico(){ tone(2600, .16, 'sine', .1, -1900, .02); noise(.09, 4200, .12, -3000, 3); },
     empty(){ tone(1800,.03,'square',.09); tone(900,.04,'square',.07,0,.05); },
     reload(){ tone(620,.05,'square',.12,-120); tone(430,.06,'square',.12,-90,.13);
@@ -583,11 +652,27 @@ const prog = { unlocked:1, stars:{}, best:0 };
 const G = {
   screen:'menu', level:1, score:0, lives:3, timeLeft:0, hits:0, shots:0, misses:0,
   combo:0, bestCombo:0, mult:1, ammo:6, maxAmmo:6, reloading:false, reloadT:0,
+  wp:0, mag:[8,18,5,3], fireCd:0, swapFx:0,
   targets:[], parts:[], pops:[], holes:[], boss:null, calls:[], rings:[], smoke:[],
   spawnT:0, shake:0, freeze:0, dbl:0, flash:0, paused:false, running:false,
   intro:0, recoil:0, hurt:0, tickAt:99, slowmo:0, glowT:0,
   cross:{x:W/2,y:H/2}, lastPointer:0, t:0
 };
+
+/* ---------- 5.5) الأسلحة ---------- */
+// كل سلاح له إيقاع مختلف: ذخيرة، سرعة، ضرر، تشتّت، وسعة تصويب
+const WEAPONS = [
+  { id:'rifle', name:'بندقية', hint:'متوازنة ودقيقة، تصويبها متسامح',
+    mag:8,  cd:.18, reload:.95,  dmg:1, pellets:1, spread:0,  aim:8,  mult:1,   unlock:1, col:'#FFC94D' },
+  { id:'smg', name:'رشاش', hint:'رشقات سريعة لكن مبعثرة',
+    mag:18, cd:.11, reload:2.0,  dmg:1, pellets:1, spread:26, aim:5,  mult:.7,  unlock:3, col:'#38C9A0' },
+  { id:'shot', name:'بارودة', hint:'خمس شظايا تصيب أكثر من هدف',
+    mag:5,  cd:.62, reload:2.0,  dmg:1, pellets:5, spread:62, aim:20, mult:1.15,unlock:5, col:'#FF7A3D' },
+  { id:'sniper', name:'قنّاص', hint:'ضربة قاضية تخترق الدروع',
+    mag:3,  cd:.85, reload:2.3,  dmg:4, pellets:1, spread:0,  aim:4,  mult:1.9, unlock:8, col:'#4FB8FF' }
+];
+const wp = () => WEAPONS[G.wp];
+const wpOpen = i => (prog.unlocked || 1) >= WEAPONS[i].unlock;
 
 /* ---------- 6) المراحل ---------- */
 // pal: أجواء الوقت (فجر/ظهر/غروب/ليل)
@@ -870,7 +955,7 @@ function drawPortrait(x, y, r, face, ring, extra){
   if(extra) extra();
   // الاسم
   if(face){
-    ctx.font = '700 13px Tajawal, sans-serif'; ctx.textAlign = 'center';
+    ctx.font = '700 13px Noto Kufi Arabic, Noto Sans Arabic, Segoe UI, Tahoma, sans-serif'; ctx.textAlign = 'center';
     const w = ctx.measureText(face.name).width + 14;
     ctx.fillStyle = 'rgba(27,20,16,.78)';
     ctx.fillRect(x-w/2, y+r+5, w, 19);
@@ -947,7 +1032,7 @@ function drawTarget(t){
       } else {
         ctx.beginPath(); ctx.moveTo(x-7, by-5); ctx.lineTo(x-1, by+5);
         ctx.moveTo(x-1, by-5); ctx.lineTo(x-7, by+5); ctx.stroke();
-        ctx.fillStyle = '#F7EEDC'; ctx.font = '800 14px Tajawal, sans-serif'; ctx.textAlign='center';
+        ctx.fillStyle = '#F7EEDC'; ctx.font = '800 14px Noto Kufi Arabic, Noto Sans Arabic, Segoe UI, Tahoma, sans-serif'; ctx.textAlign='center';
         ctx.fillText('2', x+5.5, by+5);
       }
     }
@@ -1026,54 +1111,100 @@ function smoke(x, y, n){
 }
 
 /* ---------- 13) الإطلاق ---------- */
+function switchWeapon(i){
+  if(i === G.wp || !WEAPONS[i]) return;
+  if(!wpOpen(i)){ toast('يفتح من المرحلة ' + WEAPONS[i].unlock); Snd.empty(); return; }
+  G.mag[G.wp] = G.ammo;
+  G.wp = i; G.maxAmmo = wp().mag;
+  G.ammo = clamp(G.mag[i], 0, G.maxAmmo);
+  G.reloading = false; G.reloadT = 0; G.fireCd = .12; G.swapFx = 1;
+  Snd.swap(); updAmmo(); renderRail();
+  if(G.ammo <= 0) startReload();
+}
+
 function fire(px, py){
   if(!G.running || G.paused || G.intro > 0) return;
-  if(G.reloading) return;
-  if(G.ammo <= 0){ Snd.empty(); toast('خلصت الطلقات — عبّي!'); return; }
-  G.ammo--; G.shots++; updAmmo();
-  Snd.shoot(); G.flash = .28; G.shake = RM ? 0 : 6; G.recoil = 1;
-  smoke(px, py, 3);
-  burst(px, py, '#F2D8A7', 7, 90);
-  let hit = false;
+  if(G.reloading || G.fireCd > 0) return;
+  const Wp = wp();
+  if(G.ammo <= 0){ Snd.empty(); toast('خلصت الذخيرة — عبّي!'); return; }
+  G.ammo--; G.shots++; G.fireCd = Wp.cd; updAmmo();
+  Snd.shoot(Wp.id);
+  G.flash = Wp.id === 'shot' ? .42 : Wp.id === 'sniper' ? .38 : Wp.id === 'smg' ? .16 : .24;
+  G.shake = RM ? 0 : (Wp.id === 'shot' ? 11 : Wp.id === 'sniper' ? 9 : Wp.id === 'smg' ? 3 : 6);
+  G.recoil = 1;
+  smoke(px, py, Wp.id === 'shot' ? 7 : 3);
 
-  // الزعيم أولاً
-  if(G.boss){
-    const b = G.boss, dy = b._dy ?? b.y;
-    if(Math.hypot(px-b.x, py-dy) < b.r + 6){
-      hit = true;
-      if(b.shield){ Snd.shield(); popText(px, py, 'الدرع مرفوع', '#C6AE86');
-                    burst(px,py,'#8C7A66',12,160); ring(px,py,'#C6AE86',10,60,.3); }
-      else{
-        b.hp -= (G.dbl > 0 ? 2 : 1); b.hitFx = .22;
-        G.combo++; G.bestCombo = Math.max(G.bestCombo, G.combo);
-        G.mult = clamp(1 + Math.floor(G.combo/4), 1, 5);
-        const pts = 20 * G.mult * (G.dbl > 0 ? 2 : 1);
-        G.score += pts; popText(px, py, '+' + pts, '#E8B33C');
-        burst(px, py, '#A81F2D', 14, 200); Snd.bossHit();
-        ring(px, py, '#FF5B3D', 12, 62, .3); updHUD();
-        const frac = b.hp/b.maxHp;
-        if(frac <= .25 && !b._rage){ b._rage = true; b.vx *= 1.45; b.vy *= 1.45;
-          callout('الزعيم غاضب!', 'صار أسرع — ركّز', '#FF5B3D'); }
-        if(b.hp <= 0) bossDown();
+  // نقطة إصابة واحدة أو شظايا موزّعة داخل دائرة التشتّت
+  const shots = [];
+  for(let i=0;i<Wp.pellets;i++){
+    if(Wp.spread <= 0){ shots.push({x:px, y:py}); continue; }
+    const a = rnd(0, 6.283);
+    const r = Wp.pellets > 1 ? Math.sqrt(Math.random())*Wp.spread : rnd(0, Wp.spread);
+    shots.push({x:px + Math.cos(a)*r, y:py + Math.sin(a)*r});
+  }
+
+  let anyHit = false, bossPellets = 0, bx = 0, by2 = 0;
+  const struck = new Set();
+
+  for(const sh of shots){
+    burst(sh.x, sh.y, '#F2D8A7', Wp.pellets > 1 ? 3 : 7, 90);
+    if(G.boss){
+      const b = G.boss, by = b._dy ?? b.y;
+      if(Math.hypot(sh.x-b.x, sh.y-by) < b.r + Wp.aim){
+        anyHit = true;
+        if(b.shield){
+          if(!struck.has('sh')){ struck.add('sh');
+            Snd.shield(); popText(sh.x, sh.y, 'الدرع مرفوع', '#C6AE86');
+            burst(sh.x, sh.y, '#8C7A66', 12, 160); ring(sh.x, sh.y, '#C6AE86', 10, 60, .3); }
+        } else {
+          // كل شظية تضيف ضرراً، لكن السلسلة تُحسب مرة واحدة للطلقة
+          bossPellets++; bx = sh.x; by2 = sh.y;
+          burst(sh.x, sh.y, '#A81F2D', 8, 170);
+        }
+        continue;
       }
     }
-  }
-  if(!hit){
+    let found = null;
     for(let i = G.targets.length-1; i >= 0; i--){
-      const t = G.targets[i]; if(t.dead) continue;
+      const t = G.targets[i]; if(t.dead || struck.has(t)) continue;
       const tx = t._dx ?? t.x, ty = t._dy ?? t.y;
-      if(Math.hypot(px-tx, py-ty) < t.r + 4){ hit = true; hitTarget(t, px, py); break; }
+      if(Math.hypot(sh.x-tx, sh.y-ty) < t.r + Wp.aim){ found = t; break; }
+    }
+    if(found){ anyHit = true; struck.add(found); hitTarget(found, sh.x, sh.y, Wp); }
+    else {
+      if(sh.y > RIDGE - 40 && G.holes.length < 40) G.holes.push({x:sh.x, y:sh.y});
+      burst(sh.x, sh.y, '#C6AE86', Wp.pellets > 1 ? 4 : 8, 110);
     }
   }
-  if(!hit){
+
+  if(bossPellets > 0) hitBoss(G.boss, bx, by2, Wp, bossPellets);
+  if(!anyHit){
     G.misses++; G.combo = 0; G.mult = 1; updCombo(); Snd.rico();
-    if(py > RIDGE - 40 && G.holes.length < 40) G.holes.push({x:px, y:py});
-    burst(px, py, '#C6AE86', 8, 110);
     ring(px, py, 'rgba(247,238,220,.6)', 4, 30, .25);
   }
   if(G.ammo === 0) startReload();
 }
-function hitTarget(t, px, py){
+
+function hitBoss(b, px, py, Wp, pellets){
+  if(!b) return;
+  const dmg = Wp.dmg * (pellets || 1) * (G.dbl > 0 ? 2 : 1);
+  b.hp -= dmg; b.hitFx = .22;
+  G.combo++; G.bestCombo = Math.max(G.bestCombo, G.combo);
+  G.mult = clamp(1 + Math.floor(G.combo/4), 1, 5);
+  const pts = Math.round(20 * dmg * G.mult * Wp.mult);
+  if(pellets > 1) popText(px, py - 26, pellets + ' شظايا', '#FF9E3D');
+  G.score += pts; popText(px, py, '+' + pts, '#E8B33C');
+  burst(px, py, '#A81F2D', 14, 200); Snd.bossHit();
+  ring(px, py, '#FF5B3D', 12, 62, .3); updHUD();
+  if(b.hp/b.maxHp <= .25 && !b._rage){
+    b._rage = true; b.vx *= 1.45; b.vy *= 1.45;
+    callout('الزعيم غاضب!', 'صار أسرع — ركّز', '#FF5B3D');
+  }
+  if(b.hp <= 0) bossDown();
+}
+
+function hitTarget(t, px, py, Wp){
+  Wp = Wp || wp();
   const T = TYPE[t.kind];
   if(t.kind === 'protected'){
     t.dead = true; G.lives--; G.combo = 0; G.mult = 1;
@@ -1086,27 +1217,30 @@ function hitTarget(t, px, py){
     if(G.lives <= 0) gameOver('ضربت المحميين');
     return;
   }
-  t.hp--; t.hitFx = .18;
-  if(t.hp > 0){ Snd.shield(); burst(px, py, '#8C7A66', 12, 160);
-                ring(px, py, '#C6AE86', 8, 46, .3);
-                popText(px, py, 'انكسر الدرع', '#C6AE86'); return; }
+  t.hp -= Wp.dmg; t.hitFx = .18;
+  if(t.hp > 0){
+    Snd.shield(); burst(px, py, '#8C7A66', 12, 160);
+    ring(px, py, '#C6AE86', 8, 46, .3);
+    popText(px, py, 'انكسر الدرع', '#C6AE86'); return;
+  }
   t.dead = true; G.hits++;
   G.combo++; G.bestCombo = Math.max(G.bestCombo, G.combo);
   G.mult = clamp(1 + Math.floor(G.combo/4), 1, 5);
   if(t.kind === 'freeze'){ G.freeze = 4; toast('تجميد الوقت 4 ثواني'); }
   if(t.kind === 'double'){ G.dbl = 8; toast('نقاط مضاعفة 8 ثواني'); }
   if(t.kind === 'golden'){
+    for(let i=0;i<WEAPONS.length;i++) G.mag[i] = WEAPONS[i].mag;
     G.ammo = G.maxAmmo; G.reloading = false; updAmmo(); Snd.big();
-    callout('هدف ذهبي!', 'الذخيرة امتلأت', '#FFE9B0');
+    callout('هدف ذهبي!', 'كل الأسلحة امتلأت', '#FFE9B0');
     ring(t._dx, t._dy, '#FFE9B0', t.r, t.r*3.4, .55);
   } else Snd.hit(G.combo);
-  ring(t._dx, t._dy, TYPE[t.kind].col, t.r*.6, t.r*2.1, .34);
+  ring(t._dx, t._dy, T.col, t.r*.6, t.r*2.1, .34);
   const cw = COMBO_WORDS[Math.min(5, G.combo)];
   if(cw && G.combo >= 2 && G.combo % 2 === 0){
     callout(cw.t, '×' + G.mult + ' سلسلة ' + G.combo, cw.c);
     Snd.combo(Math.min(5, G.mult));
   }
-  const pts = T.pts * G.mult * (G.dbl > 0 ? 2 : 1);
+  const pts = Math.round(T.pts * G.mult * Wp.mult * (G.dbl > 0 ? 2 : 1));
   G.score += pts;
   popText(t._dx, t._dy - 10, '+' + pts, t.kind === 'golden' ? '#FFE9B0' : '#F2D8A7');
   burst(t._dx, t._dy, T.col, 16, 210);
@@ -1114,12 +1248,14 @@ function hitTarget(t, px, py){
   updHUD(); updCombo();
   if(!G.boss && G.hits >= lvOf(G.level).goal) levelWin();
 }
+
 function startReload(){
   if(G.reloading) return;
-  G.reloading = true; G.reloadT = 1.05; $('reloadBtn').textContent = 'يعبّي...'; Snd.reload();
+  G.reloading = true; G.reloadT = wp().reload;
+  $('reloadBtn').textContent = 'يعبّي...'; Snd.reload();
 }
 function finishReload(){
-  G.reloading = false; G.ammo = G.maxAmmo; G.reloadT = 0;
+  G.reloading = false; G.ammo = G.maxAmmo; G.mag[G.wp] = G.maxAmmo; G.reloadT = 0;
   $('reloadBtn').textContent = 'إعادة تعبئة'; updAmmo();
 }
 
@@ -1223,6 +1359,8 @@ function stepFX(dt){
   G.shake *= .86;
   G.flash = Math.max(0, G.flash - dt*3);
   G.recoil = Math.max(0, G.recoil - dt*4.5);
+  G.fireCd = Math.max(0, G.fireCd - dt);
+  G.swapFx = Math.max(0, G.swapFx - dt*3);
   G.hurt = Math.max(0, G.hurt - dt*1.6);
   G.glowT += dt;
 }
@@ -1265,7 +1403,7 @@ function render(dt){
   ctx.textAlign = 'center';
   for(const p of G.pops){
     ctx.globalAlpha = clamp(1 - p.age/p.life, 0, 1);
-    ctx.font = '800 22px Tajawal, sans-serif';
+    ctx.font = '800 22px Noto Kufi Arabic, Noto Sans Arabic, Segoe UI, Tahoma, sans-serif';
     ctx.lineWidth = 4; ctx.strokeStyle = 'rgba(27,20,16,.8)';
     ctx.strokeText(p.txt, p.x, p.y); ctx.fillStyle = p.col; ctx.fillText(p.txt, p.x, p.y);
   }
@@ -1277,14 +1415,14 @@ function render(dt){
     const pop = k < .18 ? 1.35 - .35*(k/.18) : 1 - .06*((k-.18)/.82);
     ctx.globalAlpha = k > .72 ? (1-k)/.28 : 1;
     ctx.save(); ctx.translate(W/2, TALL ? H*.24 : H*.30); ctx.scale(pop, pop); ctx.textAlign = 'center';
-    ctx.font = "400 " + (c.txt.length > 3 ? 54 : 78) + "px Rakkas, Tajawal, serif";
+    ctx.font = "800 " + (c.txt.length > 3 ? 50 : 72) + "px Noto Naskh Arabic, SF Arabic, Geeza Pro, Georgia, serif";
     ctx.lineWidth = 9; ctx.lineJoin = 'round'; ctx.strokeStyle = 'rgba(20,12,8,.9)';
     ctx.strokeText(c.txt, 0, 0);
     const gr = ctx.createLinearGradient(0,-46,0,18);
     gr.addColorStop(0,'#FFF3D0'); gr.addColorStop(1,c.col);
     ctx.fillStyle = gr; ctx.fillText(c.txt, 0, 0);
     if(c.sub){
-      ctx.font = '700 19px Tajawal, sans-serif';
+      ctx.font = '700 19px Noto Kufi Arabic, Noto Sans Arabic, Segoe UI, Tahoma, sans-serif';
       ctx.lineWidth = 6; ctx.strokeStyle = 'rgba(20,12,8,.85)';
       ctx.strokeText(c.sub, 0, 30); ctx.fillStyle = '#F2D8A7'; ctx.fillText(c.sub, 0, 30);
     }
@@ -1322,16 +1460,34 @@ function render(dt){
   ctx.restore();
 }
 function drawCross(x, y){
-  const R = 22 * (1 + Math.sin(G.glowT*4)*.03) + G.recoil*13;
+  const Wp = wp();
+  const base = Wp.id === 'shot' ? 30 : Wp.id === 'sniper' ? 15 : Wp.id === 'smg' ? 24 : 22;
+  const R = base * (1 + Math.sin(G.glowT*4)*.03) + G.recoil*(Wp.id==='shot'?20:13);
   const live = G.ammo > 0 && !G.reloading;
-  const col = live ? '#FFC94D' : '#FF5B5B';
+  const col = live ? Wp.col : '#FF5B5B';
+  // البارودة: دائرة التشتّت الفعلية
+  if(Wp.pellets > 1 && live){
+    ctx.save(); ctx.globalAlpha = .30; ctx.strokeStyle = Wp.col; ctx.lineWidth = 2;
+    ctx.setLineDash([7, 7]); ctx.lineDashOffset = -G.glowT*22;
+    ctx.beginPath(); ctx.arc(x, y, Wp.spread, 0, 7); ctx.stroke();
+    ctx.setLineDash([]); ctx.restore();
+  }
+  // القنّاص: خطوط تصويب طويلة عبر الشاشة
+  if(Wp.id === 'sniper'){
+    ctx.save(); ctx.globalAlpha = .22; ctx.strokeStyle = Wp.col; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(x-R-16, y);
+    ctx.moveTo(x+R+16, y); ctx.lineTo(W, y);
+    ctx.moveTo(x, 0); ctx.lineTo(x, y-R-16);
+    ctx.moveTo(x, y+R+16); ctx.lineTo(x, H); ctx.stroke();
+    ctx.restore();
+  }
   ctx.save(); ctx.translate(x,y);
   // توهج
   ctx.globalAlpha = .30 + G.recoil*.4;
   ctx.fillStyle = col;
   ctx.beginPath(); ctx.arc(0,0,R*1.5,0,7); ctx.fill();
   ctx.globalAlpha = 1;
-  ctx.rotate(G.glowT*.22);
+  ctx.rotate(G.glowT*(wp().id === 'smg' ? .7 : .22));
   // حلقة خارجية بحد داكن للوضوح على أي خلفية
   ctx.strokeStyle = 'rgba(18,12,8,.75)'; ctx.lineWidth = 7;
   ctx.beginPath(); ctx.arc(0,0,R,0,7); ctx.stroke();
@@ -1346,11 +1502,11 @@ function drawCross(x, y){
     ctx.strokeStyle = col; ctx.lineWidth = 3.2;
     ctx.beginPath(); ctx.moveTo(0,-R-13); ctx.lineTo(0,-R+5); ctx.stroke();
   }
-  ctx.rotate(-G.glowT*.22);
+  ctx.rotate(-G.glowT*(wp().id === 'smg' ? .7 : .22));
   // مؤشر إعادة التعبئة
   if(G.reloading){
     ctx.strokeStyle = '#FFC94D'; ctx.lineWidth = 5;
-    ctx.beginPath(); ctx.arc(0,0,R+20,-Math.PI/2, -Math.PI/2 + 6.283*(1-G.reloadT/1.05)); ctx.stroke();
+    ctx.beginPath(); ctx.arc(0,0,R+20,-Math.PI/2, -Math.PI/2 + 6.283*(1-G.reloadT/wp().reload)); ctx.stroke();
   }
   ctx.fillStyle = 'rgba(18,12,8,.8)';
   ctx.beginPath(); ctx.arc(0,0,4.6,0,7); ctx.fill();
@@ -1389,11 +1545,51 @@ function updHUD(){
     $('goalLbl').textContent = G.hits + ' / ' + L.goal + ' إصابة';
   }
 }
+// أيقونات الأسلحة (SVG بسيط، بدون إيموجي)
+const WP_SVG = {
+  rifle:'<rect x="1" y="6" width="20" height="3.4" rx="1"/><rect x="19" y="4.6" width="10" height="2.4" rx="1"/><path d="M4 9.4h4l-2.4 5H2z"/><rect x="9" y="9.4" width="3" height="3" rx="1"/>',
+  smg:'<rect x="3" y="5.4" width="15" height="4" rx="1.2"/><rect x="17" y="6.2" width="11" height="2.2" rx="1"/><path d="M7 9.4h3.4l-.6 5.4H6.4z"/><path d="M1 4.4h4v4H1z"/>',
+  shot:'<rect x="2" y="4.6" width="21" height="2.4" rx="1"/><rect x="2" y="7.6" width="21" height="2.4" rx="1"/><path d="M5 10.4h4l-2.6 4.6H2.6z"/><rect x="22" y="4.6" width="6" height="5.4" rx="1.4"/>',
+  sniper:'<rect x="1" y="6.4" width="27" height="2.8" rx="1"/><circle cx="13" cy="4" r="3.1"/><rect x="9.6" y="3.2" width="7" height="1.6" rx=".8"/><path d="M4 9.2h3.6l-2 5.4H2.4z"/>'
+};
+function renderRail(){
+  const rail = $('wpRail'); if(!rail) return;
+  rail.innerHTML = '';
+  WEAPONS.forEach((w, i) => {
+    const open = wpOpen(i), on = i === G.wp;
+    const ammo = on ? G.ammo : G.mag[i];
+    const b = document.createElement('button');
+    b.className = 'wp' + (on ? ' on' : '') + (!open ? ' lock' : '') + (open && ammo <= 0 ? ' empty' : '');
+    b.style.color = w.col;
+    b.setAttribute('aria-label', w.name + (open ? '' : ' — مقفل'));
+    b.innerHTML =
+      '<span class="key">' + (i+1) + '</span>' +
+      '<svg viewBox="0 0 30 16" fill="' + (open ? w.col : '#7A6650') + '" aria-hidden="true">' + WP_SVG[w.id] + '</svg>' +
+      '<span class="wn">' + w.name + '</span>' +
+      '<span class="wa" style="color:' + (open ? (ammo>0?w.col:'#FF6B6B') : '#8A7458') + '">' +
+        (open ? ammo + '/' + w.mag : 'م' + w.unlock) + '</span>';
+    b.onclick = () => switchWeapon(i);
+    rail.appendChild(b);
+  });
+}
 function updAmmo(){
   const a = $('ammo'); a.innerHTML = '';
-  for(let i=0;i<G.maxAmmo;i++)
-    a.insertAdjacentHTML('beforeend', `<div class="shell${i < G.ammo ? '' : ' spent'}"></div>`);
+  // خراطيش لما تكون قليلة، ورقم لما تكون كثيرة
+  if(G.maxAmmo <= 8){
+    for(let i=0;i<G.maxAmmo;i++)
+      a.insertAdjacentHTML('beforeend', `<div class="shell${i < G.ammo ? '' : ' spent'}"></div>`);
+  } else {
+    a.insertAdjacentHTML('beforeend',
+      `<span id="ammoNum">${G.ammo} <span style="opacity:.55;font-size:.8em">/ ${G.maxAmmo}</span></span>`);
+  }
   $('reloadBtn').classList.toggle('on', G.running && G.ammo < G.maxAmmo);
+  const rail = $('wpRail');
+  if(rail && rail.children[G.wp]){
+    const el = rail.children[G.wp].querySelector('.wa');
+    if(el){ el.textContent = G.ammo + '/' + G.maxAmmo;
+            el.style.color = G.ammo > 0 ? wp().col : '#FF6B6B'; }
+    rail.children[G.wp].classList.toggle('empty', G.ammo <= 0);
+  }
 }
 function updCombo(){
   const c = $('comboTag');
@@ -1413,14 +1609,18 @@ function startLevel(n){
   G.calls = []; G.rings = []; G.smoke = [];
   G.intro = 3.2; G._lastIntro = 99; G.tickAt = 99;
   G.recoil = 0; G.hurt = 0; G.slowmo = 0;
-  G.timeLeft = L.time; G.ammo = G.maxAmmo; G.reloading = false;
+  G.timeLeft = L.time;
+  if(!wpOpen(G.wp)) G.wp = 0;
+  G.maxAmmo = wp().mag;
+  for(let i=0;i<WEAPONS.length;i++) G.mag[i] = WEAPONS[i].mag;
+  G.ammo = G.maxAmmo; G.reloading = false; G.fireCd = 0;
   G.freeze = 0; G.dbl = 0; G.spawnT = .6; G.paused = false; G.warnedP = false;
   _lastScore = -1;
   G.boss = L.boss ? makeBoss(L) : null;
   G.running = true; G.screen = 'play';
   $('reloadBtn').classList.remove('on');
   $('hud').classList.add('on'); show(null);
-  updAmmo(); updHUD(); updCombo();
+  renderRail(); updAmmo(); updHUD(); updCombo();
   Snd.boot(); Snd.windOn();
   if(L.boss) toast('الدرع يرتفع وينزل — انتظر فرصتك');
 }
@@ -1434,7 +1634,10 @@ function levelWin(){
   G.running = false; Snd.windOff(); $('hud').classList.remove('on');
   const s = starsFor();
   prog.stars[G.level] = Math.max(prog.stars[G.level] || 0, s);
+  const before = prog.unlocked;
   prog.unlocked = Math.max(prog.unlocked, Math.min(12, G.level+1));
+  const got = WEAPONS.find(w => w.unlock > before && w.unlock <= prog.unlocked);
+  if(got) setTimeout(() => callout('سلاح جديد: ' + got.name, got.hint, got.col), 900);
   prog.best = Math.max(prog.best, G.score);
   saveProg();
   Snd.lvlUp();
@@ -1785,6 +1988,7 @@ cv.addEventListener('pointerdown', e => {
   fire(G.cross.x, G.cross.y);
 });
 addEventListener('keydown', e => {
+  if(e.key >= '1' && e.key <= '4' && G.running){ switchWeapon(+e.key - 1); return; }
   if(e.key === 'r' || e.key === 'R'){ if(G.running && !G.reloading && G.ammo < G.maxAmmo) startReload(); }
   if(e.key === ' '){ e.preventDefault(); if(G.running) fire(G.cross.x, G.cross.y); }
   if(e.key === 'Escape' && G.running) togglePause();
@@ -1963,6 +2167,7 @@ function checkEnv(){
     w.textContent = 'أنت تشغّل اللعبة داخل نافذة معاينة مضمّنة، وبعض المعاينات تمنع رفع الملفات. لو ما انفتح لك منتقي الصور: نزّل الملف وافتحه في المتصفح مباشرة، أو ارفعه على رابط.';
   }
 }
+$('saveBtn').onclick = saveCopy;
 $('pauseBtn').onclick = togglePause;
 $('reloadBtn').onclick = () => { if(G.running && !G.reloading && G.ammo < G.maxAmmo) startReload(); };
 $('resumeBtn').onclick = togglePause;
@@ -1976,13 +2181,47 @@ $('resetProg').onclick = async () => {
   prog.unlocked = 1; prog.stars = {}; prog.best = 0; await saveProg(); renderMap(); toast('صفّرنا التقدم');
 };
 
-/* ---------- 23) الإقلاع ---------- */
+/* ---------- 23) العمل بدون إنترنت ---------- */
+// الملف مستقل تماماً: صفر طلبات شبكة بعد التحميل.
+// هذا الزر ينزّل نسخة منه عشان تلعب بدون إنترنت للأبد.
+function initOffline(){
+  const el = $('offlineTag'), btn = $('saveBtn');
+  const isFile = location.protocol === 'file:';
+  if(isFile){
+    if(el) el.textContent = 'محفوظة على جهازك — تشتغل بدون إنترنت';
+    if(btn) btn.style.display = 'none';
+    return;
+  }
+  if(el) el.textContent = 'احفظ نسخة وتلعبها بدون إنترنت';
+  if(btn) btn.style.display = 'inline-flex';
+}
+async function saveCopy(){
+  const btn = $('saveBtn');
+  try{
+    if(btn) btn.textContent = 'يحفظ...';
+    const res = await fetch(location.href, {cache:'reload'});
+    const txt = await res.text();
+    const url = URL.createObjectURL(new Blob([txt], {type:'text/html;charset=utf-8'}));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'رماة-الصحراء.html';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    if(btn) btn.textContent = 'تم الحفظ';
+    toast('انحفظت في التنزيلات — افتحها بأي وقت بدون نت');
+  }catch(e){
+    if(btn) btn.textContent = 'احفظها لجهازك';
+    toast('ما قدرنا نحفظها — استخدم خيار حفظ الصفحة في المتصفح');
+  }
+}
+
+/* ---------- 24) الإقلاع ---------- */
 (async function boot(){
   resize();
   await loadFaces();
   await loadProg();
   G.lives = 3;
   updAmmo();
+  initOffline();
   requestAnimationFrame(loop);
 })();
 </script>
