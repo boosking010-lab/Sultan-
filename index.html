@@ -195,6 +195,15 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
   transition:border-color .18s,transform .18s}
 .fcard canvas.thumb:hover{border-color:var(--gold);transform:scale(1.05)}
 .fcard .role{border:0;cursor:pointer;font-family:var(--f-ui)}
+.vrow{display:flex;gap:3px;align-items:center;justify-content:center;flex-wrap:wrap}
+.vrow button{font-family:var(--f-ui);font-weight:700;font-size:9.5px;cursor:pointer;
+  border-radius:99px;padding:3px 8px;min-height:24px;border:1px solid rgba(255,201,77,.3);
+  background:rgba(20,14,10,.85);color:#C6AE86;transition:background .15s,color .15s}
+.vrow button:hover{background:rgba(255,201,77,.16);color:#F2D8A7}
+.vrow .vrec.rec{background:var(--najdi);border-color:#FF6B6B;color:#fff;
+  animation:pulseWarn .7s ease-in-out infinite}
+.vrow .vply{border-color:rgba(46,213,115,.4);color:#8FE0AC}
+.vrow .vdel{border-color:rgba(255,107,107,.4);color:#FF9AA8;padding:3px 7px}
 #edCanvas{width:min(300px,78vw);height:min(300px,78vw);border-radius:18px;
   touch-action:none;cursor:grab;background:#150F0A;box-shadow:0 12px 40px rgba(0,0,0,.6)}
 #edCanvas:active{cursor:grabbing}
@@ -362,7 +371,8 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       <button class="btn ghost sm" id="studioBtn">استوديو الوجوه</button>
       <button class="btn ghost sm" id="howBtn">دليل اللعبة</button>
       <button class="btn ghost sm" id="sndBtn">الصوت: تشغيل</button>
-      <button class="btn sm" id="saveBtn" style="display:none">احفظها لجهازك</button>
+      <button class="btn sm" id="installBtn" style="display:none">ثبّتها على جوالك</button>
+      <button class="btn sm" id="updBtn" style="display:none">حدّث اللعبة</button>
     </div>
     <p class="hint" id="offlineTag">نحفظ اللعبة على جهازك...</p>
     <div class="sadu thin"></div>
@@ -389,10 +399,10 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     <div id="envWarn"></div>
     <div id="dropZone">
       <div id="faceGrid"></div>
-      <p class="hint">اسحب الصور هنا، أو الصق صورة بـ Ctrl+V، أو اضغط "أضف صور"</p>
+      <p class="hint">اسحب الصور هنا، أو الصق صورة منسوخة، أو اضغط زر "أضف صور"</p>
     </div>
     <p id="addStatus"></p>
-    <p class="hint">اضغط على أي صورة عشان تغيّر دورها: هدف ← محمي ← زعيم</p>
+    <p class="hint">اضغط على الصورة تقصّها، وعلى الشارة تغيّر دورها، و«سجّل صوت» يسجّل صيحته من الميكروفون فتطلع كل ما تصيبه.</p>
     <div class="row">
       <label class="btn sm" for="fileInput" id="addFaceBtn">أضف صور</label>
       <button class="btn ghost sm" id="restoreBtn">رجّع الوجوه الأصلية</button>
@@ -620,61 +630,24 @@ const Snd = (() => {
         tone(760, .03, 'square', .05, -300, .16);   // الغالق
       }
     },
-    // ————— أصوات الشخصيات —————
-    // كل حرف علة له ثلاث رنّات (فورمانت). نمرّر موجة منشارية عبرها فتطلع شبه صوت بشري.
-    // pitch يتغيّر لكل وجه فيصير لكل شخصية صوت مميز.
-    voice(word, pitch, vol){
-      if(!on || !ac) return;
-      const V = {
-        a:[780,1180,2760], o:[440,860,2680], i:[300,2200,2950],
-        e:[540,1720,2540], u:[340,760,2500]
-      };
-      // كل نداء = تتابع حروف علة بمدد ومقادير نغمة
-      const WORDS = {
-        oh:  [['o',.16,1],   ['a',.20,.86]],            // أوه
-        ay:  [['a',.11,1.08],['i',.22,.92]],            // آي
-        akh: [['a',.20,1],   ['e',.10,.8]],             // آخ
-        aah: [['a',.34,1]],                             // آه
-        oy:  [['o',.10,1.05],['i',.18,.9]],             // أوي
-        wa:  [['u',.09,.95], ['a',.24,1.06]]            // واه
-      };
-      const seq = WORDS[word] || WORDS.oh;
-      const t0 = T();
-      let at = 0;
-      const total = seq.reduce((x,g)=>x+g[1], 0);
-      const master = ac.createGain();
-      master.gain.setValueAtTime(.0001, t0);
-      master.gain.exponentialRampToValueAtTime((vol==null?.5:vol), t0+.03);
-      master.gain.setValueAtTime((vol==null?.5:vol), t0+total*.6);
-      master.gain.exponentialRampToValueAtTime(.0001, t0+total+.06);
-      master.connect(bus);
-      // مصدر الحنجرة: منشارية + قليل من الضوضاء (نفَس)
-      const o = ac.createOscillator(); o.type = 'sawtooth';
-      o.frequency.setValueAtTime(pitch, t0);
-      const vib = ac.createOscillator(); vib.type = 'sine'; vib.frequency.value = 5.4;
-      const vibG = ac.createGain(); vibG.gain.value = pitch*.022;
-      vib.connect(vibG); vibG.connect(o.frequency);
-      for(const [v, dur, mul] of seq){
-        o.frequency.setValueAtTime(pitch*mul, t0+at);
-        o.frequency.linearRampToValueAtTime(pitch*mul*.82, t0+at+dur);   // انحدار الألم
-        const F = V[v] || V.a;
-        F.forEach((f, i) => {
-          const bp = ac.createBiquadFilter();
-          bp.type = 'bandpass'; bp.Q.value = 7 - i*1.6;
-          bp.frequency.setValueAtTime(f, t0+at);
-          const g = ac.createGain();
-          g.gain.setValueAtTime(.0001, t0+at);
-          g.gain.exponentialRampToValueAtTime([.9,.5,.22][i], t0+at+.025);
-          g.gain.setValueAtTime([.9,.5,.22][i], t0+at+dur*.7);
-          g.gain.exponentialRampToValueAtTime(.0001, t0+at+dur);
-          o.connect(bp); bp.connect(g); g.connect(master);
-        });
-        at += dur;
-      }
-      o.start(t0); o.stop(t0+total+.14);
-      vib.start(t0); vib.stop(t0+total+.14);
-      // نفَس خفيف في البداية
-      noise(.05, 1600, .06, -900, 1.5);
+    // تشغيل صوت مسجّل من الميكروفون (يمر على نفس الناقل فيحترم زر كتم الصوت)
+    ctxOf(){ return ac; },
+    async decode(dataURL){
+      boot(); if(!ac) return null;
+      const buf = await (await fetch(dataURL)).arrayBuffer();
+      return await new Promise((res, rej) => {
+        const ok = b => res(b), no = e => rej(e);
+        const r = ac.decodeAudioData(buf, ok, no);
+        if(r && r.then) r.then(ok, no);
+      });
+    },
+    playBuf(buffer, detune){
+      if(!on || !ac || !buffer) return;
+      const src = ac.createBufferSource(); src.buffer = buffer;
+      src.playbackRate.value = 1 + (detune || 0);
+      const g = ac.createGain(); g.gain.value = .95;
+      src.connect(g); g.connect(bus); src.start();
+      return src;
     },
     swap(){ tone(520,.05,'square',.13,-90); tone(760,.06,'square',.13,0,.07);
             noise(.05,3600,.1,-2600,2,.02); },
@@ -799,7 +772,7 @@ const WEAPONS = [
   { id:'shot', name:'بارودة', hint:'خمس شظايا تصيب أكثر من هدف',
     mag:5,  cd:.62, reload:2.0,  dmg:1, pellets:5, spread:62, aim:20, mult:1.15,unlock:5, col:'#FF7A3D' },
   { id:'sniper', name:'قنّاص', hint:'ضربة قاضية تخترق الدروع',
-    mag:3,  cd:.85, reload:2.3,  dmg:4, pellets:1, spread:0,  aim:4,  mult:1.9, unlock:8, col:'#4FB8FF' }
+    mag:3,  cd:.85, reload:2.3,  dmg:5, pellets:1, spread:0,  aim:4,  mult:1.9, unlock:8, col:'#4FB8FF' }
 ];
 const wp = () => WEAPONS[G.wp];
 const wpOpen = i => (prog.unlocked || 1) >= WEAPONS[i].unlock;
@@ -1140,13 +1113,20 @@ function drawBG(pal, t, dt){
 
 /* ---------- 10) الأهداف ---------- */
 const TYPE = {
-  normal:  {pts:10, r:42, hp:1, col:'#F0A63C'},
-  runner:  {pts:25, r:36, hp:1, col:'#38C9A0'},
-  golden:  {pts:50, r:32, hp:1, col:'#FFD24A'},
-  armored: {pts:35, r:44, hp:2, col:'#9AA6B2'},
-  protected:{pts:0, r:44, hp:1, col:'#2ED573'},
-  freeze:  {pts:15, r:34, hp:1, col:'#4FB8FF'},
-  double:  {pts:15, r:34, hp:1, col:'#FF4D6D'}
+  normal:   {pts:10, r:42, hp:1, col:'#F0A63C', name:'هدف عادي',
+             note:'يطلع من ورا الكثيب ويختفي بسرعة'},
+  runner:   {pts:25, r:36, hp:1, col:'#38C9A0', name:'راكض',
+             note:'يعبر الشاشة طاير — صيده أصعب ونقاطه أعلى'},
+  golden:   {pts:50, r:32, hp:1, col:'#FFD24A', name:'ذهبي',
+             note:'نادر وسريع، وإذا صدته يعبّي لك كل الأسلحة'},
+  armored:  {pts:35, r:44, hp:2, col:'#9AA6B2', name:'مدرّع',
+             note:'قدّامه لوح خشب، يبي له ضربتين أو طلقة قنّاص'},
+  protected:{pts:0,  r:44, hp:1, col:'#2ED573', name:'محمي',
+             note:'عليه علامة خضراء — ممنوع تطلق عليه'},
+  freeze:   {pts:15, r:34, hp:1, col:'#4FB8FF', name:'ساعة التجميد',
+             note:'توقف لك الوقت أربع ثواني'},
+  double:   {pts:15, r:34, hp:1, col:'#FF4D6D', name:'مضاعف النقاط',
+             note:'يخلي نقاطك ضعفين لمدة ثمان ثواني'}
 };
 function faceFor(kind){
   const pool = faces.filter(f => kind === 'protected' ? f.role === 'protected'
@@ -1461,7 +1441,7 @@ function hitBoss(b, px, py, Wp, pellets){
   if(pellets > 1) popText(px, py - 26, pellets + ' شظايا', '#FF9E3D');
   G.score += pts; popText(px, py, '+' + pts, '#E8B33C');
   burst(px, py, '#A81F2D', 14, 200); Snd.bossHit();
-  if(Math.random() < .34) yell(b.face, true);
+  if(Math.random() < .3) yell(b.face);
   ring(px, py, '#FF5B3D', 12, 62, .3); updHUD();
   if(b.hp/b.maxHp <= .25 && !b._rage){
     b._rage = true; b.vx *= 1.45; b.vy *= 1.45;
@@ -1475,9 +1455,8 @@ function hitTarget(t, px, py, Wp){
   const T = TYPE[t.kind];
   if(t.kind === 'protected'){
     t.dead = true; G.lives--; G.combo = 0; G.mult = 1;
-    Snd.bad(); G.shake = RM ? 0 : 16; G.hurt = 1;
-    yell(t.face, true);
-    callout('ممنوع!', 'ضربت هدف محمي — خسرت قلب', '#FF5B6B');
+    Snd.bad(); G.shake = RM ? 0 : 16; G.hurt = 1; yell(t.face);
+      callout('ممنوع!', 'ضربت هدف محمي — خسرت قلب', '#FF5B6B');
     ring(t._dx, t._dy, '#FF5B6B', t.r, t.r*3.6, .5);
     popText(t._dx, t._dy, '−1', '#FF5B6B');
     burst(t._dx, t._dy, '#2C6E49', 18, 190);
@@ -1502,7 +1481,7 @@ function hitTarget(t, px, py, Wp){
     callout('هدف ذهبي!', 'كل الأسلحة امتلأت', '#FFE9B0');
     ring(t._dx, t._dy, '#FFE9B0', t.r, t.r*3.4, .55);
   } else Snd.hit(G.combo);
-  yell(t.face, true);
+  yell(t.face);
   ring(t._dx, t._dy, T.col, t.r*.6, t.r*2.1, .34);
   const cw = COMBO_WORDS[Math.min(5, G.combo)];
   if(cw && G.combo >= 2 && G.combo % 2 === 0){
@@ -1533,8 +1512,7 @@ function finishReload(){
 function bossDown(){
   const b = G.boss;
   burst(b.x, b.y, '#A81F2D', 60, 320); burst(b.x, b.y, '#E8B33C', 40, 260);
-  ring(b.x, b.y, '#FFE9B0', b.r, 520, .85); smoke(b.x, b.y, 14);
-  yell(b.face, false);
+  ring(b.x, b.y, '#FFE9B0', b.r, 520, .85); smoke(b.x, b.y, 14); yell(b.face);
   Snd.bossDie(); G.slowmo = 1.1;
   callout('سقـط الزعـيم!', '+500 نقطة', '#FFE9B0');
   G.shake = RM ? 0 : 22; G.boss = null; G.score += 500;
@@ -1911,6 +1889,7 @@ function startLevel(n){
   G.running = true; G.screen = 'play';
   $('reloadBtn').classList.remove('on');
   $('hud').classList.add('on'); show(null);
+  primeAllClips();
   renderRail(); updAmmo(); updHUD(); updCombo();
   Snd.boot(); Snd.windOn();
   if(L.boss) toast('الدرع يرتفع وينزل — انتظر فرصتك');
@@ -2038,6 +2017,11 @@ function renderStudio(){
     d.innerHTML = `<canvas class="thumb" title="اضغط للقص"></canvas>
                    <span class="nm">${f.name}</span>
                    <button class="role ${cls}">${txt}</button>
+                   <span class="vrow">
+                     <button class="vrec" aria-label="تسجيل صوت">${f.voice ? 'بدّل' : 'سجّل صوت'}</button>
+                     ${f.voice ? '<button class="vply" aria-label="تشغيل">سمّعني</button>' +
+                                 '<button class="vdel" aria-label="حذف الصوت">×</button>' : ''}
+                   </span>
                    ${f._def ? '' : '<button class="x" aria-label="حذف">×</button>'}`;
     const cvT = d.querySelector('.thumb');
     const paint = () => drawThumb(cvT, f);
@@ -2050,24 +2034,37 @@ function renderStudio(){
       f.role = order[(order.indexOf(f.role)+1) % 3];
       ensureRoles(); saveFaces(); renderStudio();
     };
+    const vr = d.querySelector('.vrec');
+    if(vr) vr.onclick = () => recordVoice(f, d);
+    const vp = d.querySelector('.vply');
+    if(vp) vp.onclick = () => { Snd.boot(); yell(f); };
+    const vd = d.querySelector('.vdel');
+    if(vd) vd.onclick = () => clearVoice(f);
     const x = d.querySelector('.x');
     if(x) x.onclick = () => { faces.splice(i,1); if(!faces.length) faces = buildDefaults();
                               ensureRoles(); saveFaces(); preload(); renderStudio(); };
     g.appendChild(d);
   });
 }
-// لكل وجه نبرة ثابتة مشتقّة من اسمه، فيصير له صوت مميز يتكرر
-const VOICE_WORDS = ['oh','ay','akh','aah','oy','wa'];
-function voiceOf(face){
-  const key = (face && face.name) ? face.name : 'x';
-  let h = 2166136261;
-  for(let i=0;i<key.length;i++){ h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-  const h2 = (h >>> 13) ^ (h * 2654435761 >>> 0);
-  return { pitch: 104 + (h % 152), word: VOICE_WORDS[(h2 >>> 3) % VOICE_WORDS.length] };
+// ————— أصوات الوجوه المسجّلة —————
+const clips = new Map();                 // src الصوت → AudioBuffer مفكوك
+let lastYell = 0;
+async function primeClip(face){
+  if(!face || !face.voice || clips.has(face.voice)) return;
+  clips.set(face.voice, null);           // علامة "جاري الفك" تمنع التكرار
+  try{ clips.set(face.voice, await Snd.decode(face.voice)); }
+  catch(e){ clips.delete(face.voice); }
 }
-function yell(face, hurt){
-  const v = voiceOf(face);
-  Snd.voice(hurt ? v.word : 'aah', v.pitch, hurt ? .5 : .34);
+function primeAllClips(){ for(const f of faces) primeClip(f); }
+// يشغّل صوت الشخص عند إصابته، مع تنويع بسيط في السرعة
+function yell(face){
+  if(!face || !face.voice) return;
+  const now = Date.now();
+  if(now - lastYell < 90) return;        // ما نكدّس الأصوات فوق بعض
+  lastYell = now;
+  const b = clips.get(face.voice);
+  if(b) Snd.playBuf(b, (Math.random()-.5)*.12);
+  else primeClip(face);
 }
 
 // ————— كشف الوجه: تحليل نغمة البشرة + أكبر كتلة متصلة —————
@@ -2201,6 +2198,91 @@ function loadImg(src){
     im.addEventListener('load', () => res(im), {once:true});
     im.addEventListener('error', () => res(null), {once:true});
   });
+}
+
+// ————— تسجيل صوت الشخص من الميكروفون —————
+const REC = { face:null, rec:null, stream:null, timer:null, chunks:[] };
+const MAX_REC = 1600;                    // مدة التسجيل بالمللي ثانية
+function recSupported(){
+  return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia &&
+            typeof MediaRecorder !== 'undefined');
+}
+function pickMime(){
+  const opts = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus',''];
+  for(const m of opts){
+    if(!m) return '';
+    try{ if(MediaRecorder.isTypeSupported(m)) return m; }catch(e){}
+  }
+  return '';
+}
+async function recordVoice(face, cardEl){
+  if(REC.rec){ stopRecording(); return; }
+  if(!recSupported()){
+    setStatus('متصفحك ما يدعم التسجيل. جرّب كروم أو سفاري محدّث.'); return;
+  }
+  if(location.protocol !== 'https:' && location.hostname !== 'localhost' &&
+     location.protocol !== 'file:'){
+    setStatus('التسجيل يحتاج رابط آمن (https).'); return;
+  }
+  let stream;
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true } });
+  }catch(e){
+    setStatus('ما وصلنا للميكروفون. تأكد إنك سمحت للموقع باستخدامه من إعدادات المتصفح.');
+    return;
+  }
+  Snd.boot();
+  const mime = pickMime();
+  let rec;
+  try{ rec = mime ? new MediaRecorder(stream, {mimeType:mime}) : new MediaRecorder(stream); }
+  catch(e){ stream.getTracks().forEach(t=>t.stop()); setStatus('ما قدرنا نبدأ التسجيل.'); return; }
+
+  REC.face = face; REC.rec = rec; REC.stream = stream; REC.chunks = [];
+  rec.ondataavailable = e => { if(e.data && e.data.size) REC.chunks.push(e.data); };
+  rec.onstop = async () => {
+    clearInterval(REC.timer);
+    REC.stream.getTracks().forEach(t => t.stop());
+    const blob = new Blob(REC.chunks, {type: REC.chunks[0] ? REC.chunks[0].type : 'audio/webm'});
+    REC.rec = null; REC.stream = null;
+    if(!blob.size){ setStatus('ما انسجّل شي — حاول مرة ثانية.'); renderStudio(); return; }
+    if(blob.size > 260000){ setStatus('التسجيل كبير — حاول أقصر.'); renderStudio(); return; }
+    const url = await new Promise(res => {
+      const fr = new FileReader(); fr.onload = () => res(fr.result);
+      fr.onerror = () => res(null); fr.readAsDataURL(blob);
+    });
+    if(!url){ setStatus('ما قدرنا نحفظ التسجيل.'); renderStudio(); return; }
+    // نتأكد إنه ينفك قبل ما نحفظه
+    try{ clips.set(url, await Snd.decode(url)); }
+    catch(e){ setStatus('التسجيل ما اشتغل على هذا المتصفح.'); renderStudio(); return; }
+    face.voice = url;
+    await saveFaces();
+    renderStudio();
+    setStatus('انحفظ صوت ' + face.name + ' — بيطلع كل ما تصيبه');
+    yell(face);
+  };
+  rec.start();
+  // عدّ تنازلي مرئي على البطاقة
+  let left = MAX_REC;
+  const btn = cardEl && cardEl.querySelector('.vrec');
+  if(btn){ btn.classList.add('rec'); btn.textContent = 'يسجّل ' + (left/1000).toFixed(1); }
+  REC.timer = setInterval(() => {
+    left -= 100;
+    if(btn) btn.textContent = 'يسجّل ' + Math.max(0,left/1000).toFixed(1);
+    if(left <= 0) stopRecording();
+  }, 100);
+  setStatus('قول «أوه» أو أي صيحة قصيرة...');
+  setTimeout(() => { if(REC.rec) stopRecording(); }, MAX_REC + 120);
+}
+function stopRecording(){
+  if(REC.rec && REC.rec.state !== 'inactive'){ try{ REC.rec.stop(); }catch(e){} }
+  clearInterval(REC.timer);
+}
+async function clearVoice(face){
+  if(face.voice) clips.delete(face.voice);
+  delete face.voice;
+  await saveFaces(); renderStudio();
+  setStatus('انحذف صوت ' + face.name);
 }
 
 // ————— محرر القص اليدوي —————
@@ -2362,7 +2444,8 @@ function renderGuide(){
       <p>البارودة أسرع طريقة لإسقاطه لأن شظاياها كلها تصيبه، والقنّاص يعطيك أعلى نقاط.</p></div>
     <div class="gsec"><h4>الوجوه</h4>
       <p>من استوديو الوجوه تضيف صوراً من جهازك. تنحفظ على جهازك أنت فقط وما ترتحل مع الرابط.</p>
-      <p>لكل وجه دور: هدف عادي، أو محمي ممنوع ضربه، أو زعيم. تغيّره بالضغط على الشارة تحت الصورة.</p></div>`;
+      <p>لكل وجه دور: هدف عادي، أو محمي ممنوع ضربه، أو زعيم. تغيّره بالضغط على الشارة تحت الصورة.</p>
+      <p>وتقدر تسجّل صوت كل شخص: اضغط «سجّل صوت» وخلّه يقول «أوه» أو أي صيحة قصيرة، وينطلع صوته كل ما تصيده. التسجيلات محفوظة على جهازك مثل الصور تماماً.</p></div>`;
 }
 
 /* ---------- 20) خريطة المراحل ---------- */
@@ -2586,7 +2669,8 @@ function checkEnv(){
     w.textContent = 'أنت تشغّل اللعبة داخل نافذة معاينة مضمّنة، وبعض المعاينات تمنع رفع الملفات. لو ما انفتح لك منتقي الصور: نزّل الملف وافتحه في المتصفح مباشرة، أو ارفعه على رابط.';
   }
 }
-$('saveBtn').onclick = saveCopy;
+$('installBtn').onclick = doInstall;
+$('updBtn').onclick = applyUpdate;
 $('bfGo').onclick    = () => startLevel(G.pendingLevel || 1);
 $('bfGuide').onclick = () => { renderGuide(); G.guideFrom = 'brief'; show('guide'); };
 $('bfBack').onclick  = () => { renderMap(); show('map'); G.screen = 'map'; };
@@ -2607,37 +2691,108 @@ $('resetProg').onclick = async () => {
   prog.unlocked = 1; prog.stars = {}; prog.best = 0; await saveProg(); renderMap(); toast('صفّرنا التقدم');
 };
 
-/* ---------- 23) العمل بدون إنترنت ---------- */
-// الملف مستقل تماماً: صفر طلبات شبكة بعد التحميل.
-// هذا الزر ينزّل نسخة منه عشان تلعب بدون إنترنت للأبد.
+/* ---------- 23) العمل بدون إنترنت والتحديث التلقائي ---------- */
+// عامل الخدمة يخزّن اللعبة على الجهاز ويجيب التحديثات بصمت.
+// المانيفست والأيقونة نولّدهما هنا فما نحتاج ملفات إضافية.
+const ICON_SRC = document.querySelector('link[rel="apple-touch-icon"]');
+function buildManifest(){
+  try{
+    const base = location.href.split('?')[0].split('#')[0];
+    const icon = ICON_SRC ? ICON_SRC.getAttribute('href') : '';
+    const man = {
+      name:'رماة الصحراء', short_name:'رماة الصحراء', lang:'ar', dir:'rtl',
+      description:'لعبة تصويب صحراوية بخمسين مرحلة وعشرة زعماء — تشتغل بدون إنترنت.',
+      start_url: base, scope: base.replace(/[^/]*$/, ''),
+      display:'fullscreen', display_override:['fullscreen','standalone'],
+      orientation:'any', background_color:'#0C0906', theme_color:'#1B1410',
+      categories:['games'],
+      icons: icon ? [
+        { src:icon, sizes:'180x180', type:'image/png', purpose:'any' },
+        { src:icon, sizes:'180x180', type:'image/png', purpose:'maskable' }
+      ] : []
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(man)],
+      {type:'application/manifest+json'}));
+    const link = document.createElement('link');
+    link.rel = 'manifest'; link.href = url;
+    document.head.appendChild(link);
+  }catch(e){}
+}
+
+let swReg = null, updateReady = false;
+function setOffline(txt, warn){
+  const el = $('offlineTag'); if(!el) return;
+  el.textContent = txt;
+  el.classList.toggle('warn', !!warn);
+}
+function showUpdate(){
+  if(updateReady) return;
+  updateReady = true;
+  const b = $('updBtn'); if(b) b.style.display = 'inline-flex';
+  setOffline('فيه نسخة أحدث جاهزة', true);
+  toast('نزل تحديث للعبة — اضغط «حدّث اللعبة»');
+}
+function applyUpdate(){
+  try{
+    if(swReg && swReg.waiting) swReg.waiting.postMessage({type:'skipWaiting'});
+  }catch(e){}
+  location.reload();
+}
 function initOffline(){
-  const el = $('offlineTag'), btn = $('saveBtn');
-  const isFile = location.protocol === 'file:';
-  if(isFile){
-    if(el) el.textContent = 'محفوظة على جهازك — تشتغل بدون إنترنت';
-    if(btn) btn.style.display = 'none';
+  buildManifest();
+  const online = () => { if(!updateReady)
+    setOffline(navigator.onLine ? 'محفوظة على جهازك — تشتغل بدون إنترنت'
+                                : 'ما فيه إنترنت — واللعبة شغالة عادي', !navigator.onLine); };
+  addEventListener('online', online); addEventListener('offline', online);
+
+  if(location.protocol === 'file:'){
+    setOffline('تشتغل من ملف محفوظ — بدون إنترنت أصلاً');
     return;
   }
-  if(el) el.textContent = 'احفظ نسخة وتلعبها بدون إنترنت';
-  if(btn) btn.style.display = 'inline-flex';
-}
-async function saveCopy(){
-  const btn = $('saveBtn');
-  try{
-    if(btn) btn.textContent = 'يحفظ...';
-    const res = await fetch(location.href, {cache:'reload'});
-    const txt = await res.text();
-    const url = URL.createObjectURL(new Blob([txt], {type:'text/html;charset=utf-8'}));
-    const a = document.createElement('a');
-    a.href = url; a.download = 'رماة-الصحراء.html';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 4000);
-    if(btn) btn.textContent = 'تم الحفظ';
-    toast('انحفظت في التنزيلات — افتحها بأي وقت بدون نت');
-  }catch(e){
-    if(btn) btn.textContent = 'احفظها لجهازك';
-    toast('ما قدرنا نحفظها — استخدم خيار حفظ الصفحة في المتصفح');
+  if(!('serviceWorker' in navigator)){
+    setOffline('متصفحك ما يدعم الحفظ للعمل بدون نت', true);
+    return;
   }
+  setOffline('نحفظ اللعبة على جهازك...');
+  navigator.serviceWorker.addEventListener('message', e => {
+    if(e.data && e.data.type === 'update') showUpdate();
+  });
+  navigator.serviceWorker.register('./sw.js').then(reg => {
+    swReg = reg;
+    if(reg.waiting && navigator.serviceWorker.controller) showUpdate();
+    reg.addEventListener('updatefound', () => {
+      const sw = reg.installing; if(!sw) return;
+      sw.addEventListener('statechange', () => {
+        if(sw.state === 'installed'){
+          if(navigator.serviceWorker.controller) showUpdate();   // نسخة جديدة تنتظر
+          else online();                                          // أول تخزين
+        }
+      });
+    });
+    if(navigator.serviceWorker.controller) online();
+    // نفحص وجود تحديث كل مرة يرجع فيها للّعبة
+    document.addEventListener('visibilitychange', () => {
+      if(!document.hidden && swReg) { try{ swReg.update(); }catch(e){} }
+    });
+  }).catch(() => setOffline('ما قدرنا نحفظها للعمل بدون نت', true));
+}
+// زر التثبيت على الشاشة الرئيسية
+let installPrompt = null;
+addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); installPrompt = e;
+  const b = $('installBtn'); if(b) b.style.display = 'inline-flex';
+});
+addEventListener('appinstalled', () => {
+  installPrompt = null;
+  const b = $('installBtn'); if(b) b.style.display = 'none';
+  toast('انثبتت على شاشتك الرئيسية');
+});
+async function doInstall(){
+  if(!installPrompt) return;
+  installPrompt.prompt();
+  try{ await installPrompt.userChoice; }catch(e){}
+  installPrompt = null;
+  const b = $('installBtn'); if(b) b.style.display = 'none';
 }
 
 /* ---------- 24) الإقلاع ---------- */
