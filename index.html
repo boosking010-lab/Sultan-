@@ -137,7 +137,7 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
        transition:opacity .14s,transform .14s}
 .shell.spent{opacity:.16;transform:translateY(5px) scaleY(.62);box-shadow:none}
 #reloadBtn{pointer-events:auto;position:absolute;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);
-  inset-inline-end:14px;display:none}
+  right:calc(env(safe-area-inset-right,0px) + 14px);left:auto;display:none}
 #reloadBtn.on{display:block}
 #comboTag{position:absolute;top:98px;inset-inline:0;text-align:center;
   font-family:var(--f-disp);font-size:clamp(24px,6.5vw,40px);
@@ -248,6 +248,19 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
 .stat b{color:var(--gold);font-variant-numeric:tabular-nums}
 .tag{font-size:12px;font-weight:700;color:var(--ink);background:var(--sand);
   padding:3px 10px;border-radius:99px}
+/* رقم النسخة: مثبّت على أقصى أسفل يسار الشاشة الفعلي،
+   يحترم حواف الشاشات المنحنية ويصمد مع دوران الجهاز */
+#verTag{
+  position:fixed;
+  left:calc(env(safe-area-inset-left,0px) + 7px);
+  bottom:calc(env(safe-area-inset-bottom,0px) + 5px);
+  z-index:60;pointer-events:none;user-select:none;
+  font-family:var(--f-ui);font-size:10px;font-weight:700;letter-spacing:.2px;
+  color:rgba(198,174,134,.5);text-shadow:0 1px 3px rgba(0,0,0,.85);
+  font-variant-numeric:tabular-nums;line-height:1;
+}
+@media (max-height:430px){ #verTag{font-size:9px;bottom:calc(env(safe-area-inset-bottom,0px) + 3px)} }
+@media (max-width:340px){ #verTag{font-size:9px} }
 #toast{position:absolute;bottom:80px;inset-inline:0;display:flex;justify-content:center;z-index:30;
   pointer-events:none;opacity:0;transition:opacity .3s}
 #toast.on{opacity:1}
@@ -292,7 +305,23 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   #faceGrid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
 }
 /* بيان المرحلة والدليل */
-#brief,#guide{overflow-y:auto;justify-content:flex-start;
+#achList{width:min(520px,96%);display:flex;flex-direction:column;gap:8px}
+.acard{display:flex;gap:11px;align-items:center;text-align:start;padding:10px 13px;
+  border-radius:14px;background:rgba(20,14,10,.72);border:1px solid rgba(255,255,255,.07)}
+.acard.on{background:rgba(255,201,77,.10);border-color:rgba(255,201,77,.38)}
+.acard .adot{width:13px;height:13px;border-radius:50%;flex:none;background:#3A2C1E}
+.acard.on .adot{box-shadow:0 0 10px currentColor}
+.acard .an{font-weight:800;font-size:14px;color:#8A7458;display:block}
+.acard.on .an{color:#FFC94D}
+.acard .ad{font-size:12px;color:#9E8B70;line-height:1.5}
+.acard .abar{height:5px;border-radius:99px;background:rgba(0,0,0,.45);margin-top:5px;overflow:hidden}
+.acard .abar i{display:block;height:100%;background:linear-gradient(90deg,#FF9E3D,#FFD24A);border-radius:99px}
+.acard .apct{font-size:10.5px;color:#8A7458;font-variant-numeric:tabular-nums;flex:none}
+#endTop{width:min(400px,94%);display:flex;flex-direction:column;gap:5px}
+.erow{display:flex;justify-content:space-between;font-size:13px;padding:5px 11px;
+  border-radius:10px;background:rgba(20,14,10,.7);border:1px solid rgba(255,255,255,.06)}
+.erow b{color:#FFC94D;font-variant-numeric:tabular-nums}
+#ach,#endless,#brief,#guide{overflow-y:auto;justify-content:flex-start;
   padding-top:calc(env(safe-area-inset-top,0px) + 16px);
   padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px);gap:11px}
 .bfStats{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
@@ -368,8 +397,10 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     <p class="sub">صوّب على الأهداف اللي تطلع من ورا الكثبان قبل ما تختفي.<br>وانتبه — الوجوه اللي عليها علامة خضراء ممنوع تضربها.</p>
     <div class="row">
       <button class="btn" id="playBtn">ابدأ اللعب</button>
+      <button class="btn" id="endlessBtn">التحدي اللانهائي</button>
     </div>
     <div class="row">
+      <button class="btn ghost sm" id="achBtn">الإنجازات</button>
       <button class="btn ghost sm" id="studioBtn">استوديو الوجوه</button>
       <button class="btn ghost sm" id="howBtn">دليل اللعبة</button>
       <button class="btn ghost sm" id="sndBtn">الصوت: تشغيل</button>
@@ -378,7 +409,7 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     </div>
     <p class="hint" id="offlineTag">نحفظ اللعبة على جهازك...</p>
     <div class="sadu thin"></div>
-    <p class="hint">أعلى نتيجة: <b id="best">0</b> · نسخة <b id="verTag">7</b></p>
+    <p class="hint">أعلى نتيجة: <b id="best">0</b></p>
     <p class="hint" style="max-width:38ch">من "استوديو الوجوه" تقدر تضيف صورك — تنحفظ على جهازك أنت فقط وما تنرسل لأي مكان.</p>
   </div>
 
@@ -454,6 +485,33 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     </div>
   </div>
 
+  <!-- الإنجازات -->
+  <div class="layer scrim" id="ach">
+    <h2>الإنجازات</h2>
+    <p class="hint" id="achCount"></p>
+    <div class="sadu thin"></div>
+    <div id="achList"></div>
+    <button class="btn ghost sm" id="achBack">رجوع</button>
+  </div>
+
+  <!-- التحدي اللانهائي -->
+  <div class="layer scrim" id="endless">
+    <span class="tag">وضع البقاء</span>
+    <h2>التحدي اللانهائي</h2>
+    <div class="sadu thin"></div>
+    <div style="max-width:42ch;text-align:start">
+      <p>موجات بلا نهاية، كل 25 ثانية تصير أصعب: أهداف أسرع وأكثر وأصغر.</p>
+      <p>ما فيه وقت ينتهي — تلعب لين تخلص قلوبك الثلاثة.</p>
+      <p>تخسر قلباً إذا ضربت محمياً، أو إذا هربت منك ثمانية أهداف.</p>
+      <p>وكل أربع موجات يرجع لك قلب إذا كنت ناقصاً.</p>
+    </div>
+    <div id="endTop"></div>
+    <div class="row">
+      <button class="btn" id="endGo">ابدأ التحدي</button>
+      <button class="btn ghost sm" id="endBack">رجوع</button>
+    </div>
+  </div>
+
   <!-- دليل اللعبة -->
   <div class="layer scrim" id="guide">
     <h2>دليل اللعبة</h2>
@@ -497,6 +555,7 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   </div>
 
   <div id="toast"><span></span></div>
+  <div id="verTag">نسخة ٩</div>
 </div></div>
 
 <script>
@@ -648,13 +707,60 @@ const Snd = (() => {
         if(r && r.then) r.then(ok, no);
       });
     },
+    // يقص السكوت من الطرفين ويعاير مستوى الصوت — هذا اللي يشيل التأخير
+    trim(buf){
+      if(!ac || !buf) return buf;
+      const ch = buf.getChannelData(0), n = ch.length, sr = buf.sampleRate;
+      const TH = .022;
+      let a = 0, b = n - 1, peak = 0;
+      for(let i=0;i<n;i++){ const v = Math.abs(ch[i]); if(v > peak) peak = v; }
+      const th = Math.max(TH, peak * .09);
+      while(a < n && Math.abs(ch[a]) < th) a++;
+      while(b > a && Math.abs(ch[b]) < th) b--;
+      if(b <= a) return buf;
+      a = Math.max(0, a - Math.round(sr * .012));      // نترك ومضة قبل الصوت
+      b = Math.min(n - 1, b + Math.round(sr * .06));   // وذيلاً بسيطاً بعده
+      const maxLen = Math.round(sr * 1.25);            // سقف مدة الصيحة
+      let len = b - a; if(len > maxLen) len = maxLen;
+      const gain = peak > .001 ? Math.min(3.2, .92 / peak) : 1;
+      const out = ac.createBuffer(buf.numberOfChannels, len, sr);
+      for(let c=0;c<buf.numberOfChannels;c++){
+        const src = buf.getChannelData(Math.min(c, buf.numberOfChannels-1));
+        const dst = out.getChannelData(c);
+        for(let i=0;i<len;i++) dst[i] = Math.max(-1, Math.min(1, src[a+i] * gain));
+        // تلاشٍ سريع في الطرفين يمنع الطقطقة
+        const f = Math.min(Math.round(sr*.006), Math.floor(len/2));
+        for(let i=0;i<f;i++){ dst[i] *= i/f; dst[len-1-i] *= i/f; }
+      }
+      return out;
+    },
     playBuf(buffer, detune){
-      if(!on || !ac || !buffer) return;
+      if(!on || !ac || !buffer) return null;
       const src = ac.createBufferSource(); src.buffer = buffer;
       src.playbackRate.value = 1 + (detune || 0);
       const g = ac.createGain(); g.gain.value = .95;
-      src.connect(g); g.connect(bus); src.start();
+      src.connect(g); g.connect(bus);
+      src.start(0);
       return src;
+    },
+    // يخفض كل الأصوات مؤقتاً عشان اللقطة البطيئة تبان
+    duck(sec){
+      if(!ac || !bus) return;
+      const t = ac.currentTime;
+      bus.gain.cancelScheduledValues(t);
+      bus.gain.setValueAtTime(bus.gain.value || .85, t);
+      bus.gain.linearRampToValueAtTime(.20, t + .09);
+      bus.gain.linearRampToValueAtTime(.85, t + (sec || 1));
+    },
+    finale(){
+      [1319,1047,784,1047,1568].forEach((f,i)=>tone(f,.34,'triangle',.24,0,i*.13));
+      noise(.6,3200,.1,-2600,1,.05);
+    },
+    thunder(){
+      noise(1.5, 420, .30, -360, 1.4, .06);
+      tone(42, 1.2, 'sine', .26, -14, .05);
+      noise(.10, 5200, .16, -4200, 1.1);
+      noise(.7, 260, .12, -200, 3, .55);
     },
     swap(){ tone(520,.05,'square',.13,-90); tone(760,.06,'square',.13,0,.07);
             noise(.05,3600,.1,-2600,2,.02); },
@@ -757,13 +863,51 @@ function buildDefaults(){
 
 /* ---------- 5) الحالة ---------- */
 let faces = [], imgs = new Map();
-const prog = { unlocked:1, stars:{}, best:0 };
+const prog = { unlocked:1, stars:{}, best:0, endless:0, endlessTop:[], ach:{},
+  st:{ hits:0, golden:0, armor:0, boss:0, combo:0, clean:0, wp:{}, endlessHits:0 } };
+
+// ————— الإنجازات —————
+const ACH = [
+  {id:'first',  n:'أول صيد',         d:'أسقط أول هدف',                    c:'#F0A63C', f:p=>p.st.hits>=1},
+  {id:'h100',   n:'مية إصابة',       d:'أسقط 100 هدف',                    c:'#F0A63C', f:p=>p.st.hits>=100,  bar:p=>[p.st.hits,100]},
+  {id:'h1000',  n:'ألف إصابة',       d:'أسقط 1000 هدف',                   c:'#FFD24A', f:p=>p.st.hits>=1000, bar:p=>[p.st.hits,1000]},
+  {id:'c25',    n:'قنّاص الصحراء',   d:'سلسلة 25 إصابة بلا خطأ',          c:'#38C9A0', f:p=>p.st.combo>=25,  bar:p=>[p.st.combo,25]},
+  {id:'c50',    n:'لهــيــب',         d:'سلسلة 50 إصابة بلا خطأ',          c:'#FF5B3D', f:p=>p.st.combo>=50,  bar:p=>[p.st.combo,50]},
+  {id:'clean',  n:'بلا خدش',         d:'خلّص مرحلة بلا ولا طلقة طائشة',    c:'#2ED573', f:p=>p.st.clean>=1},
+  {id:'clean10',n:'يد ثابتة',        d:'عشر مراحل بلا ولا طلقة طائشة',     c:'#2ED573', f:p=>p.st.clean>=10,  bar:p=>[p.st.clean,10]},
+  {id:'gold20', n:'صيّاد الذهب',     d:'أسقط 20 هدفاً ذهبياً',            c:'#FFD24A', f:p=>p.st.golden>=20, bar:p=>[p.st.golden,20]},
+  {id:'armor30',n:'كاسر الدروع',     d:'حطّم 30 هدفاً مدرّعاً',           c:'#9AA6B2', f:p=>p.st.armor>=30,  bar:p=>[p.st.armor,30]},
+  {id:'boss5',  n:'مسقط الزعماء',    d:'أسقط 5 زعماء',                    c:'#A81F2D', f:p=>p.st.boss>=5,    bar:p=>[p.st.boss,5]},
+  {id:'boss10', n:'سيّد الزعماء',    d:'أسقط العشرة كلهم',                c:'#FF4D6D', f:p=>p.st.boss>=10,   bar:p=>[p.st.boss,10]},
+  {id:'allwp',  n:'خبير الأسلحة',    d:'اصطد بكل سلاح من الأربعة',        c:'#4FB8FF',
+     f:p=>WEAPONS.every(w=>(p.st.wp[w.id]||0)>0), bar:p=>[WEAPONS.filter(w=>(p.st.wp[w.id]||0)>0).length,4]},
+  {id:'lv25',   n:'نصف الطريق',      d:'وصّل للمرحلة 25',                 c:'#F2D8A7', f:p=>p.unlocked>=25,  bar:p=>[p.unlocked,25]},
+  {id:'lv50',   n:'بطل الصحراء',     d:'خلّص الخمسين مرحلة',              c:'#FFC94D', f:p=>p.unlocked>=50,  bar:p=>[p.unlocked,50]},
+  {id:'end100', n:'أسطورة اللانهائي',d:'مية إصابة في التحدي اللانهائي',   c:'#C77DFF', f:p=>p.st.endlessHits>=100, bar:p=>[p.st.endlessHits,100]}
+];
+function checkAch(){
+  const got = [];
+  for(const a of ACH){
+    if(prog.ach[a.id]) continue;
+    let ok = false; try{ ok = a.f(prog); }catch(e){}
+    if(ok){ prog.ach[a.id] = Date.now(); got.push(a); }
+  }
+  if(got.length){
+    saveProg();
+    got.forEach((a,i) => setTimeout(() => {
+      callout('إنجاز: ' + a.n, a.d, a.c); Snd.lvlUp();
+    }, 300 + i*1400));
+  }
+  return got.length;
+}
+function achDone(){ return ACH.filter(a => prog.ach[a.id]).length; }
 
 const G = {
   screen:'menu', level:1, score:0, lives:3, timeLeft:0, hits:0, shots:0, misses:0,
   combo:0, bestCombo:0, mult:1, ammo:6, maxAmmo:6, reloading:false, reloadT:0,
   wp:0, mag:[8,18,5,3], fireCd:0, swapFx:0,
   targets:[], parts:[], pops:[], holes:[], boss:null, calls:[], rings:[], smoke:[],
+  finale:0, finaleAt:null, endless:false, wave:1, escaped:0, elapsed:0, stormOn:false,
   spawnT:0, shake:0, freeze:0, dbl:0, flash:0, paused:false, running:false,
   intro:0, recoil:0, hurt:0, tickAt:99, slowmo:0, glowT:0,
   cross:{x:W/2,y:H/2}, lastPointer:0, t:0
@@ -806,7 +950,9 @@ const MODS = {
   armor:  {name:'دروع',          desc:'أهداف مدرّعة تحتاج ضربتين'},
   heavy:  {name:'تعبئة ثقيلة',   desc:'إعادة التعبئة أبطأ — لا تهدر الطلقات'},
   fog:    {name:'عجاج',          desc:'الرؤية أقل بسبب الغبار'},
-  gold:   {name:'موسم الذهب',    desc:'أهداف ذهبية أكثر من المعتاد'}
+  gold:   {name:'موسم الذهب',    desc:'أهداف ذهبية أكثر من المعتاد'},
+  storm:  {name:'عاصفة رملية',   desc:'موجات رمل تعبر الشاشة وتخفي الأهداف لحظات'},
+  bolt:   {name:'ليلة برق',      desc:'ظلام دامس وبرق يضيء كل شي لحظة — استغلها'}
 };
 
 // ————— توليد 50 مرحلة بمنحنى صعوبة متدرّج —————
@@ -815,8 +961,8 @@ const LV = (() => {
   const PALCYC = ['dawn','noon','dusk','night'];
   // ما الذي يُفتح ومتى، وأي مُعدّل يدخل في أي مرحلة
   const NEWTYPE = { 2:'runner', 6:'protected', 8:'golden', 11:'armored' };
-  const NEWMOD  = { 12:'swarm', 16:'wind', 18:'blitz', 21:'shrink', 26:'guard',
-                    28:'heavy', 31:'fog', 33:'gold', 36:'armor' };
+  const NEWMOD  = { 12:'swarm', 16:'wind', 18:'blitz', 21:'shrink', 24:'storm',
+                    26:'guard', 28:'heavy', 31:'fog', 33:'gold', 36:'armor', 39:'bolt' };
   let types = ['normal'], mods = [];
 
   for(let n = 1; n <= 50; n++){
@@ -853,8 +999,36 @@ const LV = (() => {
   return out;
 })();
 const LVN = LV.length;
-const lvOf = n => LV[clamp(n,1,LVN) - 1];
+let _endlessL = null;
+const lvOf = n => (G && G.endless && _endlessL) ? _endlessL : LV[clamp(n,1,LVN) - 1];
 const hasMod = (L, m) => !!(L.mods && L.mods.indexOf(m) >= 0);
+
+// إعداد الوضع اللانهائي: يتولّد لحظياً حسب الوقت المنقضي
+const ENDLESS_WAVE = 25;                 // ثواني كل موجة
+function endlessCfg(sec){
+  const w = Math.floor(sec / ENDLESS_WAVE) + 1;
+  const k = Math.min(1, sec / 330);      // يصل ذروته بعد ~5.5 دقائق
+  const types = ['normal'];
+  if(w >= 2) types.push('runner');
+  if(w >= 3) types.push('protected');
+  if(w >= 4) types.push('golden');
+  if(w >= 5) types.push('armored');
+  const mods = [];
+  if(w >= 6)  mods.push('swarm');
+  if(w >= 8)  mods.push('wind');
+  if(w >= 9)  mods.push('blitz');
+  if(w >= 11) mods.push('shrink');
+  if(w >= 12) mods.push('guard');
+  if(w >= 14) mods.push('storm');
+  if(w >= 16) mods.push('heavy');
+  return {
+    n:1, endless:true, wave:w, goal:1e9, time:1e9,
+    rate: +(1.25 - .92*Math.pow(k,.8)).toFixed(3),
+    life: +(1.95 - 1.18*Math.pow(k,.85)).toFixed(3),
+    pal: ['dawn','noon','dusk','night'][Math.floor(sec/60) % 4],
+    types, mods
+  };
+}
 // المناطق: كل عشر مراحل لها اسم يظهر في الخريطة
 const REGIONS = [
   {from:1,  to:10, name:'أطراف الرمال'},
@@ -1468,7 +1642,7 @@ function hitTarget(t, px, py, Wp){
     popText(t._dx, t._dy, '−1', '#FF5B6B');
     burst(t._dx, t._dy, '#2C6E49', 18, 190);
     updHUD(); updCombo();
-    if(G.lives <= 0) gameOver('ضربت المحميين');
+    if(G.lives <= 0){ G.endless ? endlessOver() : gameOver('ضربت المحميين'); }
     return;
   }
   t.hp -= Wp.dmg; t.hitFx = .18;
@@ -1478,7 +1652,12 @@ function hitTarget(t, px, py, Wp){
     popText(px, py, 'انكسر الدرع', '#C6AE86'); return;
   }
   t.dead = true; G.hits++;
+  prog.st.hits++;
+  prog.st.wp[Wp.id] = (prog.st.wp[Wp.id] || 0) + 1;
+  if(t.kind === 'golden') prog.st.golden++;
+  if(t.maxHp > 1) prog.st.armor++;
   G.combo++; G.bestCombo = Math.max(G.bestCombo, G.combo);
+  if(G.combo > (prog.st.combo || 0)) prog.st.combo = G.combo;
   G.mult = clamp(1 + Math.floor(G.combo/4), 1, 5);
   if(t.kind === 'freeze'){ G.freeze = 4; toast('تجميد الوقت 4 ثواني'); }
   if(t.kind === 'double'){ G.dbl = 8; toast('نقاط مضاعفة 8 ثواني'); }
@@ -1501,9 +1680,23 @@ function hitTarget(t, px, py, Wp){
   burst(t._dx, t._dy, T.col, 16, 210);
   burst(t._dx, t._dy + t.r, '#D9AE6B', 12, 130);
   updHUD(); updCombo();
-  if(!G.boss && G.hits >= lvOf(G.level).goal) levelWin();
+  // آخر هدف في المرحلة: لقطة بطيئة قبل شاشة النتيجة
+  if(!G.endless && !G.boss && G.hits >= lvOf(G.level).goal){
+    startFinale(t._dx, t._dy);
+  }
 }
 
+// لقطة سينمائية على آخر هدف
+function startFinale(x, y){
+  if(G.finale > 0) return;
+  G.finale = 1.35; G.finaleAt = {x, y};
+  G.slowmo = Math.max(G.slowmo, 1.35);
+  stopVoices();
+  Snd.duck(1.15); Snd.finale();
+  callout('آخــر هدف', 'خلّصت المرحلة', '#FFE9B0');
+  ring(x, y, '#FFE9B0', 20, Math.max(W,H)*.7, 1.0);
+  burst(x, y, '#FFD24A', 30, 240);
+}
 function startReload(){
   if(G.reloading) return;
   G.reloading = true;
@@ -1523,6 +1716,7 @@ function bossDown(){
   Snd.bossDie(); G.slowmo = 1.1;
   callout('سقـط الزعـيم!', '+500 نقطة', '#FFE9B0');
   G.shake = RM ? 0 : 22; G.boss = null; G.score += 500;
+  prog.st.boss = (prog.st.boss || 0) + 1;
   G.timeLeft = Math.max(G.timeLeft, 3);
   popText(b.x, b.y, '+500', '#FFE9B0');
   setTimeout(() => levelWin(), 700);
@@ -1539,8 +1733,16 @@ function loop(ts){
 }
 function update(dt){
   const L = lvOf(G.level);
-  // بطء حركة سينمائي بعد سقوط الزعيم
-  if(G.slowmo > 0){ G.slowmo -= dt; dt *= .35; }
+  // بطء حركة سينمائي: سقوط الزعيم أو آخر هدف في المرحلة
+  if(G.finale > 0){
+    G.finale -= dt;
+    if(G.finale <= 0){                      // انتهت اللقطة → شاشة النتيجة
+      G.finale = 0; G.finaleAt = null;
+      stepFX(dt); levelWin(); return;
+    }
+    dt *= .18;
+  }
+  else if(G.slowmo > 0){ G.slowmo -= dt; dt *= .35; }
   // عدّاد استعداد قبل انطلاق المرحلة
   if(G.intro > 0){
     G.intro -= dt;
@@ -1552,13 +1754,26 @@ function update(dt){
     if(G.intro <= 0){ callout('انطـلق!', L.boss ? 'مرحلة زعيم' : 'المرحلة ' + L.n, '#E8B33C'); Snd.big(); }
     stepFX(dt); return;
   }
-  if(G.freeze > 0) G.freeze -= dt; else G.timeLeft -= dt;
+  if(G.endless){
+    G.elapsed += dt;
+    const w = Math.floor(G.elapsed / ENDLESS_WAVE) + 1;
+    _endlessL = endlessCfg(G.elapsed);
+    G.stormOn = hasMod(_endlessL, 'storm');
+    if(w !== G.wave){
+      G.wave = w;
+      callout('الموجة ' + w, 'صارت أصعب', '#FFC94D');
+      Snd.lvlUp();
+      if(w % 4 === 0 && G.lives < 3){ G.lives++; toast('قلب إضافي!'); updHUD(); }
+    }
+    if(G.freeze > 0) G.freeze -= dt;
+  }
+  else if(G.freeze > 0) G.freeze -= dt; else G.timeLeft -= dt;
   // تكات تحذير آخر 10 ثواني
   const secs = Math.ceil(G.timeLeft);
   if(secs <= 10 && secs !== G.tickAt){ G.tickAt = secs; if(secs > 0) Snd.tick(); }
   if(G.dbl > 0) G.dbl -= dt;
   if(G.reloading){ G.reloadT -= dt; if(G.reloadT <= 0) finishReload(); }
-  if(G.timeLeft <= 0){ G.timeLeft = 0; timeUp(); return; }
+  if(!G.endless && G.timeLeft <= 0){ G.timeLeft = 0; timeUp(); return; }
 
   if(G.boss){
     const b = G.boss;
@@ -1596,7 +1811,17 @@ function update(dt){
       if(t.x < -t.r-10 || t.x > W+t.r+10) t.dead = true;
     } else if(t.age > t.life){
       t.dead = true;
-      if(t.kind !== 'protected'){ G.combo = 0; G.mult = 1; updCombo(); }
+      if(t.kind !== 'protected'){
+        G.combo = 0; G.mult = 1; updCombo();
+        if(G.endless){
+          G.escaped++;
+          if(G.escaped >= 8){
+            G.escaped = 0; G.lives--; G.hurt = 1; Snd.bad(); updHUD();
+            callout('هربوا منك!', 'ثمانية أهداف فاتت — خسرت قلب', '#FF5B6B');
+            if(G.lives <= 0){ endlessOver(); return; }
+          }
+        }
+      }
     }
   }
   G.targets = G.targets.filter(t => !t.dead);
@@ -1708,6 +1933,60 @@ function render(dt){
     }
     ctx.restore();
   }
+  // ————— الطقس —————
+  if(G.running){
+    const Lw = lvOf(G.level);
+    // عاصفة رملية: موجات كثيفة تعبر الشاشة أفقياً
+    if(hasMod(Lw,'storm') || G.endless && G.stormOn){
+      ctx.save();
+      for(let i=0;i<3;i++){
+        const w = W*.85;
+        const x = ((G.t*(150+i*46) + i*W*.7) % (W + w*2)) - w;
+        const g2 = ctx.createLinearGradient(x, 0, x + w, 0);
+        g2.addColorStop(0,   'rgba(201,164,106,0)');
+        g2.addColorStop(.45, 'rgba(214,178,118,' + (.42 - i*.08) + ')');
+        g2.addColorStop(1,   'rgba(201,164,106,0)');
+        ctx.fillStyle = g2; ctx.fillRect(x, 0, w, H);
+      }
+      // ذرات رمل تنجرف مع العاصفة
+      ctx.globalAlpha = .5; ctx.fillStyle = '#F2D8A7';
+      for(let i=0;i<44;i++){
+        const x = ((G.t*470 + i*163) % (W+60)) - 30;
+        const y = (i*97 + Math.sin(G.t*2+i)*22) % H;
+        ctx.fillRect(x, y, 9, 1.6);
+      }
+      ctx.restore();
+    }
+    // ليلة برق: ظلام ثم ومضة تكشف كل شي
+    if(hasMod(Lw,'bolt')){
+      if(G.boltT === undefined) G.boltT = rnd(2.5, 5);
+      G.boltT -= (G._bgdt || .016);
+      if(G.boltT <= 0){ G.boltT = rnd(3.5, 7.5); G.bolt = .55; Snd.thunder(); }
+      G.bolt = Math.max(0, (G.bolt || 0) - (G._bgdt || .016)*1.9);
+      ctx.fillStyle = 'rgba(6,8,22,.42)'; ctx.fillRect(0,0,W,H);
+      if(G.bolt > 0){
+        const k = G.bolt;
+        const flick = (k > .38 || (k > .2 && k < .28)) ? 1 : .35;
+        ctx.fillStyle = 'rgba(214,228,255,' + (k*.85*flick) + ')';
+        ctx.fillRect(0,0,W,H);
+      }
+    }
+  }
+  // بؤرة اللقطة الأخيرة: كل الشاشة تعتم إلا مكان الهدف
+  if(G.finale > 0 && G.finaleAt){
+    const k = 1 - G.finale/1.35;
+    const rad = Math.max(W,H) * (.16 + k*.55);
+    const fg = ctx.createRadialGradient(G.finaleAt.x, G.finaleAt.y, rad*.22,
+                                        G.finaleAt.x, G.finaleAt.y, rad);
+    const a = Math.min(.72, (1-k)*.9);
+    fg.addColorStop(0, 'rgba(0,0,0,0)');
+    fg.addColorStop(1, 'rgba(8,5,2,' + a + ')');
+    ctx.fillStyle = fg; ctx.fillRect(0,0,W,H);
+    ctx.globalAlpha = (1-k)*.55;
+    ctx.strokeStyle = '#FFE9B0'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(G.finaleAt.x, G.finaleAt.y, rad*.30, 0, 7); ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
   // إطار معتم يركّز النظر
   const vgR = Math.max(W,H);
   const vg = ctx.createRadialGradient(W/2,H/2,vgR*.30, W/2,H/2,vgR*.80);
@@ -1799,9 +2078,15 @@ function updHUD(){
     const sEl = $('score'); sEl.textContent = G.score;
     sEl.classList.remove('bump'); void sEl.offsetWidth; sEl.classList.add('bump');
   }
-  const secs = Math.ceil(G.timeLeft);
-  $('time').textContent = secs;
-  $('timePill').classList.toggle('warn', secs <= 10 && G.running && G.intro <= 0);
+  if(G.endless){
+    const e = Math.floor(G.elapsed);
+    $('time').textContent = Math.floor(e/60) + ':' + String(e%60).padStart(2,'0');
+    $('timePill').classList.remove('warn');
+  } else {
+    const secs = Math.ceil(G.timeLeft);
+    $('time').textContent = secs;
+    $('timePill').classList.toggle('warn', secs <= 10 && G.running && G.intro <= 0);
+  }
   const lv = $('lives');
   if(lv.childElementCount !== Math.max(0,G.lives)){
     lv.innerHTML = '';
@@ -1815,6 +2100,12 @@ function updHUD(){
     $('goalFill').className = 'fill hp';
     $('goalFill').style.width = (G.boss.hp/G.boss.maxHp*100) + '%';
     $('goalLbl').textContent = 'الزعيم ' + Math.max(0,G.boss.hp) + ' / ' + G.boss.maxHp + (G.boss.shield ? ' — الدرع مرفوع' : '');
+  } else if(G.endless){
+    $('goalFill').className = 'fill';
+    const into = (G.elapsed % ENDLESS_WAVE) / ENDLESS_WAVE * 100;
+    $('goalFill').style.width = into + '%';
+    $('goalLbl').textContent = 'الموجة ' + G.wave + ' · ' + G.hits + ' إصابة · هربوا ' +
+                               G.escaped + '/8';
   } else if(!L.boss){
     $('goalFill').className = 'fill';
     $('goalFill').style.width = clamp(G.hits/L.goal*100,0,100) + '%';
@@ -1878,12 +2169,15 @@ function updCombo(){
 
 /* ---------- 17) تدفّق المراحل ---------- */
 function startLevel(n){
+  G.endless = false; _endlessL = null;
   G.level = n; const L = lvOf(n);
   G.score = G.score || 0;
   G.hits = 0; G.shots = 0; G.misses = 0; G.combo = 0; G.mult = 1;
   G.targets = []; G.parts = []; G.pops = []; G.holes = [];
   G.calls = []; G.rings = []; G.smoke = [];
   G.intro = 3.2; G._lastIntro = 99; G.tickAt = 99;
+  G.boltT = undefined; G.bolt = 0; G.stormOn = false;
+  G.finale = 0; G.finaleAt = null;
   G.recoil = 0; G.hurt = 0; G.slowmo = 0;
   G.timeLeft = L.time;
   if(!wpOpen(G.wp)) G.wp = 0;
@@ -1901,6 +2195,48 @@ function startLevel(n){
   Snd.boot(); Snd.windOn();
   if(L.boss) toast('الدرع يرتفع وينزل — انتظر فرصتك');
 }
+function startEndless(){
+  G.endless = true; _endlessL = endlessCfg(0);
+  G.level = 1; G.score = 0; _lastScore = -1; G.lives = 3;
+  G.hits = 0; G.shots = 0; G.misses = 0; G.combo = 0; G.mult = 1; G.bestCombo = 0;
+  G.targets = []; G.parts = []; G.pops = []; G.holes = [];
+  G.calls = []; G.rings = []; G.smoke = []; G.boss = null;
+  G.elapsed = 0; G.wave = 1; G.escaped = 0;
+  G.intro = 3.2; G._lastIntro = 99; G.tickAt = 99;
+  G.boltT = undefined; G.bolt = 0; G.finale = 0; G.finaleAt = null;
+  G.recoil = 0; G.hurt = 0; G.slowmo = 0; G.warnedP = false;
+  G.timeLeft = 1e9; G.freeze = 0; G.dbl = 0; G.spawnT = .6; G.paused = false;
+  if(!wpOpen(G.wp)) G.wp = 0;
+  G.maxAmmo = wp().mag;
+  for(let i=0;i<WEAPONS.length;i++) G.mag[i] = WEAPONS[i].mag;
+  G.ammo = G.maxAmmo; G.reloading = false; G.fireCd = 0;
+  G.running = true; G.screen = 'play';
+  $('reloadBtn').classList.remove('on');
+  $('hud').classList.add('on'); show(null);
+  primeAllClips(); renderRail(); updAmmo(); updHUD(); updCombo();
+  Snd.boot(); Snd.windOn();
+  toast('اصمد أطول ما تقدر — كل 25 ثانية موجة أصعب');
+}
+function endlessOver(){
+  G.running = false; Snd.windOff(); stopVoices();
+  $('hud').classList.remove('on');
+  prog.endless = Math.max(prog.endless || 0, G.score);
+  prog.best = Math.max(prog.best, G.score);
+  prog.st.endlessHits = Math.max(prog.st.endlessHits || 0, G.hits);
+  prog.endlessTop = (prog.endlessTop || []).concat([{s:G.score, w:G.wave, h:G.hits, d:Date.now()}])
+    .sort((a,b)=>b.s-a.s).slice(0,5);
+  saveProg(); checkAch(); Snd.lose();
+  const mins = Math.floor(G.elapsed/60), secs = Math.floor(G.elapsed%60);
+  const acc = G.shots ? Math.round(G.hits/G.shots*100) : 0;
+  $('overStats').innerHTML =
+    `<p class="sub">صمدت ${mins}:${String(secs).padStart(2,'0')} — وصلت للموجة ${G.wave}</p>
+     <div class="stat"><span>النقاط</span><b>${G.score}</b></div>
+     <div class="stat"><span>الإصابات</span><b>${G.hits}</b></div>
+     <div class="stat"><span>الدقة</span><b>${acc}%</b></div>
+     <div class="stat"><span>أطول سلسلة</span><b>${G.bestCombo}</b></div>
+     <div class="stat"><span>أفضل نتيجة لك</span><b>${prog.endless}</b></div>`;
+  show('over'); G.screen = 'over';
+}
 function starsFor(){
   const acc = G.shots ? G.hits/G.shots : 0;
   if(acc >= .8 && G.lives === 3) return 3;
@@ -1908,7 +2244,7 @@ function starsFor(){
   return 1;
 }
 function levelWin(){
-  G.running = false; Snd.windOff(); $('hud').classList.remove('on');
+  G.running = false; Snd.windOff(); stopVoices(); $('hud').classList.remove('on');
   const s = starsFor();
   prog.stars[G.level] = Math.max(prog.stars[G.level] || 0, s);
   const before = prog.unlocked;
@@ -1916,7 +2252,8 @@ function levelWin(){
   const got = WEAPONS.find(w => w.unlock > before && w.unlock <= prog.unlocked);
   if(got) setTimeout(() => callout('سلاح جديد: ' + got.name, got.hint, got.col), 900);
   prog.best = Math.max(prog.best, G.score);
-  saveProg();
+  if(G.misses === 0 && G.shots > 0) prog.st.clean = (prog.st.clean || 0) + 1;
+  saveProg(); checkAch();
   Snd.lvlUp();
   const acc = G.shots ? Math.round(G.hits/G.shots*100) : 0;
   const isLast = G.level === LVN;
@@ -1932,7 +2269,7 @@ function levelWin(){
 function timeUp(){
   G.lives--; updHUD();
   if(G.lives <= 0){ gameOver('انتهى الوقت'); return; }
-  G.running = false; $('hud').classList.remove('on');
+  G.running = false; stopVoices(); $('hud').classList.remove('on');
   Snd.bad();
   $('winTitle').textContent = 'انتهى الوقت';
   $('winStars').textContent = '';
@@ -1943,8 +2280,8 @@ function timeUp(){
   show('win'); G.screen = 'win';
 }
 function gameOver(why){
-  G.running = false; Snd.windOff(); $('hud').classList.remove('on');
-  prog.best = Math.max(prog.best, G.score); saveProg(); Snd.lose();
+  G.running = false; Snd.windOff(); stopVoices(); $('hud').classList.remove('on');
+  prog.best = Math.max(prog.best, G.score); saveProg(); checkAch(); Snd.lose();
   const acc = G.shots ? Math.round(G.hits/G.shots*100) : 0;
   $('overStats').innerHTML =
     `<p class="sub">${why}</p>
@@ -1961,7 +2298,14 @@ async function saveProg(){
 async function loadProg(){
   try{
     const raw = await Store.get('sahra_prog');
-    if(raw){ const p = JSON.parse(raw); Object.assign(prog, p); }
+    if(raw){
+      const p = JSON.parse(raw);
+      const st = Object.assign({hits:0,golden:0,armor:0,boss:0,combo:0,clean:0,wp:{},endlessHits:0},
+                               p.st || {});
+      Object.assign(prog, p);
+      prog.st = st; prog.ach = p.ach || {}; prog.endlessTop = p.endlessTop || [];
+      prog.endless = p.endless || 0;
+    }
   }catch(e){}
   $('best').textContent = prog.best || 0;
 }
@@ -2044,7 +2388,7 @@ function renderStudio(){
     const vr = d.querySelector('.vrec');
     if(vr) vr.onclick = () => recordVoice(f, d);
     const vp = d.querySelector('.vply');
-    if(vp) vp.onclick = () => { Snd.boot(); yell(f); };
+    if(vp) vp.onclick = () => { Snd.boot(); yell(f, true); };
     const vd = d.querySelector('.vdel');
     if(vd) vd.onclick = () => clearVoice(f);
     const x = d.querySelector('.x');
@@ -2059,19 +2403,33 @@ let lastYell = 0;
 async function primeClip(face){
   if(!face || !face.voice || clips.has(face.voice)) return;
   clips.set(face.voice, null);           // علامة "جاري الفك" تمنع التكرار
-  try{ clips.set(face.voice, await Snd.decode(face.voice)); }
-  catch(e){ clips.delete(face.voice); }
+  try{
+    const raw = await Snd.decode(face.voice);
+    clips.set(face.voice, Snd.trim(raw));   // مقصوص ومعاير = تشغيل فوري
+  }catch(e){ clips.delete(face.voice); }
+}
+// الأصوات الشغالة الآن — نوقفها فوراً عند نهاية المرحلة أو الإيقاف
+const liveVoices = new Set();
+function stopVoices(){
+  for(const s of liveVoices){ try{ s.stop(); }catch(e){} }
+  liveVoices.clear();
 }
 function primeAllClips(){ for(const f of faces) primeClip(f); }
 // يشغّل صوت الشخص عند إصابته، مع تنويع بسيط في السرعة
-function yell(face){
+function yell(face, force){
   if(!face || !face.voice) return;
+  // داخل اللعب: ما نشغّل صوتاً إلا واللعبة فعلاً شغالة، عشان ما يطلع بعد نهاية المرحلة
+  if(!force && (!G.running || G.paused || G.intro > 0)) return;
   const now = Date.now();
   if(now - lastYell < 90) return;        // ما نكدّس الأصوات فوق بعض
   lastYell = now;
   const b = clips.get(face.voice);
-  if(b) Snd.playBuf(b, (Math.random()-.5)*.12);
-  else primeClip(face);
+  if(!b){ primeClip(face); return; }     // لسه ما انفكّ — نتجاهل بدل ما نتأخر
+  const src = Snd.playBuf(b, (Math.random()-.5)*.12);
+  if(src){
+    liveVoices.add(src);
+    src.onended = () => liveVoices.delete(src);
+  }
 }
 
 // ————— كشف الوجه: تحليل نغمة البشرة + أكبر كتلة متصلة —————
@@ -2281,7 +2639,7 @@ async function recordVoice(face, cardEl, inEditor){
       renderStudio();
       setStatus('انحفظ صوت ' + face.name + ' — بيطلع كل ما تصيبه');
     }
-    yell(face);
+    yell(face, true);
   };
   rec.start();
   // عدّ تنازلي مرئي على البطاقة
@@ -2475,6 +2833,11 @@ function renderGuide(){
     <div class="gsec"><h4>الأسلحة</h4>${wpRows}</div>
     <div class="gsec"><h4>الأهداف</h4>${tRows}</div>
     <div class="gsec"><h4>تغيّرات المراحل</h4>${mRows}</div>
+    <div class="gsec"><h4>التحدي اللانهائي</h4>
+      <p>موجات بلا نهاية تصعب كل 25 ثانية. ما فيه وقت ينتهي — تلعب لين تخلص قلوبك.</p>
+      <p>تخسر قلباً إذا ضربت محمياً أو هربت منك ثمانية أهداف، ويرجع لك قلب كل أربع موجات.</p></div>
+    <div class="gsec"><h4>الإنجازات</h4>
+      <p>خمسة عشر إنجازاً تُفتح مع لعبك: سلاسل طويلة، مراحل بلا طلقة طائشة، أهداف ذهبية، زعماء، وغيرها. تشوف تقدّمك في صفحة الإنجازات.</p></div>
     <div class="gsec"><h4>الزعماء</h4>
       <p>كل خمس مراحل يجيك زعيم: وجه كبير بشريط صحة، يتحرك ويرفع درعاً خشبياً بين فترة وأخرى — الطلقات على الدرع ضائعة.</p>
       <p>يرسل أهدافاً صغيرة تشغلك، وبعضها محمي فانتبه. لما تنزل صحته تحت الربع يصير أسرع.</p>
@@ -2483,6 +2846,35 @@ function renderGuide(){
       <p>من استوديو الوجوه تضيف صوراً من جهازك. تنحفظ على جهازك أنت فقط وما ترتحل مع الرابط.</p>
       <p>لكل وجه دور: هدف عادي، أو محمي ممنوع ضربه، أو زعيم. تغيّره بالضغط على الشارة تحت الصورة.</p>
       <p>وتقدر تسجّل صوت كل شخص: اضغط «سجّل صوت» وخلّه يقول «أوه» أو أي صيحة قصيرة، وينطلع صوته كل ما تصيده. التسجيلات محفوظة على جهازك مثل الصور تماماً.</p></div>`;
+}
+
+function renderAch(){
+  $('achCount').textContent = 'فتحت ' + achDone() + ' من ' + ACH.length;
+  const box = $('achList'); box.innerHTML = '';
+  for(const a of ACH){
+    const on = !!prog.ach[a.id];
+    let bar = '', pct = '';
+    if(!on && a.bar){
+      const [c, t] = a.bar(prog);
+      const r = Math.min(100, Math.round(c/t*100));
+      bar = '<div class="abar"><i style="width:' + r + '%"></i></div>';
+      pct = '<span class="apct">' + Math.min(c,t) + '/' + t + '</span>';
+    }
+    box.insertAdjacentHTML('beforeend',
+      `<div class="acard${on?' on':''}" style="color:${a.c}">
+         <span class="adot" style="${on?'background:'+a.c:''}"></span>
+         <span style="flex:1"><span class="an">${a.n}</span>
+           <span class="ad">${a.d}</span>${bar}</span>${pct}
+       </div>`);
+  }
+}
+function renderEndless(){
+  const box = $('endTop'); box.innerHTML = '';
+  const top = prog.endlessTop || [];
+  if(!top.length){ box.innerHTML = '<p class="hint">ما لك نتائج بعد — جرّب!</p>'; return; }
+  box.insertAdjacentHTML('beforeend', '<p class="hint">أفضل نتائجك</p>');
+  top.forEach((r,i) => box.insertAdjacentHTML('beforeend',
+    `<div class="erow"><span>${i+1}. الموجة ${r.w} · ${r.h} إصابة</span><b>${r.s}</b></div>`));
 }
 
 /* ---------- 20) خريطة المراحل ---------- */
@@ -2531,6 +2923,7 @@ addEventListener('keydown', e => {
 });
 function togglePause(){
   G.paused = !G.paused;
+  if(G.paused) stopVoices();
   if(G.paused){ show('pause'); $('hud').classList.remove('on'); }
   else { show(null); $('hud').classList.add('on'); }
 }
@@ -2588,7 +2981,7 @@ $('sndBtn').onclick = e => { const on = Snd.toggle(); e.target.textContent = 'ا
   }, {passive:false});
   $('edZoom').addEventListener('input', e => setZoom(+e.target.value));
   $('edRec').onclick  = () => { if(Ed.face) recordVoice(Ed.face, null, true); };
-  $('edPlay').onclick = () => { Snd.boot(); if(Ed.face) yell(Ed.face); };
+  $('edPlay').onclick = () => { Snd.boot(); if(Ed.face) yell(Ed.face, true); };
   $('edAuto').onclick = () => {
     const {w,h} = edDims();
     const f = detectFace(Ed.img, w, h);
@@ -2717,17 +3110,32 @@ $('guideBack').onclick = () => {
   if(G.guideFrom === 'brief' && G.pendingLevel) show('brief');
   else show('menu');
 };
+$('endlessBtn').onclick = () => { Snd.boot(); renderEndless(); show('endless'); G.screen='endless'; };
+$('endGo').onclick   = () => startEndless();
+$('endBack').onclick = () => show('menu');
+$('achBtn').onclick  = () => { renderAch(); show('ach'); G.screen='ach'; };
+$('achBack').onclick = () => show('menu');
 $('pauseBtn').onclick = togglePause;
 $('reloadBtn').onclick = () => { if(G.running && !G.reloading && G.ammo < G.maxAmmo) startReload(); };
 $('resumeBtn').onclick = togglePause;
-$('quitBtn').onclick = () => { G.running = false; G.paused = false; Snd.windOff(); $('hud').classList.remove('on'); show('menu'); G.screen = 'menu'; };
+$('quitBtn').onclick = () => { G.running = false; G.paused = false; Snd.windOff(); stopVoices(); $('hud').classList.remove('on'); show('menu'); G.screen = 'menu'; };
 $('nextBtn').onclick = () => openBrief(Math.min(LVN, G.level+1));
 $('retryBtn').onclick = () => openBrief(G.level);
 $('winMap').onclick = () => { renderMap(); show('map'); G.screen = 'map'; $('best').textContent = prog.best; };
-$('againBtn').onclick = () => { G.score = 0; _lastScore = -1; G.lives = 3; G.bestCombo = 0; openBrief(G.level); };
-$('overMap').onclick = () => { G.score = 0; G.lives = 3; renderMap(); show('map'); G.screen = 'map'; };
+$('againBtn').onclick = () => {
+  if(G.endless){ startEndless(); return; }
+  G.score = 0; _lastScore = -1; G.lives = 3; G.bestCombo = 0; openBrief(G.level);
+};
+$('overMap').onclick = () => {
+  G.score = 0; G.lives = 3;
+  if(G.endless){ G.endless = false; _endlessL = null; show('menu'); G.screen='menu'; return; }
+  renderMap(); show('map'); G.screen = 'map';
+};
 $('resetProg').onclick = async () => {
-  prog.unlocked = 1; prog.stars = {}; prog.best = 0; await saveProg(); renderMap(); toast('صفّرنا التقدم');
+  prog.unlocked = 1; prog.stars = {}; prog.best = 0;
+  prog.ach = {}; prog.endless = 0; prog.endlessTop = [];
+  prog.st = {hits:0,golden:0,armor:0,boss:0,combo:0,clean:0,wp:{},endlessHits:0};
+  await saveProg(); renderMap(); toast('صفّرنا التقدم');
 };
 
 /* ---------- 23) العمل بدون إنترنت والتحديث التلقائي ---------- */
@@ -2842,6 +3250,7 @@ async function doInstall(){
   G.lives = 3;
   updAmmo();
   initOffline();
+  primeAllClips();
   requestAnimationFrame(loop);
 })();
 </script>
