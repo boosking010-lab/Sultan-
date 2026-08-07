@@ -159,8 +159,15 @@ p,li{font-size:clamp(14px,3.6vw,17px);line-height:1.7;color:#E4D3B4}
 #pauseBtn{pointer-events:auto}
 
 /* شاشة المراحل */
-#mapGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
-  width:min(520px,94%);margin-top:4px}
+#map{overflow-y:auto;justify-content:flex-start;
+  padding-top:calc(env(safe-area-inset-top,0px) + 16px);
+  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
+#mapGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;
+  width:min(560px,95%);margin-top:4px}
+.regHead{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;
+  margin-top:10px;padding-bottom:5px;border-bottom:1px solid rgba(216,174,107,.22);
+  font-family:var(--f-disp);font-weight:800;font-size:15px;color:#F2D8A7}
+.regHead .regN{font-family:var(--f-ui);font-size:11.5px;color:#9E8B70;font-weight:700}
 .node{
   aspect-ratio:1;border-radius:16px;border:3px solid #6C543A;
   background:linear-gradient(180deg,#3A2A1C,#241A11);color:var(--sand-light);
@@ -273,6 +280,47 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   .node{border-radius:18px;font-size:23px}
   #faceGrid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
 }
+/* بيان المرحلة والدليل */
+#brief,#guide{overflow-y:auto;justify-content:flex-start;
+  padding-top:calc(env(safe-area-inset-top,0px) + 16px);
+  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px);gap:11px}
+.bfStats{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.bfBox{min-width:88px;padding:9px 14px;border-radius:14px;
+  background:linear-gradient(180deg,rgba(40,28,20,.85),rgba(18,12,8,.9));
+  border:1px solid rgba(255,201,77,.26);display:flex;flex-direction:column;gap:2px;align-items:center}
+.bfBox .bl{font-size:10.5px;color:#9E8B70;font-weight:600;letter-spacing:.3px}
+.bfBox b{font-size:19px;color:#FFC94D;font-variant-numeric:tabular-nums}
+.bfHead{font-size:12px;color:#9E8B70;font-weight:700;letter-spacing:.5px;margin-top:2px}
+#bfNew{display:flex;flex-direction:column;gap:7px;width:min(430px,94%)}
+.newCard{display:flex;gap:10px;align-items:flex-start;text-align:start;
+  padding:9px 13px;border-radius:13px;background:rgba(232,179,60,.11);
+  border:1px solid rgba(255,201,77,.34)}
+.newCard .nt{font-weight:800;color:#FFC94D;font-size:14px;display:block;margin-bottom:1px}
+.newCard .nd{font-size:12.5px;color:#E4D3B4;line-height:1.5}
+.newCard .badge{flex:none;font-size:9.5px;font-weight:800;color:#241703;
+  background:#FFC94D;border-radius:99px;padding:2px 8px;margin-top:2px}
+#bfTypes{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;width:min(460px,96%)}
+.tchip{display:flex;align-items:center;gap:6px;padding:6px 11px;border-radius:99px;
+  background:rgba(20,14,10,.8);border:1px solid rgba(255,255,255,.09);font-size:12px}
+.tchip i{width:11px;height:11px;border-radius:50%;flex:none;display:block}
+.tchip .tn{font-weight:700;color:#E4D3B4}
+.tchip .tp{color:#9E8B70;font-size:11px;font-variant-numeric:tabular-nums}
+#guideBody{width:min(520px,96%);display:flex;flex-direction:column;gap:12px;text-align:start}
+.gsec{padding:13px 16px;border-radius:15px;background:rgba(20,14,10,.72);
+  border:1px solid rgba(255,255,255,.08)}
+.gsec h4{font-family:var(--f-disp);font-size:16px;color:#FFC94D;margin-bottom:7px;font-weight:800}
+.gsec p{font-size:13px;line-height:1.75;color:#E4D3B4;margin-bottom:5px}
+.gsec .grow{display:flex;gap:9px;align-items:baseline;font-size:12.5px;
+  padding:5px 0;border-bottom:1px dashed rgba(216,174,107,.18)}
+.gsec .grow:last-child{border-bottom:0}
+.gsec .gk{font-weight:800;color:#F2D8A7;flex:none;min-width:74px}
+.gsec .gv{color:#C6AE86;line-height:1.55}
+@media (max-height:480px) and (orientation:landscape){
+  .bfBox{min-width:70px;padding:6px 10px} .bfBox b{font-size:15px}
+  .newCard{padding:6px 10px} .newCard .nd{font-size:11px}
+  .tchip{padding:4px 8px;font-size:11px}
+  .gsec{padding:9px 12px} .gsec p{font-size:12px;line-height:1.5}
+}
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
 </style>
 </head>
@@ -312,7 +360,7 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     </div>
     <div class="row">
       <button class="btn ghost sm" id="studioBtn">استوديو الوجوه</button>
-      <button class="btn ghost sm" id="howBtn">كيف ألعب</button>
+      <button class="btn ghost sm" id="howBtn">دليل اللعبة</button>
       <button class="btn ghost sm" id="sndBtn">الصوت: تشغيل</button>
       <button class="btn sm" id="saveBtn" style="display:none">احفظها لجهازك</button>
     </div>
@@ -331,25 +379,6 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       <button class="btn ghost sm" id="mapBack">رجوع</button>
       <button class="btn ghost sm" id="resetProg">تصفير التقدم</button>
     </div>
-  </div>
-
-  <!-- كيف ألعب -->
-  <div class="layer scrim" id="how">
-    <h2>كيف ألعب</h2>
-    <div class="sadu thin"></div>
-    <div style="max-width:44ch;text-align:start">
-      <p>• على الجوال: المس مكان الهدف = طلقة. على الكمبيوتر: حرّك الماوس واضغط.</p>
-      <p>• عندك <b>6 طلقات</b>. لما تخلص اضغط "إعادة تعبئة" أو زر <b>R</b>.</p>
-      <p>• ضربات متتالية بدون خطأ = <b>مضاعف نقاط</b> يوصل ×5.</p>
-      <p>• الوجه اللي عليه علامة خضراء <b>محمي</b> — إذا ضربته تخسر قلب.</p>
-      <p>• الهدف الذهبي نادر: نقاط عالية + يعبّي لك الطلقات.</p>
-      <p>• من شريط الأسلحة على يسار الشاشة تبدّل بين أربعة أسلحة (أو أرقام 1-4):
-         <b>بندقية</b> متوازنة، <b>رشاش</b> سريع ومبعثر، <b>بارودة</b> شظاياها تصيب أكثر من هدف،
-         و<b>قنّاص</b> يخترق الدروع ونقاطه مضاعفة. الأسلحة تنفتح كل ما تقدّمت.</p>
-      <p>• كل 4 مراحل يجيك <b>زعيم</b> يحتاج ضربات كثيرة ويرفع درعه بين فترة وفترة.</p>
-      <p>• لازم توصل هدف المرحلة قبل ما ينتهي الوقت، وإلا تخسر قلب وتعيدها.</p>
-    </div>
-    <button class="btn ghost sm" id="howBack">رجوع</button>
   </div>
 
   <!-- استوديو الوجوه -->
@@ -385,6 +414,35 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       <button class="btn ghost sm" id="edAuto">كشف تلقائي</button>
       <button class="btn ghost sm" id="edCancel">إلغاء</button>
     </div>
+  </div>
+
+  <!-- بيان المرحلة قبل البداية -->
+  <div class="layer scrim" id="brief">
+    <span class="tag" id="bfRegion"></span>
+    <h2 id="bfTitle">المرحلة 1</h2>
+    <div class="sadu thin"></div>
+    <div class="bfStats">
+      <div class="bfBox"><span class="bl">المطلوب</span><b id="bfGoal">—</b></div>
+      <div class="bfBox"><span class="bl">الوقت</span><b id="bfTime">—</b></div>
+      <div class="bfBox"><span class="bl">القلوب</span><b id="bfLives">—</b></div>
+    </div>
+    <div id="bfNew"></div>
+    <p class="bfHead">اللي راح تشوفه</p>
+    <div id="bfTypes"></div>
+    <p class="hint" id="bfTip"></p>
+    <div class="row">
+      <button class="btn" id="bfGo">ابدأ</button>
+      <button class="btn ghost sm" id="bfGuide">دليل اللعبة</button>
+      <button class="btn ghost sm" id="bfBack">رجوع</button>
+    </div>
+  </div>
+
+  <!-- دليل اللعبة -->
+  <div class="layer scrim" id="guide">
+    <h2>دليل اللعبة</h2>
+    <div class="sadu thin"></div>
+    <div id="guideBody"></div>
+    <button class="btn ghost sm" id="guideBack">رجوع</button>
   </div>
 
   <!-- إيقاف مؤقت -->
@@ -522,29 +580,101 @@ const Snd = (() => {
       wind.connect(f); f.connect(windG); windG.connect(bus); wind.start();
     },
     windOff(){ if(wind){ try{ wind.stop(); }catch(e){} wind = null; windG = null; } },
-    // لكل سلاح بصمة صوتية مختلفة
+    // ————— بصمة صوتية حقيقية لكل سلاح —————
+    // كل طلقة = انفجار الفوهة + جسم منخفض + ذيل صدى + صوت ميكانيكي
     shoot(id){
-      if(id === 'smg'){                       // رشاش: فرقعة قصيرة حادة
-        noise(.035, 8000, .34, -6000, 1.1);
-        noise(.09, 2100, .2, -1700, 2);
-        tone(150, .05, 'square', .1, -60);
-      } else if(id === 'shot'){                // بارودة: دوي عريض وثقيل
-        noise(.09, 5200, .58, -4200, .9);
-        noise(.42, 900, .42, -760, 2.6, .015);
-        tone(58, .3, 'square', .3, -26);
-        tone(1500, .05, 'square', .1, -1100);
-      } else if(id === 'sniper'){              // قنّاص: طلقة حادة مع صدى
-        noise(.05, 9000, .5, -7000, 1.4);
-        noise(.3, 1800, .3, -1600, 3, .01);
-        tone(70, .34, 'sawtooth', .26, -30);
-        noise(.5, 700, .12, -600, 4, .12);     // صدى بعيد
-        tone(2600, .04, 'square', .09, -2000);
-      } else {                                 // بندقية
-        noise(.05, 7000, .5, -5000, 1.2);
-        noise(.20, 1500, .34, -1300, 2.4, .01);
-        tone(88, .14, 'square', .18, -40);
-        tone(2100, .03, 'square', .08, -1500);
+      if(!on || !ac) return;
+      if(id === 'smg'){
+        // رشاش: انفجار ضيق حاد + خشخشة المدك، بلا ذيل تقريباً
+        noise(.014, 9000, .40, -6500, .8);          // القدح
+        noise(.055, 2600, .30, -2200, 1.6, .004);   // الجسم
+        tone(190, .045, 'square', .13, -110);
+        tone(3400, .012, 'square', .07, -2400);
+        noise(.03, 5200, .10, -3400, 4, .055);      // المدك يرجع
+        tone(920, .02, 'square', .05, -420, .07);
+      } else if(id === 'shot'){
+        // بارودة: دوي عريض بطيء + هدير عميق + تلقيم المدفع بعدها
+        noise(.10, 4200, .62, -3200, .7);
+        noise(.55, 620, .48, -520, 1.9, .02);       // الهدير
+        tone(46, .48, 'sine', .38, -18);            // الارتداد العميق
+        tone(96, .22, 'square', .2, -44, .01);
+        noise(.05, 1800, .16, -1200, 3, .30);       // تلقيم: سحب
+        noise(.05, 1500, .16, -1000, 3, .46);       // تلقيم: دفع
+      } else if(id === 'sniper'){
+        // قنّاص: قرقعة حادة جداً + صدى يرتد من الكثبان + مزلاج
+        noise(.03, 11000, .58, -8500, 1.1);
+        tone(4200, .016, 'square', .12, -3400);
+        noise(.34, 1500, .34, -1300, 2.2, .008);
+        tone(58, .42, 'sawtooth', .3, -22);
+        noise(.42, 560, .13, -460, 4, .16);         // صدى أول
+        noise(.36, 420, .07, -350, 5, .34);         // صدى ثانٍ أبعد
+        noise(.04, 2600, .12, -1800, 4, .52);       // المزلاج يُفتح
+        tone(640, .05, 'square', .07, -240, .60);   // المزلاج يُقفل
+      } else {
+        // بندقية: متوازنة — قدح واضح، جسم متوسط، ذيل قصير
+        noise(.045, 7400, .50, -5200, 1.0);
+        noise(.18, 1700, .36, -1450, 2.0, .008);
+        tone(112, .16, 'square', .22, -52);
+        tone(2400, .02, 'square', .09, -1700);
+        noise(.30, 700, .10, -560, 4, .10);         // ذيل خفيف
+        tone(760, .03, 'square', .05, -300, .16);   // الغالق
       }
+    },
+    // ————— أصوات الشخصيات —————
+    // كل حرف علة له ثلاث رنّات (فورمانت). نمرّر موجة منشارية عبرها فتطلع شبه صوت بشري.
+    // pitch يتغيّر لكل وجه فيصير لكل شخصية صوت مميز.
+    voice(word, pitch, vol){
+      if(!on || !ac) return;
+      const V = {
+        a:[780,1180,2760], o:[440,860,2680], i:[300,2200,2950],
+        e:[540,1720,2540], u:[340,760,2500]
+      };
+      // كل نداء = تتابع حروف علة بمدد ومقادير نغمة
+      const WORDS = {
+        oh:  [['o',.16,1],   ['a',.20,.86]],            // أوه
+        ay:  [['a',.11,1.08],['i',.22,.92]],            // آي
+        akh: [['a',.20,1],   ['e',.10,.8]],             // آخ
+        aah: [['a',.34,1]],                             // آه
+        oy:  [['o',.10,1.05],['i',.18,.9]],             // أوي
+        wa:  [['u',.09,.95], ['a',.24,1.06]]            // واه
+      };
+      const seq = WORDS[word] || WORDS.oh;
+      const t0 = T();
+      let at = 0;
+      const total = seq.reduce((x,g)=>x+g[1], 0);
+      const master = ac.createGain();
+      master.gain.setValueAtTime(.0001, t0);
+      master.gain.exponentialRampToValueAtTime((vol==null?.5:vol), t0+.03);
+      master.gain.setValueAtTime((vol==null?.5:vol), t0+total*.6);
+      master.gain.exponentialRampToValueAtTime(.0001, t0+total+.06);
+      master.connect(bus);
+      // مصدر الحنجرة: منشارية + قليل من الضوضاء (نفَس)
+      const o = ac.createOscillator(); o.type = 'sawtooth';
+      o.frequency.setValueAtTime(pitch, t0);
+      const vib = ac.createOscillator(); vib.type = 'sine'; vib.frequency.value = 5.4;
+      const vibG = ac.createGain(); vibG.gain.value = pitch*.022;
+      vib.connect(vibG); vibG.connect(o.frequency);
+      for(const [v, dur, mul] of seq){
+        o.frequency.setValueAtTime(pitch*mul, t0+at);
+        o.frequency.linearRampToValueAtTime(pitch*mul*.82, t0+at+dur);   // انحدار الألم
+        const F = V[v] || V.a;
+        F.forEach((f, i) => {
+          const bp = ac.createBiquadFilter();
+          bp.type = 'bandpass'; bp.Q.value = 7 - i*1.6;
+          bp.frequency.setValueAtTime(f, t0+at);
+          const g = ac.createGain();
+          g.gain.setValueAtTime(.0001, t0+at);
+          g.gain.exponentialRampToValueAtTime([.9,.5,.22][i], t0+at+.025);
+          g.gain.setValueAtTime([.9,.5,.22][i], t0+at+dur*.7);
+          g.gain.exponentialRampToValueAtTime(.0001, t0+at+dur);
+          o.connect(bp); bp.connect(g); g.connect(master);
+        });
+        at += dur;
+      }
+      o.start(t0); o.stop(t0+total+.14);
+      vib.start(t0); vib.stop(t0+total+.14);
+      // نفَس خفيف في البداية
+      noise(.05, 1600, .06, -900, 1.5);
     },
     swap(){ tone(520,.05,'square',.13,-90); tone(760,.06,'square',.13,0,.07);
             noise(.05,3600,.1,-2600,2,.02); },
@@ -686,21 +816,73 @@ const PALS = {
   night:{ sky:['#070B24','#1C1240','#5B2E6B'], sun:'#E6EEFF', dune:['#5A4130','#402D20','#261A12'],
           haze:'rgba(120,150,255,.1)', star:1, glow:'#8FA8FF' }
 };
-const LV = [
-  {n:1, goal:8,  time:45, rate:1.25, life:1.9, pal:'dawn',  types:['normal']},
-  {n:2, goal:12, time:45, rate:1.05, life:1.75,pal:'dawn',  types:['normal','runner']},
-  {n:3, goal:14, time:45, rate:.95, life:1.6, pal:'noon',  types:['normal','runner','protected']},
-  {n:4, boss:1, time:70, pal:'dusk', hp:32},
-  {n:5, goal:18, time:50, rate:.88, life:1.5, pal:'noon',  types:['normal','runner','protected','golden']},
-  {n:6, goal:20, time:50, rate:.82, life:1.45,pal:'dusk',  types:['normal','runner','protected','armored']},
-  {n:7, goal:23, time:50, rate:.75, life:1.35,pal:'dusk',  types:['normal','runner','protected','armored','golden']},
-  {n:8, boss:2, time:80, pal:'night', hp:54},
-  {n:9, goal:26, time:55, rate:.7,  life:1.3, pal:'night', types:['normal','runner','protected','armored','golden']},
-  {n:10,goal:30, time:55, rate:.62, life:1.2, pal:'noon',  types:['runner','protected','armored','golden','normal']},
-  {n:11,goal:34, time:55, rate:.55, life:1.1, pal:'dusk',  types:['runner','protected','armored','golden','normal']},
-  {n:12,boss:3, time:95, pal:'night', hp:82}
+// ————— مُعدّلات المراحل: كل واحد له اسم وشرح يظهر للاعب —————
+const MODS = {
+  swarm:  {name:'أسراب',        desc:'الأهداف تطلع اثنين مع بعض'},
+  wind:   {name:'رياح',          desc:'الأهداف الطائرة أسرع وتتمايل'},
+  blitz:  {name:'خطف',           desc:'الأهداف تختفي أسرع بكثير'},
+  shrink: {name:'أهداف صغيرة',   desc:'الأحجام أصغر — تحتاج دقة'},
+  guard:  {name:'محميون كثر',    desc:'وجوه ممنوعة أكثر، ركّز قبل ما تطلق'},
+  armor:  {name:'دروع',          desc:'أهداف مدرّعة تحتاج ضربتين'},
+  heavy:  {name:'تعبئة ثقيلة',   desc:'إعادة التعبئة أبطأ — لا تهدر الطلقات'},
+  fog:    {name:'عجاج',          desc:'الرؤية أقل بسبب الغبار'},
+  gold:   {name:'موسم الذهب',    desc:'أهداف ذهبية أكثر من المعتاد'}
+};
+
+// ————— توليد 50 مرحلة بمنحنى صعوبة متدرّج —————
+const LV = (() => {
+  const out = [];
+  const PALCYC = ['dawn','noon','dusk','night'];
+  // ما الذي يُفتح ومتى، وأي مُعدّل يدخل في أي مرحلة
+  const NEWTYPE = { 2:'runner', 6:'protected', 8:'golden', 11:'armored' };
+  const NEWMOD  = { 12:'swarm', 16:'wind', 18:'blitz', 21:'shrink', 26:'guard',
+                    28:'heavy', 31:'fog', 33:'gold', 36:'armor' };
+  let types = ['normal'], mods = [];
+
+  for(let n = 1; n <= 50; n++){
+    if(NEWTYPE[n]) types = types.concat(NEWTYPE[n]);
+    if(NEWMOD[n])  mods  = mods.concat(NEWMOD[n]);
+    const t = (n - 1) / 49;                     // 0 في البداية، 1 في النهاية
+    const isBoss = n % 5 === 0;
+
+    if(isBoss){
+      const tier = n / 5;                        // 1 .. 10
+      out.push({
+        n, boss: tier,
+        hp: Math.round(28 + tier * 13),          // 41 .. 158
+        time: Math.round(68 + tier * 4.2),       // 72 .. 110
+        pal: tier % 2 ? 'dusk' : 'night',
+        types: ['normal','runner'].concat(tier >= 3 ? ['protected'] : []),
+        mods: mods.filter(m => m !== 'shrink'),  // نخفف على مراحل الزعماء
+        newType: NEWTYPE[n] || null, newMod: NEWMOD[n] || null
+      });
+      continue;
+    }
+    // المراحل العادية
+    const goal = Math.round(8 + 30 * Math.pow(t, .92));         // 8 .. 38
+    const rate = +(1.28 - .86 * Math.pow(t, .8)).toFixed(3);    // 1.28 .. 0.42 ثانية بين الأهداف
+    const life = +(1.95 - 1.05 * Math.pow(t, .85)).toFixed(3);  // 1.95 .. 0.90 ثانية عمر الهدف
+    const time = Math.round(45 + 22 * t);                       // 45 .. 67 ثانية
+    out.push({
+      n, goal, time, rate, life,
+      pal: PALCYC[(n + Math.floor(n/7)) % 4],
+      types: types.slice(), mods: mods.slice(),
+      newType: NEWTYPE[n] || null, newMod: NEWMOD[n] || null
+    });
+  }
+  return out;
+})();
+const LVN = LV.length;
+const lvOf = n => LV[clamp(n,1,LVN) - 1];
+const hasMod = (L, m) => !!(L.mods && L.mods.indexOf(m) >= 0);
+// المناطق: كل عشر مراحل لها اسم يظهر في الخريطة
+const REGIONS = [
+  {from:1,  to:10, name:'أطراف الرمال'},
+  {from:11, to:20, name:'قلب النفود'},
+  {from:21, to:30, name:'دروب القوافل'},
+  {from:31, to:40, name:'وادي العجاج'},
+  {from:41, to:50, name:'الربع الخالي'}
 ];
-const lvOf = n => LV[n-1];
 
 /* ---------- 7) أدوات ---------- */
 const $ = id => document.getElementById(id);
@@ -738,6 +920,7 @@ function layout(rw, rh){
     stars.push({x:rnd(0,W), y:rnd(0,H*.62), r:rnd(.6,1.7), tw:rnd(0,6.3)});
   for(let i=0;i<45;i++)
     grains.push({x:rnd(0,W), y:rnd(H*.35,H), s:rnd(.2,.9), r:rnd(.6,1.8)});
+  CARAVAN.length = 0;
   // نبقي الكروسهير داخل الحدود بعد تغيير المقاس
   G.cross.x = clamp(G.cross.x, 0, W);
   G.cross.y = clamp(G.cross.y, 0, H);
@@ -817,6 +1000,80 @@ function palm(x, base, s, col){
   }
   ctx.restore();
 }
+// ————— قافلة جِمال تمشي عبر الكثبان —————
+const CARAVAN = [];
+function initCaravan(){
+  CARAVAN.length = 0;
+  const n = W > 800 ? 3 : 2;
+  for(let i=0;i<n;i++){
+    CARAVAN.push({
+      x: rnd(-260, W),
+      lane: i % 2,                       // على أي كثيب يمشي
+      sp: rnd(9, 17) * (Math.random() < .5 ? 1 : -1),
+      sc: rnd(.62, 1.05),
+      ph: rnd(0, 6.28),
+      calf: Math.random() < .45          // ومعه حوار صغير
+    });
+  }
+}
+// جمل واحد: جسم وسنام ورقبة وأربع أرجل تتحرك
+function camel(x, y, sc, dir, ph, col){
+  ctx.save();
+  ctx.translate(x, y); ctx.scale(sc*dir, sc);
+  ctx.fillStyle = col;
+  // الأرجل — خطوة متعاكسة بين الأمام والخلف
+  const sw = Math.sin(ph), sw2 = Math.sin(ph + Math.PI);
+  ctx.lineCap = 'round'; ctx.strokeStyle = col; ctx.lineWidth = 3.2;
+  const leg = (lx, s) => {
+    const knee = 9, foot = 18;
+    ctx.beginPath();
+    ctx.moveTo(lx, 0);
+    ctx.lineTo(lx + s*3.5, knee);
+    ctx.lineTo(lx + s*7, foot - Math.abs(s)*2.2);
+    ctx.stroke();
+  };
+  leg(-9, sw); leg(-6, sw2*.8); leg(8, sw2); leg(11, sw*.8);
+  // الجسم
+  ctx.beginPath();
+  ctx.ellipse(0, -5, 15, 8.5, 0, 0, 7); ctx.fill();
+  // السنام
+  ctx.beginPath();
+  ctx.moveTo(-7, -10);
+  ctx.quadraticCurveTo(0, -25, 8, -10);
+  ctx.closePath(); ctx.fill();
+  // الرقبة والرأس
+  ctx.lineWidth = 5.4;
+  ctx.beginPath();
+  ctx.moveTo(11, -9);
+  ctx.quadraticCurveTo(20, -18, 19, -27);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.ellipse(20.5, -30, 5.2, 3.4, -.35, 0, 7); ctx.fill();
+  // الأذن والذيل
+  ctx.beginPath(); ctx.moveTo(18,-33); ctx.lineTo(17,-36); ctx.lineTo(20,-34); ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(-15,-7);
+  ctx.quadraticCurveTo(-20,-2, -18 + sw*2, 5); ctx.stroke();
+  ctx.restore();
+}
+function drawCaravan(dt, p){
+  if(!CARAVAN.length) initCaravan();
+  for(const c of CARAVAN){
+    c.x += c.sp * dt;
+    c.ph += Math.abs(c.sp) * dt * .55;
+    if(c.sp > 0 && c.x > W + 300) c.x = -300;
+    if(c.sp < 0 && c.x < -300) c.x = W + 300;
+    const base = c.lane ? DUNE[1] : DUNE[0];
+    const y = duneY(c.lane, c.x, base) + 3;
+    const dir = c.sp > 0 ? 1 : -1;
+    // ظل خفيف على الرمل
+    ctx.globalAlpha = .18; ctx.fillStyle = '#1B1410';
+    ctx.beginPath(); ctx.ellipse(c.x, y + 15*c.sc, 17*c.sc, 3.4*c.sc, 0, 0, 7); ctx.fill();
+    ctx.globalAlpha = 1;
+    camel(c.x, y, c.sc, dir, c.ph, p.dune[c.lane === 0 ? 1 : 2]);
+    if(c.calf) camel(c.x - dir*30*c.sc, y + 2, c.sc*.58, dir, c.ph + 1.1, p.dune[c.lane === 0 ? 1 : 2]);
+  }
+}
 function tent(x, base, s, col){
   ctx.save(); ctx.translate(x, base); ctx.scale(s,s);
   ctx.fillStyle = col; ctx.beginPath();
@@ -826,7 +1083,8 @@ function tent(x, base, s, col){
   ctx.fillRect(-70,-14,140,4); ctx.fillRect(-70,-6,140,2);
   ctx.restore();
 }
-function drawBG(pal, t){
+function drawBG(pal, t, dt){
+  G._bgdt = dt || .016;
   const p = PALS[pal];
   const g = ctx.createLinearGradient(0,0,0,H*.78);
   g.addColorStop(0,p.sky[0]); g.addColorStop(.55,p.sky[1]); g.addColorStop(1,p.sky[2]);
@@ -855,6 +1113,7 @@ function drawBG(pal, t){
     ctx.beginPath(); ctx.moveTo(0,H);
     for(let x=0;x<=W;x+=14) ctx.lineTo(x, duneY(l, x + t*(l===0?3:0), bases[l]));
     ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+    if(l === 1) drawCaravan(G._bgdt || .016, p);
     if(l === 1){
       const ps = clamp(Math.min(W,H)/560, .55, 1.25);
       palm(W*.12, bases[1]+6, .9*ps, p.dune[2]);
@@ -897,21 +1156,28 @@ function faceFor(kind){
   return faces[Math.floor(Math.random()*faces.length)] || null;
 }
 function spawn(L){
+  const goldBoost = hasMod(L,'gold'), guardMore = hasMod(L,'guard'), armorMore = hasMod(L,'armor');
   let kind = pick(L.types);
-  if(kind === 'golden' && Math.random() > .3) kind = 'normal';
-  if(kind === 'protected' && (Math.random() > .55 || !faces.some(f => f.role === 'protected'))) kind = 'normal';
+  if(kind === 'golden' && Math.random() > (goldBoost ? .62 : .3)) kind = 'normal';
+  if(kind === 'protected' && (Math.random() > (guardMore ? .82 : .55) ||
+     !faces.some(f => f.role === 'protected'))) kind = 'normal';
+  if(armorMore && kind === 'normal' && L.types.indexOf('armored') >= 0 && Math.random() < .3) kind = 'armored';
   if(Math.random() < .06) kind = Math.random() < .5 ? 'freeze' : 'double';
   if(kind === 'protected' && !G.warnedP){ G.warnedP = true; toast('العلامة الخضراء = ممنوع تطلق عليه'); }
   const T = TYPE[kind];
+  const shrink = hasMod(L,'shrink') ? .78 : 1;                  // أهداف أصغر
+  const blitz  = hasMod(L,'blitz')  ? 1.35 : 1;                 // أسرع
   const air = (kind === 'runner' || kind === 'golden') ? Math.random() < .55 : Math.random() < .15;
   const t = {
-    kind, r:T.r, hp:T.hp, maxHp:T.hp, life:L.life * (kind==='golden'?.72:1),
+    kind, r:Math.round(T.r * shrink), hp:T.hp, maxHp:T.hp,
+    life:(L.life / blitz) * (kind==='golden'?.72:1),
     age:0, dead:false, hitFx:0, air,
-    face: faceFor(kind), rise:0, vx:0, wob:rnd(0,6.3)
+    face: faceFor(kind), rise:0, vx:0, vy:0, wob:rnd(0,6.3),
+    wind: hasMod(L,'wind') ? (L.n >= 16 ? 26 : 0) : 0
   };
   if(air){
     t.y = rnd(AIR[0], AIR[1]);
-    t.vx = (Math.random()<.5?1:-1) * rnd(90,175) * (kind==='runner'?1.35:1);
+    t.vx = (Math.random()<.5?1:-1) * rnd(90,175) * (kind==='runner'?1.35:1) * blitz;
     t.x = t.vx > 0 ? -t.r : W + t.r;
     t.life = Math.max(t.life, (W + t.r*2)/Math.abs(t.vx));
   } else {
@@ -1195,6 +1461,7 @@ function hitBoss(b, px, py, Wp, pellets){
   if(pellets > 1) popText(px, py - 26, pellets + ' شظايا', '#FF9E3D');
   G.score += pts; popText(px, py, '+' + pts, '#E8B33C');
   burst(px, py, '#A81F2D', 14, 200); Snd.bossHit();
+  if(Math.random() < .34) yell(b.face, true);
   ring(px, py, '#FF5B3D', 12, 62, .3); updHUD();
   if(b.hp/b.maxHp <= .25 && !b._rage){
     b._rage = true; b.vx *= 1.45; b.vy *= 1.45;
@@ -1209,6 +1476,7 @@ function hitTarget(t, px, py, Wp){
   if(t.kind === 'protected'){
     t.dead = true; G.lives--; G.combo = 0; G.mult = 1;
     Snd.bad(); G.shake = RM ? 0 : 16; G.hurt = 1;
+    yell(t.face, true);
     callout('ممنوع!', 'ضربت هدف محمي — خسرت قلب', '#FF5B6B');
     ring(t._dx, t._dy, '#FF5B6B', t.r, t.r*3.6, .5);
     popText(t._dx, t._dy, '−1', '#FF5B6B');
@@ -1234,6 +1502,7 @@ function hitTarget(t, px, py, Wp){
     callout('هدف ذهبي!', 'كل الأسلحة امتلأت', '#FFE9B0');
     ring(t._dx, t._dy, '#FFE9B0', t.r, t.r*3.4, .55);
   } else Snd.hit(G.combo);
+  yell(t.face, true);
   ring(t._dx, t._dy, T.col, t.r*.6, t.r*2.1, .34);
   const cw = COMBO_WORDS[Math.min(5, G.combo)];
   if(cw && G.combo >= 2 && G.combo % 2 === 0){
@@ -1251,7 +1520,8 @@ function hitTarget(t, px, py, Wp){
 
 function startReload(){
   if(G.reloading) return;
-  G.reloading = true; G.reloadT = wp().reload;
+  G.reloading = true;
+  G.reloadT = wp().reload * (hasMod(lvOf(G.level),'heavy') ? 1.5 : 1);
   $('reloadBtn').textContent = 'يعبّي...'; Snd.reload();
 }
 function finishReload(){
@@ -1264,6 +1534,7 @@ function bossDown(){
   const b = G.boss;
   burst(b.x, b.y, '#A81F2D', 60, 320); burst(b.x, b.y, '#E8B33C', 40, 260);
   ring(b.x, b.y, '#FFE9B0', b.r, 520, .85); smoke(b.x, b.y, 14);
+  yell(b.face, false);
   Snd.bossDie(); G.slowmo = 1.1;
   callout('سقـط الزعـيم!', '+500 نقطة', '#FFE9B0');
   G.shake = RM ? 0 : 22; G.boss = null; G.score += 500;
@@ -1327,6 +1598,7 @@ function update(dt){
       G.spawnT = L.rate * rnd(.75, 1.2);
       spawn(L);
       if(G.level >= 7 && Math.random() < .35) spawn(L);
+      if(hasMod(L,'swarm') && Math.random() < .22){ spawn(L); spawn(L); }
     }
   }
   for(const t of G.targets){
@@ -1334,6 +1606,8 @@ function update(dt){
     t.age += dt; t.hitFx = Math.max(0, t.hitFx - dt);
     if(t.air){
       t.x += t.vx*dt;
+      if(t.wind) t.y += Math.sin(G.t*1.6 + t.wob) * t.wind * dt;
+      t.y = clamp(t.y, AIR[0]-20, AIR[1]+20);
       if(t.x < -t.r-10 || t.x > W+t.r+10) t.dead = true;
     } else if(t.age > t.life){
       t.dead = true;
@@ -1373,7 +1647,7 @@ function render(dt){
   ctx.beginPath(); ctx.rect(0,0,W,H); ctx.clip();
   if(G.shake > .4) ctx.translate(rnd(-G.shake,G.shake), rnd(-G.shake,G.shake));
 
-  drawBG(L.pal, G.t);
+  drawBG(L.pal, G.t, dt);
 
   if(G.running || G.screen === 'play'){
     for(const t of G.targets) if(!t.dead) drawTarget(t);
@@ -1433,6 +1707,22 @@ function render(dt){
   // شريط السدو أسفل الشاشة
   if(G.running) drawSadu(0, H-12, W, 12);
 
+  // عجاج: غبار يقلّل الرؤية في مراحل معيّنة
+  if(G.running && hasMod(lvOf(G.level),'fog')){
+    ctx.save();
+    ctx.globalAlpha = .30;
+    ctx.fillStyle = '#C9A46A';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalAlpha = .16;
+    for(let i=0;i<5;i++){
+      const yy = (G.t*26 + i*H/5) % (H+120) - 60;
+      ctx.fillStyle = i%2 ? '#E8CC96' : '#B08B54';
+      ctx.beginPath();
+      ctx.ellipse(((G.t*44 + i*310) % (W+520)) - 260, yy, 240, 62, 0, 0, 7);
+      ctx.fill();
+    }
+    ctx.restore();
+  }
   // إطار معتم يركّز النظر
   const vgR = Math.max(W,H);
   const vg = ctx.createRadialGradient(W/2,H/2,vgR*.30, W/2,H/2,vgR*.80);
@@ -1506,7 +1796,8 @@ function drawCross(x, y){
   // مؤشر إعادة التعبئة
   if(G.reloading){
     ctx.strokeStyle = '#FFC94D'; ctx.lineWidth = 5;
-    ctx.beginPath(); ctx.arc(0,0,R+20,-Math.PI/2, -Math.PI/2 + 6.283*(1-G.reloadT/wp().reload)); ctx.stroke();
+    const rlMax = wp().reload * (hasMod(lvOf(G.level),'heavy') ? 1.5 : 1);
+    ctx.beginPath(); ctx.arc(0,0,R+20,-Math.PI/2, -Math.PI/2 + 6.283*(1-G.reloadT/rlMax)); ctx.stroke();
   }
   ctx.fillStyle = 'rgba(18,12,8,.8)';
   ctx.beginPath(); ctx.arc(0,0,4.6,0,7); ctx.fill();
@@ -1635,14 +1926,14 @@ function levelWin(){
   const s = starsFor();
   prog.stars[G.level] = Math.max(prog.stars[G.level] || 0, s);
   const before = prog.unlocked;
-  prog.unlocked = Math.max(prog.unlocked, Math.min(12, G.level+1));
+  prog.unlocked = Math.max(prog.unlocked, Math.min(LVN, G.level+1));
   const got = WEAPONS.find(w => w.unlock > before && w.unlock <= prog.unlocked);
   if(got) setTimeout(() => callout('سلاح جديد: ' + got.name, got.hint, got.col), 900);
   prog.best = Math.max(prog.best, G.score);
   saveProg();
   Snd.lvlUp();
   const acc = G.shots ? Math.round(G.hits/G.shots*100) : 0;
-  const isLast = G.level === 12;
+  const isLast = G.level === LVN;
   $('winTitle').textContent = isLast ? 'أنت شيخ الرماة!' : (lvOf(G.level).boss ? 'أسقطت الزعيم' : 'خلصت المرحلة ' + G.level);
   $('winStars').textContent = '★'.repeat(s) + '☆'.repeat(3-s);
   $('winStats').innerHTML =
@@ -1765,6 +2056,20 @@ function renderStudio(){
     g.appendChild(d);
   });
 }
+// لكل وجه نبرة ثابتة مشتقّة من اسمه، فيصير له صوت مميز يتكرر
+const VOICE_WORDS = ['oh','ay','akh','aah','oy','wa'];
+function voiceOf(face){
+  const key = (face && face.name) ? face.name : 'x';
+  let h = 2166136261;
+  for(let i=0;i<key.length;i++){ h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  const h2 = (h >>> 13) ^ (h * 2654435761 >>> 0);
+  return { pitch: 104 + (h % 152), word: VOICE_WORDS[(h2 >>> 3) % VOICE_WORDS.length] };
+}
+function yell(face, hurt){
+  const v = voiceOf(face);
+  Snd.voice(hurt ? v.word : 'aah', v.pitch, hurt ? .5 : .34);
+}
+
 // ————— كشف الوجه: تحليل نغمة البشرة + أكبر كتلة متصلة —————
 function detectFace(img, W0, H0){
   const MAX = 150;
@@ -1956,20 +2261,131 @@ function edPan(dxCss, dyCss){
   Ed.crop = clampCrop({ x:Ed.crop.x - dxCss*r, y:Ed.crop.y - dyCss*r, s:Ed.crop.s }, w, h);
   drawEditor();
 }
+/* ---------- 19.5) بيان المرحلة ودليل اللعبة ---------- */
+const MOD_ICON = { swarm:'#FF7A3D', wind:'#4FB8FF', blitz:'#C77DFF', shrink:'#38C9A0',
+                   guard:'#2ED573', heavy:'#9AA6B2', fog:'#C9A46A', gold:'#FFD24A', armor:'#7C8AA0' };
+const regionOf = n => (REGIONS.find(r => n >= r.from && n <= r.to) || REGIONS[0]).name;
+
+// نصائح تتغيّر حسب ما في المرحلة
+function tipFor(L){
+  if(L.boss) return 'الزعيم يرفع درعه ثم ينزله — لا تهدر ذخيرتك على الدرع، انتظر لحظة النزول.';
+  if(hasMod(L,'fog')) return 'العجاج يخفي الأهداف — راقب الحركة لا اللون.';
+  if(hasMod(L,'heavy')) return 'التعبئة أبطأ هنا، فكل طلقة تحسب. البارودة تكفيك أكثر من الرشاش.';
+  if(hasMod(L,'guard')) return 'المحميون كثر — تمهّل ربع ثانية وتأكد من العلامة الخضراء.';
+  if(hasMod(L,'shrink')) return 'الأهداف أصغر من المعتاد — البارودة تعوّض ضيق التصويب.';
+  if(hasMod(L,'swarm')) return 'يطلعون دفعات — البارودة تسقط أكثر من واحد بطلقة.';
+  if(L.types.indexOf('armored') >= 0) return 'المدرّع يحتاج ضربتين، والقنّاص يخترقه بضربة وحدة.';
+  if(L.types.indexOf('golden') >= 0) return 'الذهبي نادر لكنه يعبّي كل أسلحتك — لا تفوّته.';
+  if(L.types.indexOf('protected') >= 0) return 'السلسلة تنكسر بأي طلقة طائشة، والمحمي يكلّفك قلباً.';
+  return 'الضربات المتتالية بدون خطأ ترفع مضاعف النقاط إلى ×5.';
+}
+function typesIn(L){
+  const base = (L.types || []).slice();
+  if(L.boss) base.unshift('boss');
+  if(L.n >= 9 || (L.boss && L.boss >= 2)){ base.push('freeze'); base.push('double'); }
+  return base;
+}
+function openBrief(n){
+  const L = lvOf(n);
+  G.pendingLevel = n;
+  $('bfRegion').textContent = regionOf(n);
+  $('bfTitle').textContent = L.boss ? ('المرحلة ' + n + ' — زعيم') : ('المرحلة ' + n);
+  $('bfGoal').textContent = L.boss ? 'أسقط الزعيم' : (L.goal + ' إصابة');
+  $('bfTime').textContent = L.time + ' ث';
+  $('bfLives').textContent = G.lives;
+
+  // الجديد في هذي المرحلة
+  const nw = $('bfNew'); nw.innerHTML = '';
+  const add = (badge, title, desc) => nw.insertAdjacentHTML('beforeend',
+    `<div class="newCard"><span class="badge">${badge}</span><span>
+      <span class="nt">${title}</span><span class="nd">${desc}</span></span></div>`);
+  if(L.newType && TYPE[L.newType])
+    add('جديد', TYPE[L.newType].name, TYPE[L.newType].note + ' — ' + TYPE[L.newType].pts + ' نقطة');
+  if(L.newMod && MODS[L.newMod]) add('تغيّر', MODS[L.newMod].name, MODS[L.newMod].desc);
+  const gun = WEAPONS.find(w => w.unlock === n);
+  if(gun) add('سلاح', gun.name, gun.hint);
+  if(L.boss) add('زعيم', 'وجه كبير بدرع', 'يرفع درعه بين فترة وأخرى ويرسل أهدافاً صغيرة. لما تنزل صحته للربع يصير أسرع.');
+  if(!nw.children.length && L.mods && L.mods.length){
+    const m = L.mods[L.mods.length-1];
+    if(MODS[m]) add('مستمر', MODS[m].name, MODS[m].desc);
+  }
+
+  // الأهداف الموجودة
+  const tw = $('bfTypes'); tw.innerHTML = '';
+  typesIn(L).forEach(k => {
+    if(k === 'boss'){
+      tw.insertAdjacentHTML('beforeend',
+        `<span class="tchip"><i style="background:#A81F2D"></i><span class="tn">الزعيم</span>
+         <span class="tp">صحة ${lvOf(n).hp}</span></span>`);
+      return;
+    }
+    const T = TYPE[k]; if(!T) return;
+    tw.insertAdjacentHTML('beforeend',
+      `<span class="tchip"><i style="background:${T.col}"></i><span class="tn">${T.name}</span>
+       <span class="tp">${k === 'protected' ? 'لا تضربه' : T.pts + ' نقطة'}</span></span>`);
+  });
+  $('bfTip').textContent = 'نصيحة: ' + tipFor(L);
+  show('brief'); G.screen = 'brief';
+}
+
+function renderGuide(){
+  const wpRows = WEAPONS.map(w =>
+    `<div class="grow"><span class="gk" style="color:${w.col}">${w.name}</span><span class="gv">
+      ${w.hint}. ذخيرة ${w.mag}، ضرر ${w.dmg}${w.pellets>1?' ×'+w.pellets+' شظايا':''},
+      نقاطه ×${w.mult}. ${w.unlock>1?'يفتح من المرحلة '+w.unlock:'متاح من البداية'}.</span></div>`).join('');
+  const tRows = Object.keys(TYPE).map(k => {
+    const T = TYPE[k];
+    return `<div class="grow"><span class="gk" style="color:${T.col}">${T.name}</span><span class="gv">
+      ${T.note}. ${k==='protected'?'ضربه يكلّفك قلباً.':T.pts+' نقطة'+(T.hp>1?'، ويحتاج '+T.hp+' ضربات':'')}.</span></div>`;
+  }).join('');
+  const mRows = Object.keys(MODS).map(k =>
+    `<div class="grow"><span class="gk" style="color:${MOD_ICON[k]||'#F2D8A7'}">${MODS[k].name}</span>
+     <span class="gv">${MODS[k].desc}</span></div>`).join('');
+  $('guideBody').innerHTML = `
+    <div class="gsec"><h4>كيف تلعب</h4>
+      <p>وجوه تطلع من ورا الكثبان أو تعبر السماء. صوّب واضغط قبل ما تختفي.</p>
+      <p>على الجوال: المس مكان الهدف = طلقة. على الكمبيوتر: حرّك الماوس واضغط، أو مسافة للإطلاق.</p>
+      <p>لكل سلاح ذخيرة محدودة. لما تخلص يعبّي تلقائياً، أو اضغط زر التعبئة أو حرف R.</p></div>
+    <div class="gsec"><h4>كيف تكسب المرحلة</h4>
+      <p>لازم توصل عدد الإصابات المطلوب قبل انتهاء الوقت. إذا انتهى الوقت وما وصلت، تخسر قلباً وتعيد المرحلة.</p>
+      <p>عندك ثلاثة قلوب للجولة كاملة. تخسر قلباً إذا ضربت هدفاً محمياً أو انتهى وقتك.</p>
+      <p>النجوم في النهاية حسب دقتك: ثلاث نجوم تحتاج دقة 80٪ وقلوبك كاملة.</p></div>
+    <div class="gsec"><h4>النقاط والسلسلة</h4>
+      <p>كل إصابة متتالية بدون خطأ ترفع مضاعف النقاط: ×2 عند 4 إصابات، ويوصل ×5.</p>
+      <p>أي طلقة طائشة أو هدف يهرب يصفّر السلسلة. نقاط السلاح تُضرب في نقاط الهدف.</p></div>
+    <div class="gsec"><h4>الأسلحة</h4>${wpRows}</div>
+    <div class="gsec"><h4>الأهداف</h4>${tRows}</div>
+    <div class="gsec"><h4>تغيّرات المراحل</h4>${mRows}</div>
+    <div class="gsec"><h4>الزعماء</h4>
+      <p>كل خمس مراحل يجيك زعيم: وجه كبير بشريط صحة، يتحرك ويرفع درعاً خشبياً بين فترة وأخرى — الطلقات على الدرع ضائعة.</p>
+      <p>يرسل أهدافاً صغيرة تشغلك، وبعضها محمي فانتبه. لما تنزل صحته تحت الربع يصير أسرع.</p>
+      <p>البارودة أسرع طريقة لإسقاطه لأن شظاياها كلها تصيبه، والقنّاص يعطيك أعلى نقاط.</p></div>
+    <div class="gsec"><h4>الوجوه</h4>
+      <p>من استوديو الوجوه تضيف صوراً من جهازك. تنحفظ على جهازك أنت فقط وما ترتحل مع الرابط.</p>
+      <p>لكل وجه دور: هدف عادي، أو محمي ممنوع ضربه، أو زعيم. تغيّره بالضغط على الشارة تحت الصورة.</p></div>`;
+}
+
 /* ---------- 20) خريطة المراحل ---------- */
 function renderMap(){
   const g = $('mapGrid'); g.innerHTML = '';
-  LV.forEach(L => {
-    const locked = L.n > prog.unlocked;
-    const s = prog.stars[L.n] || 0;
-    const b = document.createElement('button');
-    b.className = 'node' + (locked ? ' locked' : '') + (L.boss ? ' boss' : '');
-    b.innerHTML = `<span>${L.n}</span>
-      <span class="stars">${locked ? '' : '★'.repeat(s) + '☆'.repeat(3-s)}</span>
-      ${L.boss ? '<span class="lock">زعيم</span>' : ''}`;
-    b.disabled = locked;
-    if(!locked) b.onclick = () => { G.score = 0; G.lives = 3; G.bestCombo = 0; startLevel(L.n); };
-    g.appendChild(b);
+  REGIONS.forEach(R => {
+    const done = LV.filter(L => L.n >= R.from && L.n <= R.to && prog.stars[L.n]).length;
+    const tot = R.to - R.from + 1;
+    g.insertAdjacentHTML('beforeend',
+      `<div class="regHead"><span>${R.name}</span><span class="regN">${done}/${tot}</span></div>`);
+    for(let n = R.from; n <= R.to; n++){
+      const L = lvOf(n);
+      const locked = n > prog.unlocked;
+      const st = prog.stars[n] || 0;
+      const b = document.createElement('button');
+      b.className = 'node' + (locked ? ' locked' : '') + (L.boss ? ' boss' : '');
+      b.innerHTML = `<span>${n}</span>
+        <span class="stars">${locked ? '' : '★'.repeat(st) + '☆'.repeat(3-st)}</span>
+        ${L.boss ? '<span class="lock">زعيم</span>' : ''}`;
+      b.disabled = locked;
+      if(!locked) b.onclick = () => { G.score = 0; G.lives = 3; G.bestCombo = 0; openBrief(n); };
+      g.appendChild(b);
+    }
   });
 }
 
@@ -2000,10 +2416,13 @@ function togglePause(){
 }
 
 /* ---------- 22) ربط الأزرار ---------- */
-$('playBtn').onclick = () => { Snd.boot(); renderMap(); show('map'); G.screen = 'map'; };
+$('playBtn').onclick = () => {
+  Snd.boot();
+  G.score = 0; _lastScore = -1; G.lives = 3; G.bestCombo = 0;
+  openBrief(clamp(prog.unlocked || 1, 1, LVN));
+};
 $('mapBack').onclick = () => { show('menu'); G.screen = 'menu'; };
-$('howBtn').onclick = () => show('how');
-$('howBack').onclick = () => show('menu');
+$('howBtn').onclick = () => { renderGuide(); G.guideFrom = 'menu'; show('guide'); };
 $('sndBtn').onclick = e => { const on = Snd.toggle(); e.target.textContent = 'الصوت: ' + (on ? 'تشغيل' : 'إيقاف'); };
 // ————— أحداث محرر القص —————
 (function bindEditor(){
@@ -2168,14 +2587,21 @@ function checkEnv(){
   }
 }
 $('saveBtn').onclick = saveCopy;
+$('bfGo').onclick    = () => startLevel(G.pendingLevel || 1);
+$('bfGuide').onclick = () => { renderGuide(); G.guideFrom = 'brief'; show('guide'); };
+$('bfBack').onclick  = () => { renderMap(); show('map'); G.screen = 'map'; };
+$('guideBack').onclick = () => {
+  if(G.guideFrom === 'brief' && G.pendingLevel) show('brief');
+  else show('menu');
+};
 $('pauseBtn').onclick = togglePause;
 $('reloadBtn').onclick = () => { if(G.running && !G.reloading && G.ammo < G.maxAmmo) startReload(); };
 $('resumeBtn').onclick = togglePause;
 $('quitBtn').onclick = () => { G.running = false; G.paused = false; Snd.windOff(); $('hud').classList.remove('on'); show('menu'); G.screen = 'menu'; };
-$('nextBtn').onclick = () => startLevel(Math.min(12, G.level+1));
-$('retryBtn').onclick = () => startLevel(G.level);
+$('nextBtn').onclick = () => openBrief(Math.min(LVN, G.level+1));
+$('retryBtn').onclick = () => openBrief(G.level);
 $('winMap').onclick = () => { renderMap(); show('map'); G.screen = 'map'; $('best').textContent = prog.best; };
-$('againBtn').onclick = () => { G.score = 0; G.lives = 3; G.bestCombo = 0; startLevel(G.level); };
+$('againBtn').onclick = () => { G.score = 0; _lastScore = -1; G.lives = 3; G.bestCombo = 0; openBrief(G.level); };
 $('overMap').onclick = () => { G.score = 0; G.lives = 3; renderMap(); show('map'); G.screen = 'map'; };
 $('resetProg').onclick = async () => {
   prog.unlocked = 1; prog.stars = {}; prog.best = 0; await saveProg(); renderMap(); toast('صفّرنا التقدم');
