@@ -257,6 +257,20 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   padding:3px 10px;border-radius:99px}
 /* رقم النسخة: مثبّت على أقصى أسفل يسار الشاشة الفعلي،
    يحترم حواف الشاشات المنحنية ويصمد مع دوران الجهاز */
+#coinBar{display:flex;gap:9px;align-items:center;justify-content:center;flex-wrap:wrap}
+.coinChip{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:99px;
+  background:linear-gradient(180deg,rgba(60,42,18,.9),rgba(28,19,8,.92));
+  border:1px solid rgba(255,201,77,.42);
+  box-shadow:0 4px 14px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,232,160,.18)}
+.coinChip svg{width:22px;height:22px;display:block;
+  filter:drop-shadow(0 0 6px rgba(255,201,77,.55))}
+.coinChip b{font-size:17px;font-weight:800;color:#FFD24A;font-variant-numeric:tabular-nums;
+  text-shadow:0 0 12px rgba(255,201,77,.4)}
+.coinChip.alt{background:rgba(20,14,10,.7);border-color:rgba(255,255,255,.1)}
+.coinChip.alt b{font-size:15px;color:#F2D8A7;text-shadow:none}
+.coinChip .cl{font-size:10.5px;color:#9E8B70;font-weight:600}
+.coinChip.pop{animation:coinPop .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes coinPop{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
 #verTag{
   position:fixed;
   left:calc(env(safe-area-inset-left,0px) + 7px);
@@ -327,6 +341,18 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
 #shop{overflow-y:auto;justify-content:flex-start;
   padding-top:calc(env(safe-area-inset-top,0px) + 16px);
   padding-bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
+#diff{overflow-y:auto;justify-content:flex-start;
+  padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
+#diffList{width:min(500px,95%);display:flex;flex-direction:column;gap:9px}
+.dcard{display:flex;align-items:center;gap:12px;padding:12px 15px;border-radius:15px;
+  background:linear-gradient(180deg,rgba(40,28,20,.8),rgba(16,11,7,.86));
+  border:2px solid rgba(255,255,255,.07);cursor:pointer;text-align:start}
+.dcard.on{border-color:currentColor;background:rgba(255,201,77,.10)}
+.dcard .dn{font-weight:800;font-size:16px;display:block}
+.dcard .dh{font-size:11.5px;color:#9E8B70;display:block;margin-top:2px;line-height:1.5}
+.dcard .dstat{font-size:10.5px;color:#8A7458;margin-top:4px;display:block;
+  font-variant-numeric:tabular-nums}
+.dcard .dhearts{flex:none;font-size:13px;letter-spacing:1px}
 #shopList{width:min(520px,95%);display:flex;flex-direction:column;gap:10px}
 .wcard{display:flex;align-items:center;gap:13px;padding:12px 15px;border-radius:16px;
   background:linear-gradient(180deg,rgba(40,28,20,.82),rgba(16,11,7,.88));
@@ -424,6 +450,7 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       <button class="btn" id="endlessBtn">التحدي اللانهائي</button>
     </div>
     <div class="row">
+      <button class="btn ghost sm" id="diffBtn">الصعوبة</button>
       <button class="btn ghost sm" id="achBtn">الإنجازات</button>
       <button class="btn ghost sm" id="shopBtn">المتجر</button>
       <button class="btn ghost sm" id="studioBtn">استوديو الوجوه</button>
@@ -434,7 +461,18 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     </div>
     <p class="hint" id="offlineTag">نحفظ اللعبة على جهازك...</p>
     <div class="orn thin"></div>
-    <p class="hint">أعلى نتيجة: <b id="best">0</b> · <b id="menuCoins">0</b> قطعة</p>
+    <div id="coinBar">
+      <span class="coinChip">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="#B9832E"/>
+          <circle cx="12" cy="12" r="8.2" fill="#FFD24A"/>
+          <circle cx="12" cy="12" r="6" fill="none" stroke="#C08A1E" stroke-width="1.1"/>
+          <path d="M12 7.2l1.5 3.1 3.4.5-2.5 2.4.6 3.4-3-1.6-3 1.6.6-3.4-2.5-2.4 3.4-.5z" fill="#8A5A10"/>
+        </svg>
+        <b id="menuCoins">0</b>
+      </span>
+      <span class="coinChip alt"><span class="cl">أعلى نتيجة</span><b id="best">0</b></span>
+    </div>
     <p class="hint" style="max-width:38ch">من "استوديو الوجوه" تقدر تضيف صورك — تنحفظ على جهازك أنت فقط وما تنرسل لأي مكان.</p>
   </div>
 
@@ -508,6 +546,15 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
       <button class="btn ghost sm" id="bfGuide">دليل اللعبة</button>
       <button class="btn ghost sm" id="bfBack">رجوع</button>
     </div>
+  </div>
+
+  <!-- الصعوبة -->
+  <div class="layer scrim" id="diff">
+    <h2>مستوى الصعوبة</h2>
+    <div class="orn thin"></div>
+    <p class="hint">يؤثر على سرعة الأهداف والوقت والمطلوب وصحة الزعماء وعدد قلوبك</p>
+    <div id="diffList"></div>
+    <button class="btn ghost sm" id="diffBack">رجوع</button>
   </div>
 
   <!-- الإنجازات -->
@@ -592,7 +639,7 @@ input[type=file]{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   </div>
 
   <div id="toast"><span></span></div>
-  <div id="verTag">نسخة ١٠</div>
+  <div id="verTag">نسخة ١١</div>
 </div></div>
 
 <script>
@@ -643,11 +690,37 @@ const Store = (() => {
 /* ---------- 3) الصوت ---------- */
 const Snd = (() => {
   let ac = null, on = true, bus = null, wind = null, windG = null;
+  let verb = null;
+  // صدى صحراوي مبني رياضياً: انعكاسات مبكرة من الكثبان ثم ذيل يخفت
+  function buildVerb(){
+    if(!ac || verb) return;
+    try{
+      const sr = ac.sampleRate, len = Math.floor(sr * 1.1);
+      const buf = ac.createBuffer(2, len, sr);
+      const taps = [.031,.058,.091,.137,.198,.264];
+      for(let ch=0; ch<2; ch++){
+        const d = buf.getChannelData(ch);
+        for(let i=0;i<len;i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, 2.7) * .3;
+        taps.forEach((tp,k) => {
+          const idx = Math.floor(tp*sr*(1+ch*.04));
+          if(idx < len) d[idx] += (k%2?-1:1) * (.55/(k+1));
+        });
+      }
+      verb = ac.createConvolver(); verb.buffer = buf;
+      const vg = ac.createGain(); vg.gain.value = .38;
+      verb.connect(vg); vg.connect(ac.destination);
+    }catch(e){ verb = null; }
+  }
+  function toVerb(node, amt){
+    if(!verb || !amt) return;
+    try{ const g = ac.createGain(); g.gain.value = amt; node.connect(g); g.connect(verb); }catch(e){}
+  }
   function boot(){
     if(!ac){
       try{
         ac = new (window.AudioContext||window.webkitAudioContext)();
         bus = ac.createGain(); bus.gain.value = .85; bus.connect(ac.destination);
+        buildVerb();
       }catch(e){}
     }
     if(ac && ac.state === 'suspended') ac.resume();
@@ -667,7 +740,7 @@ const Snd = (() => {
     if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, f+slide), t+dur);
     env(o, t, .006, dur, peak==null?.2:peak); o.start(t); o.stop(t+dur+.08);
   }
-  function noise(dur, cut, peak, sweep, q, delay){
+  function noise(dur, cut, peak, sweep, q, delay, verbAmt){
     if(!on || !ac) return; const t = T() + (delay||0);
     const n = Math.max(1, Math.floor(ac.sampleRate*dur));
     const b = ac.createBuffer(1, n, ac.sampleRate), d = b.getChannelData(0);
@@ -676,7 +749,10 @@ const Snd = (() => {
     const f = ac.createBiquadFilter(); f.type = 'lowpass';
     f.Q.value = q||1; f.frequency.setValueAtTime(cut, t);
     if(sweep) f.frequency.exponentialRampToValueAtTime(Math.max(100, cut+sweep), t+dur);
-    src.connect(f); env(f, t, .004, dur, peak); src.start(t);
+    src.connect(f);
+    const eg = env(f, t, .004, dur, peak);
+    toVerb(eg, verbAmt);
+    src.start(t);
   }
   const SCALE = [523.25,587.33,659.25,783.99,880,1046.5,1174.7,1318.5,1568,1760];
   return {
@@ -698,50 +774,49 @@ const Snd = (() => {
     shoot(id){
       if(!on || !ac) return;
       if(id === 'smg'){
-        // رشاش: انفجار ضيق حاد + خشخشة المدك، بلا ذيل تقريباً
-        noise(.014, 9000, .40, -6500, .8);          // القدح
-        noise(.055, 2600, .30, -2200, 1.6, .004);   // الجسم
-        tone(190, .045, 'square', .13, -110);
-        tone(3400, .012, 'square', .07, -2400);
-        noise(.03, 5200, .10, -3400, 4, .055);      // المدك يرجع
-        tone(920, .02, 'square', .05, -420, .07);
+        // رشاش: قدح جاف قصير جداً، صدى قليل — إيقاع سريع
+        noise(.008, 11000, .55, -8000, .7);          // القدح اللحظي
+        noise(.045, 3400, .34, -3000, 1.4, .002, .10);
+        tone(240, .035, 'square', .12, -170);
+        noise(.022, 6500, .10, -4200, 5, .05);       // المدك يرجع
       } else if(id === 'shot'){
-        // بارودة: دوي عريض بطيء + هدير عميق + تلقيم المدفع بعدها
-        noise(.10, 4200, .62, -3200, .7);
-        noise(.55, 620, .48, -520, 1.9, .02);       // الهدير
-        tone(46, .48, 'sine', .38, -18);            // الارتداد العميق
-        tone(96, .22, 'square', .2, -44, .01);
-        noise(.05, 1800, .16, -1200, 3, .30);       // تلقيم: سحب
-        noise(.05, 1500, .16, -1000, 3, .46);       // تلقيم: دفع
+        // بارودة: قدح عريض + هدير عميق + صدى واسع من الكثبان
+        noise(.012, 8000, .62, -6000, .6);
+        noise(.09, 2600, .55, -2200, .9, .004, .55);
+        noise(.62, 700, .34, -600, 1.7, .02, .75);   // الهدير المتدحرج
+        tone(42, .55, 'sine', .40, -16);
+        tone(88, .20, 'square', .18, -40, .006);
+        noise(.045, 1900, .16, -1300, 3, .34);       // تلقيم: سحب
+        noise(.045, 1600, .16, -1100, 3, .50);       // تلقيم: دفع
       } else if(id === 'sniper'){
-        // قنّاص: قرقعة حادة جداً + صدى يرتد من الكثبان + مزلاج
-        noise(.03, 11000, .58, -8500, 1.1);
-        tone(4200, .016, 'square', .12, -3400);
-        noise(.34, 1500, .34, -1300, 2.2, .008);
-        tone(58, .42, 'sawtooth', .3, -22);
-        noise(.42, 560, .13, -460, 4, .16);         // صدى أول
-        noise(.36, 420, .07, -350, 5, .34);         // صدى ثانٍ أبعد
-        noise(.04, 2600, .12, -1800, 4, .52);       // المزلاج يُفتح
-        tone(640, .05, 'square', .07, -240, .60);   // المزلاج يُقفل
+        // قنّاص: قرقعة حادة جداً ثم صدى بعيد مرتد مرتين
+        noise(.006, 14000, .66, -11000, .8);
+        tone(5200, .010, 'square', .13, -4200);
+        noise(.20, 2100, .40, -1800, 1.3, .003, .85);
+        tone(52, .5, 'sawtooth', .32, -20);
+        noise(.55, 620, .16, -520, 3.5, .13, .9);    // ارتداد أول
+        noise(.45, 420, .09, -340, 4.5, .33, .8);    // ارتداد أبعد
+        noise(.03, 2800, .13, -2000, 4, .55);        // المزلاج
+        tone(700, .04, 'square', .08, -260, .63);
       } else if(id === 'bow'){
-        // سهم: صفير وتر القوس، بلا فرقعة بارود إطلاقاً
-        noise(.05, 5000, .16, -3800, 4, 0);
-        tone(680, .09, 'sine', .1, 260);
-        tone(1400, .05, 'triangle', .06, 180, .02);
+        noise(.04, 5200, .17, -4000, 4.5, 0, .2);    // صفير الوتر
+        tone(720, .075, 'sine', .10, 300);
+        tone(1500, .04, 'triangle', .05, 200, .015);
       } else if(id === 'cannon'){
-        // مدفع: دوي إطلاق ثقيل جداً + ارتجاج المنصة
-        noise(.14, 3200, .55, -2400, .6);
-        noise(.8, 340, .5, -280, 1.6, .03);
-        tone(34, 1.0, 'sine', .34, -10);
-        tone(70, .3, 'square', .2, -30, .02);
+        // مدفع: قدح ثقيل + موجة ضغط + صدى طويل جداً
+        noise(.02, 5200, .68, -4000, .5);
+        noise(.16, 1500, .60, -1300, .8, .006, .9);
+        noise(.95, 300, .42, -250, 1.5, .04, 1.0);
+        tone(30, 1.1, 'sine', .40, -9);
+        tone(62, .34, 'square', .2, -26, .01);
       } else {
-        // بندقية: متوازنة — قدح واضح، جسم متوسط، ذيل قصير
-        noise(.045, 7400, .50, -5200, 1.0);
-        noise(.18, 1700, .36, -1450, 2.0, .008);
-        tone(112, .16, 'square', .22, -52);
-        tone(2400, .02, 'square', .09, -1700);
-        noise(.30, 700, .10, -560, 4, .10);         // ذيل خفيف
-        tone(760, .03, 'square', .05, -300, .16);   // الغالق
+        // بندقية: قدح واضح، جسم متوسط، ذيل صحراوي قصير
+        noise(.009, 9500, .58, -7000, .8);
+        noise(.07, 2400, .40, -2000, 1.2, .003, .35);
+        noise(.34, 900, .18, -700, 2.6, .015, .55);
+        tone(105, .17, 'square', .24, -46);
+        tone(2900, .012, 'square', .09, -2200);
+        tone(780, .028, 'square', .06, -320, .13);   // الغالق
       }
     },
     // ————— أصوات السلاح الأبيض والمقذوفات —————
@@ -1001,8 +1076,8 @@ const WEAPONS = [
     mag:10, cd:.42, reload:1.3, dmg:2, pellets:1, spread:0, aim:14, mult:1.5, unlock:'coin',
     cost:260, projectile:true, speed:820, col:'#8FE0AC' },
   { id:'cannon', name:'مدفع الصحراء', hint:'قذيفة بطيئة تنفجر بمنطقة واسعة — الأقوى إطلاقاً',
-    mag:2,  cd:1.1, reload:2.5, dmg:7, pellets:1, spread:0, aim:14, mult:2.2, unlock:'coin',
-    cost:520, projectile:true, speed:520, splash:98, col:'#FF4D6D' }
+    mag:4,  cd:.5,  reload:2.0, dmg:5, pellets:1, spread:0, aim:14, mult:2.2, unlock:'coin',
+    cost:520, projectile:true, speed:640, splash:98, col:'#FF4D6D' }
 ];
 const wp = () => WEAPONS[G.wp];
 const wpOpen = i => {
@@ -1068,7 +1143,7 @@ const LV = (() => {
       continue;
     }
     // المراحل العادية
-    const goal = Math.round(8 + 30 * Math.pow(t, .92));         // 8 .. 38
+    const goal = Math.round(13 + 57 * Math.pow(t, .92));        // 13 .. 70
     const rate = +(1.28 - .86 * Math.pow(t, .8)).toFixed(3);    // 1.28 .. 0.42 ثانية بين الأهداف
     const life = +(1.95 - 1.05 * Math.pow(t, .85)).toFixed(3);  // 1.95 .. 0.90 ثانية عمر الهدف
     const time = Math.round(45 + 22 * t);                       // 45 .. 67 ثانية
@@ -1083,8 +1158,38 @@ const LV = (() => {
 })();
 const LVN = LV.length;
 let _endlessL = null;
-const lvOf = n => (G && G.endless && _endlessL) ? _endlessL : LV[clamp(n,1,LVN) - 1];
+const _rawLv = n => LV[clamp(n,1,LVN) - 1];
+// يطبّق مضاعفات الصعوبة على إعداد المرحلة، مع تخزين النتيجة لكل مستوى
+function lvOf(n){
+  if(G && G.endless && _endlessL) return _endlessL;
+  const base = _rawLv(n), d = diff();
+  if(d.id === 'normal') return base;
+  if(base._dk === d.id) return base._dc;
+  const c = Object.assign({}, base);
+  if(c.goal) c.goal = Math.max(4, Math.round(c.goal * d.goal));
+  if(c.rate) c.rate = +Math.max(.18, c.rate * d.rate).toFixed(3);
+  if(c.life) c.life = +Math.max(.45, c.life * d.life).toFixed(3);
+  if(c.hp)   c.hp   = Math.round(c.hp * d.hp);
+  if(c.time) c.time = Math.round(c.time * d.time);
+  base._dk = d.id; base._dc = c;
+  return c;
+}
 const hasMod = (L, m) => !!(L.mods && L.mods.indexOf(m) >= 0);
+
+// ————— مستويات الصعوبة —————
+// تضرب عمر الهدف ومعدل التوليد والمطلوب وصحة الزعيم والوقت وعدد القلوب
+const DIFFS = [
+  { id:'easy',   name:'هيّن',   hint:'للتعوّد والتجربة',
+    life:1.25, rate:1.2,  goal:.8,  hp:.8,  time:1.15, lives:4, esc:0,  coin:.7 },
+  { id:'normal', name:'عادي',   hint:'التوازن الأصلي',
+    life:1,    rate:1,    goal:1,   hp:1,   time:1,    lives:3, esc:0,  coin:1 },
+  { id:'hard',   name:'صعب',    hint:'أهداف أسرع ووقت أقل وقلبان فقط',
+    life:.72,  rate:.76,  goal:1.18,hp:1.4, time:.92,  lives:2, esc:45, coin:1.5 },
+  { id:'insane', name:'أسطوري', hint:'أهداف خاطفة، زعماء بضعف الصحة، وقلبان فقط',
+    life:.58,  rate:.62,  goal:1.24,hp:1.9, time:.9,   lives:2, esc:48, coin:2.2 }
+];
+const diff = () => DIFFS[clamp(prog.diff == null ? 1 : prog.diff, 0, DIFFS.length-1)];
+function startLives(){ return diff().lives; }
 
 // إعداد الوضع اللانهائي: يتولّد لحظياً حسب الوقت المنقضي
 const ENDLESS_WAVE = 25;                 // ثواني كل موجة
@@ -1300,15 +1405,18 @@ function camel(x, y, sc, dir, ph, col){
   ctx.quadraticCurveTo(-20,-2, -18 + sw*2, 5); ctx.stroke();
   ctx.restore();
 }
-function drawCaravan(dt, p){
+// ترسم فقط جِمال الطبقة المطلوبة، فور تعبئة كثيبها — عشان الطبقة اللي بعدها تغطي أرجلها
+function drawCaravan(dt, p, lane, scroll){
   if(!CARAVAN.length) initCaravan();
   for(const c of CARAVAN){
+    if(c.lane !== lane) continue;
     c.x += c.sp * dt;
     c.ph += Math.abs(c.sp) * dt * .55;
     if(c.sp > 0 && c.x > W + 300) c.x = -300;
     if(c.sp < 0 && c.x < -300) c.x = W + 300;
-    const base = c.lane ? DUNE[1] : DUNE[0];
-    const y = duneY(c.lane, c.x, base) + 3;
+    const base = DUNE[c.lane];
+    // نفس انزياح رسم الكثيب، وإلا انفصل الجمل عن سطح الرمل وطار بالسماء
+    const y = duneY(c.lane, c.x + (scroll || 0), base) + 3;
     const dir = c.sp > 0 ? 1 : -1;
     // ظل خفيف على الرمل
     ctx.globalAlpha = .18; ctx.fillStyle = '#1B1410';
@@ -1354,10 +1462,12 @@ function drawBG(pal, t, dt){
   const bases = DUNE;
   for(let l=0;l<3;l++){
     ctx.fillStyle = p.dune[l];
+    const scroll = l === 0 ? t*3 : 0;
     ctx.beginPath(); ctx.moveTo(0,H);
-    for(let x=0;x<=W;x+=14) ctx.lineTo(x, duneY(l, x + t*(l===0?3:0), bases[l]));
+    for(let x=0;x<=W;x+=14) ctx.lineTo(x, duneY(l, x + scroll, bases[l]));
     ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
-    if(l === 1) drawCaravan(G._bgdt || .016, p);
+    // القافلة تُرسم فور تعبئة كثيبها فتُحجب صح بالطبقة التالية
+    drawCaravan(G._bgdt || .016, p, l, scroll);
     if(l === 1){
       const ps = clamp(Math.min(W,H)/560, .55, 1.25);
       palm(W*.12, bases[1]+6, .9*ps, p.dune[2]);
@@ -1428,12 +1538,33 @@ function spawn(L){
   };
   if(air){
     t.y = rnd(AIR[0], AIR[1]);
+    if(kind === 'protected'){
+      let ok = false;
+      for(let tries = 0; tries < 10 && !ok; tries++){
+        const cy = rnd(AIR[0], AIR[1]);
+        ok = !G.targets.some(o => !o.dead && o.air && o._dy !== undefined &&
+              Math.abs(o._dy - cy) < (o.r + t.r) * 1.15);
+        if(ok) t.y = cy;
+      }
+      if(!ok) return;
+    }
     t.vx = (Math.random()<.5?1:-1) * rnd(90,175) * (kind==='runner'?1.35:1) * blitz;
     t.x = t.vx > 0 ? -t.r : W + t.r;
     t.life = Math.max(t.life, (W + t.r*2)/Math.abs(t.vx));
   } else {
     const m = Math.min(W*.12, 80);
     t.x = rnd(m, W-m);
+    // المحمي لازم يبان لوحده: نجرّب مواضع حتى نلقى مكاناً ما يتداخل مع هدف قائم
+    if(kind === 'protected'){
+      let clear = false;
+      for(let tries = 0; tries < 10 && !clear; tries++){
+        const cand = rnd(m, W-m);
+        clear = !G.targets.some(o => !o.dead && o._dx !== undefined &&
+                 Math.abs(o._dx - cand) < (o.r + t.r) * 1.15);
+        if(clear) t.x = cand;
+      }
+      if(!clear) return;                   // ما فيه مكان واضح → نلغي التوليد بدل ظلم اللاعب
+    }
     // في الشاشات الطولية نوزّع الأهداف على حافتين عشان نملأ الطول
     const useMid = TALL && Math.random() < .45;
     t.tier = useMid ? 1 : 2;
@@ -1770,17 +1901,22 @@ function fire(px, py){
         continue;
       }
     }
-    let found = null;
+    // الأولوية لأقرب هدف مشروع؛ المحمي ما ينضرب إلا إذا كان الوحيد تحت الكروسهير.
+    // بهذا تبقى القاعدة واضحة: ما تخسر قلباً إلا لو صوّبت عليه فعلاً.
+    let found = null, bestD = Infinity, guard = null, guardD = Infinity;
     for(let i = G.targets.length-1; i >= 0; i--){
       const t = G.targets[i]; if(t.dead || struck.has(t)) continue;
       const tx = t._dx ?? t.x, ty = t._dy ?? t.y;
       const rad = Wp.melee ? Wp.meleeR : Wp.aim;
-      if(Math.hypot(sh.x-tx, sh.y-ty) < t.r + rad){
-        if(Wp.melee){                       // السيف يضرب كل هدف بمداه دفعة وحدة، بلا break
-          anyHit = true; struck.add(t); hitTarget(t, tx, ty, Wp);
-        } else { found = t; break; }
+      const d = Math.hypot(sh.x-tx, sh.y-ty);
+      if(d >= t.r + rad) continue;
+      if(Wp.melee){                         // السيف يضرب كل هدف بمداه دفعة وحدة
+        anyHit = true; struck.add(t); hitTarget(t, tx, ty, Wp); continue;
       }
+      if(t.kind === 'protected'){ if(d < guardD){ guard = t; guardD = d; } }
+      else if(d < bestD){ found = t; bestD = d; }
     }
+    if(!Wp.melee && !found && guard){ found = guard; }
     if(found){ anyHit = true; struck.add(found); hitTarget(found, sh.x, sh.y, Wp); }
     else if(!Wp.melee){                     // الفشل الفوري لا يُحسم إلا لغير السيف/الفأس هنا
       if(sh.y > RIDGE - 40 && G.holes.length < 40) G.holes.push({x:sh.x, y:sh.y});
@@ -2056,12 +2192,13 @@ function update(dt){
       t.dead = true;
       if(t.kind !== 'protected'){
         G.combo = 0; G.mult = 1; updCombo();
-        if(G.endless){
+        const escLimit = G.endless ? 8 : diff().esc;
+        if(escLimit){
           G.escaped++;
-          if(G.escaped >= 8){
+          if(G.escaped >= escLimit){
             G.escaped = 0; G.lives--; G.hurt = 1; Snd.bad(); updHUD();
-            callout('هربوا منك!', 'ثمانية أهداف فاتت — خسرت قلب', '#FF5B6B');
-            if(G.lives <= 0){ endlessOver(); return; }
+            callout('هربوا منك!', escLimit + ' أهداف فاتت — خسرت قلب', '#FF5B6B');
+            if(G.lives <= 0){ G.endless ? endlessOver() : gameOver('هربت منك الأهداف'); return; }
           }
         }
       }
@@ -2194,8 +2331,8 @@ function render(dt){
   }
   ctx.globalAlpha = 1;
 
-  // النداءات الكبيرة
-  for(const c of G.calls){
+  // النداءات الكبيرة — تختفي فور ظهور شاشة نتيجة عشان ما تتراكب على نصوصها
+  for(const c of (G.running || G.bossDeath > 0 ? G.calls : [])){
     const k = c.age/c.life;
     const pop = k < .18 ? 1.35 - .35*(k/.18) : 1 - .06*((k-.18)/.82);
     ctx.globalAlpha = k > .72 ? (1-k)/.28 : 1;
@@ -2444,7 +2581,9 @@ function updHUD(){
   } else if(!L.boss){
     $('goalFill').className = 'fill';
     $('goalFill').style.width = clamp(G.hits/L.goal*100,0,100) + '%';
-    $('goalLbl').textContent = G.hits + ' / ' + L.goal + ' إصابة';
+    const esc = diff().esc;
+    $('goalLbl').textContent = G.hits + ' / ' + L.goal + ' إصابة' +
+      (esc ? ' · هربوا ' + G.escaped + '/' + esc : '');
   }
 }
 // أيقونات الأسلحة (SVG بسيط، بدون إيموجي)
@@ -2520,6 +2659,7 @@ function startLevel(n){
   G.finale = 0; G.finaleAt = null;
   G.bossDeath = 0; G.bossDeathAt = null; G.coinGain = 0;
   G._deathFlashed = G._deathRing = G._deathCoins = false;
+  G.escaped = 0;                        // يبدأ من الصفر كل مرحلة
   G.recoil = 0; G.hurt = 0; G.slowmo = 0;
   G.timeLeft = L.time;
   if(!wpOpen(G.wp)) G.wp = 0;
@@ -2539,7 +2679,7 @@ function startLevel(n){
 }
 function startEndless(){
   G.endless = true; _endlessL = endlessCfg(0);
-  G.level = 1; G.score = 0; _lastScore = -1; G.lives = 3;
+  G.level = 1; G.score = 0; _lastScore = -1; G.lives = startLives();
   G.hits = 0; G.shots = 0; G.misses = 0; G.combo = 0; G.mult = 1; G.bestCombo = 0;
   G.targets = []; G.parts = []; G.pops = []; G.holes = [];
   G.calls = []; G.rings = []; G.smoke = []; G.boss = null;
@@ -2594,7 +2734,7 @@ function levelWin(){
   G.running = false; Snd.windOff(); stopVoices(); $('hud').classList.remove('on');
   const s = starsFor();
   const already = prog.stars[G.level] || 0;
-  const gain = Math.max(0, coinsForStars(s) - coinsForStars(already));   // فرق الترقية فقط
+  const gain = Math.round(Math.max(0, coinsForStars(s) - coinsForStars(already)) * diff().coin);
   if(gain > 0){ G.coinGain = gain; prog.coins = (prog.coins||0) + gain; refreshMenuCoins(); }
   else G.coinGain = 0;
   prog.stars[G.level] = Math.max(already, s);
@@ -2647,7 +2787,17 @@ function gameOver(why){
 async function saveProg(){
   try{ await Store.set('sahra_prog', JSON.stringify(prog)); }catch(e){}
 }
-function refreshMenuCoins(){ const e = $('menuCoins'); if(e) e.textContent = prog.coins || 0; }
+let _lastCoins = null;
+function refreshMenuCoins(){
+  const e = $('menuCoins'); if(!e) return;
+  const v = prog.coins || 0;
+  e.textContent = v;
+  if(_lastCoins !== null && v > _lastCoins){
+    const chip = e.parentElement;
+    if(chip){ chip.classList.remove('pop'); void chip.offsetWidth; chip.classList.add('pop'); }
+  }
+  _lastCoins = v;
+}
 async function loadProg(){
   try{
     const raw = await Store.get('sahra_prog');
@@ -3119,7 +3269,7 @@ function typesIn(L){
 function openBrief(n){
   const L = lvOf(n);
   G.pendingLevel = n;
-  $('bfRegion').textContent = regionOf(n);
+  $('bfRegion').textContent = regionOf(n) + ' · ' + diff().name;
   $('bfTitle').textContent = L.boss ? ('المرحلة ' + n + ' — زعيم') : ('المرحلة ' + n);
   $('bfGoal').textContent = L.boss ? 'أسقط الزعيم' : (L.goal + ' إصابة');
   $('bfTime').textContent = L.time + ' ث';
@@ -3184,6 +3334,10 @@ function renderGuide(){
     <div class="gsec"><h4>النقاط والسلسلة</h4>
       <p>كل إصابة متتالية بدون خطأ ترفع مضاعف النقاط: ×2 عند 4 إصابات، ويوصل ×5.</p>
       <p>أي طلقة طائشة أو هدف يهرب يصفّر السلسلة. نقاط السلاح تُضرب في نقاط الهدف.</p></div>
+    <div class="gsec"><h4>مستوى الصعوبة</h4>
+      <p>أربعة مستويات من القائمة الرئيسية: هيّن، عادي، صعب، وأسطوري.</p>
+      <p>كل ما صعّبت: الأهداف تختفي أسرع، الوقت أقصر، المطلوب أكثر، الزعماء أقوى، وقلوبك أقل — لكن العملات تتضاعف.</p>
+      <p>في «صعب» و«أسطوري» الأهداف اللي تهرب منك تكلّفك قلباً، مو بس تكسر السلسلة.</p></div>
     <div class="gsec"><h4>المتجر والعملات</h4>
       <p>تكسب عملات من إكمال المراحل (حسب عدد النجوم) ومن إسقاط الزعماء، وتشتري فيها أسلحة جديدة أقوى من المتجر في القائمة الرئيسية.</p>
       <p>السيف والفأس ضربتهما منطقة واسعة فورية بدون تصويب دقيق. السهم والمدفع مقذوفات لها زمن سفر حقيقي — تحتاج تتوقّع حركة الهدف.</p></div>
@@ -3226,6 +3380,29 @@ const WP_SVG_ALL = Object.assign({}, WP_SVG, {
         +'<circle cx="8.6" cy="20.4" r="4.4"/>'
         +'<circle cx="8.6" cy="20.4" r="1.6" fill="#1B1410"/>'
 });
+const DIFF_COL = ['#8FE0AC','#FFC94D','#FF7A3D','#FF4D6D'];
+function renderDiff(){
+  const box = $('diffList'); box.innerHTML = '';
+  DIFFS.forEach((d, i) => {
+    const on = (prog.diff == null ? 1 : prog.diff) === i;
+    const el = document.createElement('div');
+    el.className = 'dcard' + (on ? ' on' : '');
+    el.style.color = DIFF_COL[i];
+    el.innerHTML =
+      `<span style="flex:1"><span class="dn">${d.name}${on ? ' ✓' : ''}</span>
+         <span class="dh">${d.hint}</span>
+         <span class="dstat">عمر الهدف ×${d.life} · المطلوب ×${d.goal} · صحة الزعيم ×${d.hp}
+           · الوقت ×${d.time} · العملات ×${d.coin}${d.esc ? ' · ' + d.esc + ' هاربين = قلب' : ''}</span></span>
+       <span class="dhearts">${'♥'.repeat(d.lives)}</span>`;
+    el.onclick = async () => {
+      prog.diff = i;
+      LV.forEach(L => { L._dk = null; L._dc = null; });   // نبطل التخزين المؤقت القديم
+      await saveProg(); renderDiff(); Snd.big();
+      toast('الصعوبة: ' + d.name);
+    };
+    box.appendChild(el);
+  });
+}
 function renderShop(){
   $('shopCoins').textContent = prog.coins || 0;
   const box = $('shopList'); box.innerHTML = '';
@@ -3298,7 +3475,7 @@ function renderMap(){
         <span class="stars">${locked ? '' : '★'.repeat(st) + '☆'.repeat(3-st)}</span>
         ${L.boss ? '<span class="lock">زعيم</span>' : ''}`;
       b.disabled = locked;
-      if(!locked) b.onclick = () => { G.score = 0; G.lives = 3; G.bestCombo = 0; openBrief(n); };
+      if(!locked) b.onclick = () => { G.score = 0; G.lives = startLives(); G.bestCombo = 0; openBrief(n); };
       g.appendChild(b);
     }
   });
@@ -3334,7 +3511,7 @@ function togglePause(){
 /* ---------- 22) ربط الأزرار ---------- */
 $('playBtn').onclick = () => {
   Snd.boot();
-  G.score = 0; _lastScore = -1; G.lives = 3; G.bestCombo = 0;
+  G.score = 0; _lastScore = -1; G.lives = startLives(); G.bestCombo = 0;
   openBrief(clamp(prog.unlocked || 1, 1, LVN));
 };
 $('mapBack').onclick = () => { show('menu'); G.screen = 'menu'; };
@@ -3518,6 +3695,8 @@ $('endGo').onclick   = () => startEndless();
 $('endBack').onclick = () => show('menu');
 $('achBtn').onclick  = () => { renderAch(); show('ach'); G.screen='ach'; };
 $('shopBtn').onclick = () => { renderShop(); show('shop'); G.screen='shop'; };
+$('diffBtn').onclick = () => { renderDiff(); show('diff'); G.screen='diff'; };
+$('diffBack').onclick = () => show('menu');
 $('shopBack').onclick = () => show('menu');
 $('achBack').onclick = () => show('menu');
 $('pauseBtn').onclick = togglePause;
@@ -3529,16 +3708,17 @@ $('retryBtn').onclick = () => openBrief(G.level);
 $('winMap').onclick = () => { renderMap(); show('map'); G.screen = 'map'; $('best').textContent = prog.best; };
 $('againBtn').onclick = () => {
   if(G.endless){ startEndless(); return; }
-  G.score = 0; _lastScore = -1; G.lives = 3; G.bestCombo = 0; openBrief(G.level);
+  G.score = 0; _lastScore = -1; G.lives = startLives(); G.bestCombo = 0; openBrief(G.level);
 };
 $('overMap').onclick = () => {
-  G.score = 0; G.lives = 3;
+  G.score = 0; G.lives = startLives();
   if(G.endless){ G.endless = false; _endlessL = null; show('menu'); G.screen='menu'; return; }
   renderMap(); show('map'); G.screen = 'map';
 };
 $('resetProg').onclick = async () => {
   prog.unlocked = 1; prog.stars = {}; prog.best = 0;
   prog.ach = {}; prog.endless = 0; prog.endlessTop = []; prog.coins = 0; prog.bought = [];
+  prog.diff = 1; LV.forEach(L => { L._dk = null; L._dc = null; });
   prog.st = {hits:0,golden:0,armor:0,boss:0,combo:0,clean:0,wp:{},endlessHits:0};
   G.wp = 0; refreshMenuCoins();
   await saveProg(); renderMap(); toast('صفّرنا التقدم');
